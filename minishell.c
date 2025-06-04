@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/30 20:45:41 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:30:07 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ t_opirators *check_opirateur(char *input)
 
 int main(void)
 {
-    t_opirators *opirator;
+    int i;
+    t_token *tokens;
+    t_token *tmp;
+
     while (1)
     {
         char *input = readline("minishell$ ");
@@ -100,13 +103,19 @@ int main(void)
         if (!ft_strncmp(input, "exit",4))
             exit(0);
         add_history(input);
-        printf("%s %d\n",input, check_the_readability(input));
-        opirator = check_opirateur(input);
-        printf("%d %d %d %d %d\n",
-        opirator->redirect_input, opirator->redirect_output,
-    opirator->pipe, opirator->append_output, opirator->here_doc);
-        memset(opirator, 0, sizeof(t_opirators));
-        
+
+
+        tokens = tokenize(input);
+        // if (!tokens)
+        //     return 1;
+        i = 0;
+        tmp = tokens;
+        while (tmp)
+        {
+            printf("%s\n", tmp->value);
+            tmp = tmp->next;
+            i++;
+        }
         
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();

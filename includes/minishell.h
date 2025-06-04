@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/30 18:19:11 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:08:58 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+typedef struct s_token
+{
+	char			*value;
+	struct s_token	*next;
+}	t_token;
+
 typedef struct s_opirators
 {
     int pipe;
@@ -28,6 +34,6 @@ typedef struct s_opirators
 }t_opirators;
 
 
-
+t_token	*tokenize(char *input);
 
 #endif

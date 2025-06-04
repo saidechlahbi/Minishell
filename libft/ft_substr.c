@@ -38,9 +38,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-
-// int main(void)
-// {
-//     char s1[] = "said lokman hmida lamba";
-//     printf("%s\n",ft_substr(s1,'d',8));
-// }
