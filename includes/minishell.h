@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/02 10:08:58 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:28:12 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,24 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_opirators
+typedef struct s_env
 {
-    int pipe;
-    int redirect_input;
-    int redirect_output;
-    int here_doc;
-    int append_output;
-}t_opirators;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
-
+/*-----------Parsing-------------*/
 t_token	*tokenize(char *input);
+void	has_dollar(t_token *tokens);
+
+/*------------Utils-------------*/
+int		is_expandable2(char c);
+int		is_expandable(char c);
+char	*_substr(char *str, int start, int len);
+int		is_operator(char c);
+int		is_append(char *s);
+int		ft_isspace(char c);
+int		is_op(char *s);
 
 #endif

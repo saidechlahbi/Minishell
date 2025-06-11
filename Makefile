@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 # Files
-FILES =   minishell.c split3.c
+FILES =   minishell.c utils.c strtok.c expand.c get_env.c
 # Object files
 OBJ = $(FILES:.c=.o)
 

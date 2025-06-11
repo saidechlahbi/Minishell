@@ -3,48 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/02 10:58:42 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/11 09:33:57 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-int	is_operator(char c)
-{
-	return (c == '|' || c == '>' || c == '<');
-}
-
-int	is_append(char *s)
-{
-	return(!ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
-}
-
-int	ft_isspace(char c)
-{
-	return ((c >= 9 && c <= 13) || c == 32);
-}
-
-char	*_substr(char *str, int start, int len)
-{
-	char	*res;
-
-	res = malloc(len + 1);
-	if (!res)
-		return NULL;
-	ft_strncpy(res, str + start, len);
-	res[len] = 0;
-	return (res);
-}
-
-int is_op(char *s)
-{
-	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) 
-			|| !ft_strncmp(s, "<", 1) || !ft_strncmp(s, ">>", 2) 
-			|| !ft_strncmp(s, "<<", 2));
-}
 
 void	add_token(t_token **head, char *value)
 {
