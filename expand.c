@@ -4,14 +4,14 @@ char *expand(char *var, t_env *env)
 {
 	while (env->next)
 	{
-		if (!ft_strcmp(var, env))
+		if (!ft_strcmp(var, env->key))
 			return (env->value);
 		env = env->next;
 	}
 	return (NULL);
 }
 
-char *prep(char *input, t_env env)
+char *prep(char *input, t_env *env)
 {
 	int	in_squote;
 	int	i;
