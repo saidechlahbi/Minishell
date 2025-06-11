@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 18:04:19 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/11 21:47:34 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
     int i;
     t_token *tokens;
     t_token *tmp;
+    t_env   *temp;
 
     while (1)
     {
@@ -38,6 +39,13 @@
             printf("%s\n", tmp->value);
             tmp = tmp->next;
             i++;
+        }
+        printf("\n");
+        temp = get_env(envp);
+        while (temp)
+        {
+            printf("[%s] = [%s]\n", temp->key, temp->value);
+            temp = temp->next;
         }
         //has_dollar(tokens);
         
