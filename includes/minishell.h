@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 21:44:48 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/11 22:15:20 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ typedef struct s_env
 
 /*-----------Parsing-------------*/
 t_token	*tokenize(char *input);
-void	has_dollar(t_token *tokens);
+void	has_dollar(t_token *tokens, t_env *env);
 t_env	*get_env(char **envp);
 
 /*------------Utils-------------*/
 int		is_expandable2(char c);
 int		is_expandable(char c);
+int		ft_strcmp(char *s1, char *s2);
 char	*_substr(char *str, int start, int len);
 int		is_operator(char c);
 int		is_append(char *s);

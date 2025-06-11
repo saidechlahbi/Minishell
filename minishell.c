@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 21:55:00 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/11 22:18:15 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
         
         tokens = tokenize(input);
+        has_dollar(tokens, env);
         // if (!tokens)
         //     return 1;
         i = 0;
@@ -47,7 +48,6 @@
             printf("[%s] = [%s]\n", env->key, env->value);
             env = env->next;
         }
-        //has_dollar(tokens, env);
         
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
