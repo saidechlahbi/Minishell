@@ -1,11 +1,17 @@
 #include "includes/minishell.h"
 
-char *expand(char *var)
+char *expand(char *var, t_env *env)
 {
-	return(getenv(var));
+	while (env->next)
+	{
+		if (!ft_strcmp(var, env))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }
 
-char *prep(char *input)
+char *prep(char *input, t_env env)
 {
 	int	in_squote;
 	int	i;
@@ -30,7 +36,7 @@ char *prep(char *input)
 				while(input[i] && is_expandable2(input[i]))
 					i++;
 			}
-			expanded = ft_strjoin(expanded, expand(_substr(input, start, i - start)));
+			expanded = ft_strjoin(expanded, expand(_substr(input, start, i - start), env));
 		}
 		start = i;
 		expanded = ft_strjoin(expanded, _substr(input, start, i - start));
@@ -39,7 +45,7 @@ char *prep(char *input)
 	return (expanded);
 }
 
-void	has_dollar(t_token *tokens)
+void	has_dollar(t_token *tokens, t_env *env)
 {
 	t_token	*cur;
 
@@ -47,7 +53,7 @@ void	has_dollar(t_token *tokens)
     while (cur->next)
     {
         if (ft_strchr(cur->value, '$'))
-			prep(cur->value);
+			prep(cur->value, env);
 
         cur =  cur->next;
     }
