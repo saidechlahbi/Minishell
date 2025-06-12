@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 22:15:20 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/12 21:16:16 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_env
 t_token	*tokenize(char *input);
 void	has_dollar(t_token *tokens, t_env *env);
 t_env	*get_env(char **envp);
+void	unset(t_env **env, const char *value);
 
 /*------------Utils-------------*/
 int		is_expandable2(char c);
