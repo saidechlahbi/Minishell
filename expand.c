@@ -2,59 +2,73 @@
 
 char *expand(char *var, t_env *env)
 {
-	while (env->next)
-	{
-		if (!ft_strcmp(var, env->key))
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
+    while (env)
+    {
+        if (!ft_strcmp(var, env->key))
+            return (env->value);
+        env = env->next;
+    }
+    return (NULL);
 }
 
 char *prep(char *input, t_env *env)
 {
-	int	in_squote;
-	int	i;
-	int	start;
-	char *expanded;
+    int		in_squote;
+	int		in_dquote;
+    int		i;
+    int		start;
+    char *expanded;
+    char *value;
 
-	in_squote = 0;
-	i = 0;
-	start = 0;
-	expanded = NULL;
-	while(input[i])
-	{
-		if(input[i] == '\'')
-			in_squote = !in_squote;
-		if(input[i] == '$' && !in_squote)
-		{
-			expanded = ft_strjoin(expanded, _substr(input, start, i));
-			i++;
-			start = i;
-			if (is_expandable(input[i]))
-			{
-				while(input[i] && is_expandable2(input[i]))
-					i++;
-			}
-			expanded = ft_strjoin(expanded, expand(_substr(input, start, i - start), env));
-		}
-		start = i;
-		expanded = ft_strjoin(expanded, _substr(input, start, i - start));
-		i++;
-	}
-	return (expanded);
+    in_squote = 0;
+	in_dquote = 0;
+    i = 0;
+    start = 0;
+    expanded = ft_strdup("");
+    while(input[i])
+    {
+		if (input[i] == '"' && !in_squote)
+			in_dquote = !in_dquote;
+        if(input[i] == '\'' && !in_dquote)
+            in_squote = !in_squote;
+        if(input[i] == '$' && !in_squote && is_expandable(input[i + 1]))
+        {
+            expanded = ft_strjoin(expanded, _substr(input, start, i - start));
+	        i++;
+			if (is_expandable(input[i+1]))
+            start = i;
+            if (is_expandable(input[i]))
+            {
+                while(input[i] && is_expandable2(input[i]))
+                    i++;
+                value = expand(_substr(input, start, i - start), env);
+                if (value)
+                    expanded = ft_strjoin(expanded, value);
+            }
+            start = i;
+        }
+        else
+            i++;
+    }
+    if (i > start)
+        expanded = ft_strjoin(expanded, _substr(input, start, i - start));
+    return (expanded);
 }
 
-void	has_dollar(t_token *tokens, t_env *env)
+void    has_dollar(t_token *tokens, t_env *env)
 {
-	t_token	*cur;
+    t_token    *cur;
+    char    *expanded;
 
-	cur	= tokens;
-    while (cur->next)
+    cur    = tokens;
+    while (cur)
     {
         if (ft_strchr(cur->value, '$'))
-			prep(cur->value, env);
-
-        cur =  cur->next;
+        {
+            expanded = prep(cur->value, env);
+            free(cur->value);
+            cur->value = expanded;
+        }
+        cur = cur->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 22:18:15 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/12 14:50:42 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
     t_token *tmp;
     t_env   *env;
 
+	env = get_env(envp);
     while (1)
     {
         char *input = readline("minishell$ ");
@@ -28,7 +29,6 @@
             exit(0);
         add_history(input);
 
-        
         tokens = tokenize(input);
         has_dollar(tokens, env);
         // if (!tokens)
@@ -42,13 +42,11 @@
             i++;
         }
         printf("\n");
-        env = get_env(envp);
-        while (env)
-        {
-            printf("[%s] = [%s]\n", env->key, env->value);
-            env = env->next;
-        }
-        
+        // while (env)
+        // {
+        //     printf("[%s] = [%s]\n", env->key, env->value);
+        //     env = env->next;
+        // }
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }
