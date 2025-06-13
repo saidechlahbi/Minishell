@@ -1,24 +1,31 @@
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
 
 # Files
-FILES =   minishell.c utils.c strtok.c expand.c get_env.c unset.c
+
+FILES		=   minishell.c utils.c strtok.c expand.c get_env.c unset.c
+
 # Object files
-OBJ = $(FILES:.c=.o)
+
+OBJ			= $(FILES:.c=.o)
 
 # libft
+
 LIBFT_PATH	= includes/libft
 LIBFT		= $(LIBFT_PATH)/libft.a
 
 
 # Name
-NAME = minishell
+
+NAME 		= minishell
 
 # Header
-HEADER =  includes/minishell.h
+
+HEADER 		=  includes/minishell.h
 
 
 # Rules
+
 all: $(NAME) 
 
 $(LIBFT) :
