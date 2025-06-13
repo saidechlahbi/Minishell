@@ -6,14 +6,14 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/12 21:16:16 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:43:50 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "../libft/libft.h"
+#include "libft/libft.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>

@@ -7,7 +7,7 @@ FILES =   minishell.c utils.c strtok.c expand.c get_env.c unset.c
 OBJ = $(FILES:.c=.o)
 
 # libft
-LIBFT_PATH	= libft
+LIBFT_PATH	= includes/libft
 LIBFT		= $(LIBFT_PATH)/libft.a
 
 
