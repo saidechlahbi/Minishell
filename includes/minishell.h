@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/13 15:43:50 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/14 10:35:17 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_env	*get_env(char **envp);
 void	unset(t_env **env, const char *value);
 
 /*------------Utils-------------*/
+void	split_n_insert(t_token *current, char *value);
 int		is_expandable2(char c);
 int		is_expandable(char c);
 int		ft_strcmp(char *s1, char *s2);

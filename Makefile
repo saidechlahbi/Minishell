@@ -1,9 +1,9 @@
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -g -Wall -Wextra -Werror
 
 # Files
 
-FILES		=   minishell.c utils.c strtok.c expand.c get_env.c unset.c
+FILES		=   minishell.c utils.c strtok.c expand.c get_env.c unset.c split_n_insert.c
 
 # Object files
 

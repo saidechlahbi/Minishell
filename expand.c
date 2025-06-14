@@ -34,11 +34,10 @@ char *prep(char *input, t_env *env)
         if(input[i] == '$' && !in_squote && is_expandable(input[i + 1]))
         {
             expanded = ft_strjoin(expanded, _substr(input, start, i - start));
-	        i++;
-			if (is_expandable(input[i+1]))
-            start = i;
+            i++;
             if (is_expandable(input[i]))
             {
+                start = i;
                 while(input[i] && is_expandable2(input[i]))
                     i++;
                 value = expand(_substr(input, start, i - start), env);
@@ -58,17 +57,18 @@ char *prep(char *input, t_env *env)
 void    has_dollar(t_token *tokens, t_env *env)
 {
     t_token    *cur;
+    t_token    *next;
     char    *expanded;
 
-    cur    = tokens;
+    cur = tokens;
     while (cur)
     {
+        next = cur->next;
         if (ft_strchr(cur->value, '$'))
         {
             expanded = prep(cur->value, env);
-            free(cur->value);
-            cur->value = expanded;
+            split_n_insert(cur, expanded);
         }
-        cur = cur->next;
+        cur = next;
     }
 }
