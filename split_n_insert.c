@@ -8,11 +8,6 @@ void split_n_insert(t_token *current, char *value)
     int i;
 
     splits = ft_split(value, ' ');
-    if (!splits || !splits[0])
-    {
-        current->value = ft_strdup(value);
-        return;
-    }
     current->value = ft_strdup(splits[0]);
     next = current->next;
     i = 1;
