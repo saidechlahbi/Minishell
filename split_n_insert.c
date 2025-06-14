@@ -1,6 +1,6 @@
 #include "includes/minishell.h"
 
-void split_n_insert(t_token *current, char *value)
+void split_n_insert(t_token *cur, char *value)
 {
     char **splits;
     t_token *new_node;
@@ -8,8 +8,8 @@ void split_n_insert(t_token *current, char *value)
     int i;
 
     splits = ft_split(value, ' ');
-    current->value = ft_strdup(splits[0]);
-    next = current->next;
+    cur->value = ft_strdup(splits[0]);
+    next = cur->next;
     i = 1;
     while (splits[i])
     {
@@ -17,9 +17,9 @@ void split_n_insert(t_token *current, char *value)
         if (!new_node)
             break;
         new_node->value = ft_strdup(splits[i]);
-        new_node->next = current->next;
-        current->next = new_node;
-        current = new_node;
+        new_node->next = cur->next;
+        cur->next = new_node;
+        cur = new_node;
         i++;
     }
 }
