@@ -6,20 +6,20 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/14 16:29:26 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/14 23:08:54 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void	add_token(t_token **head, char *value)
+void add_token(t_token **head, char *value)
 {
-	t_token	*new;
-	t_token	*tmp;
+	t_token *new;
+	t_token *tmp;
 
 	new = malloc(sizeof(t_token));
 	if (!new)
-		return ;
+		return;
 	new->value = value;
 	new->next = NULL;
 	if (!*head)
@@ -33,9 +33,9 @@ void	add_token(t_token **head, char *value)
 	}
 }
 
-void	validate_input(t_token *token)
+void validate_input(t_token *token)
 {
-	t_token	*cur;
+	t_token *cur;
 
 	if (!token || !ft_strncmp(token->value, "|", 1))
 	{
@@ -45,7 +45,7 @@ void	validate_input(t_token *token)
 	cur = token;
 	while (cur)
 	{
-		if ((is_op(cur->value) && cur->next &&is_op(cur->next->value)) || (is_op(cur->value) && !cur->next))
+		if ((is_op(cur->value) && cur->next && is_op(cur->next->value)) || (is_op(cur->value) && !cur->next))
 		{
 			ft_putstr_fd("Error : Syntax\n", 2);
 			return;
@@ -54,13 +54,13 @@ void	validate_input(t_token *token)
 	}
 }
 
-t_token	*tokenize(char *input)
+t_token *tokenize(char *input)
 {
-	t_token	*tokens = NULL;
-	int		i = 0;
-	int		start = 0;
-	int		in_squote = 0;
-	int		in_dquote = 0;
+	t_token *tokens = NULL;
+	int i = 0;
+	int start = 0;
+	int in_squote = 0;
+	int in_dquote = 0;
 
 	while (input[i])
 	{
@@ -87,7 +87,15 @@ t_token	*tokenize(char *input)
 		{
 			if (i > start)
 				add_token(&tokens, _substr(input, start, i - start));
-			if (is_append(&input[i]))
+			if (input[i] == '$')
+			{
+				start = i;
+				i++;
+				while (input[i] && is_expandable2(input[i]))
+					i++;
+				add_token(&tokens, _substr(input, start, i - start));
+			}
+			else if (is_append(&input[i]))
 			{
 				add_token(&tokens, _substr(input, i, 2));
 				i += 2;
@@ -104,7 +112,7 @@ t_token	*tokenize(char *input)
 	}
 	if (i > start)
 		add_token(&tokens, _substr(input, start, i - start));
-	
+
 	if (in_squote || in_dquote)
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);

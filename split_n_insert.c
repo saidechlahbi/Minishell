@@ -45,6 +45,19 @@ char **str_tok(char *input)
     char    **tokens = NULL;
     int     j = 0;
 
+
+
+    // if (has_single_quote(str))
+    // {
+    //     str = join(ft_strdup("\""), str);
+    //     str = join (str, ft_strdup("\""));
+    // }
+    // else
+    // {
+    //     str = join(ft_strdup("\'"), str);
+    //     str = join (str, ft_strdup("\'"));
+    // }
+
     tokens = malloc(sizeof(char *) * (count_tok(input) + 1));
     while(input[i])
     {
