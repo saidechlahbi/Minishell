@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/14 11:17:45 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/14 18:40:07 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
             exit(1);
         if (!ft_strncmp(input, "exit",4))
             exit(0);
+        if (!input[0])
+            continue;
         add_history(input);
 
         tokens = tokenize(input);

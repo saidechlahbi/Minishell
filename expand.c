@@ -69,7 +69,7 @@ void    has_dollar(t_token *tokens, t_env *env)
         {
             expanded = prep(cur->value, env);
             cur->value = expanded;
-            split_n_insert(cur, expanded);
+            split_n_insert(cur);
         }
         cur = next;
     }
