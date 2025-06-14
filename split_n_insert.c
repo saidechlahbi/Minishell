@@ -3,7 +3,7 @@
 void split_n_insert(t_token *cur, char *value)
 {
     char **splits;
-    t_token *new_node;
+    t_token *new;
     t_token *next;
     int i;
 
@@ -13,13 +13,13 @@ void split_n_insert(t_token *cur, char *value)
     i = 1;
     while (splits[i])
     {
-        new_node = malloc(sizeof(t_token));
-        if (!new_node)
+        new = malloc(sizeof(t_token));
+        if (!new)
             break;
-        new_node->value = ft_strdup(splits[i]);
-        new_node->next = cur->next;
-        cur->next = new_node;
-        cur = new_node;
+        new->value = ft_strdup(splits[i]);
+        new->next = cur->next;
+        cur->next = new;
+        cur = new;
         i++;
     }
 }
