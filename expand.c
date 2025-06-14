@@ -51,6 +51,7 @@ char *prep(char *input, t_env *env)
     }
     if (i > start)
         expanded = ft_strjoin(expanded, _substr(input, start, i - start));
+   // printf("here1 %s\n", expanded);
     return (expanded);
 }
 
@@ -67,6 +68,7 @@ void    has_dollar(t_token *tokens, t_env *env)
         if (ft_strchr(cur->value, '$'))
         {
             expanded = prep(cur->value, env);
+            cur->value = expanded;
             split_n_insert(cur, expanded);
         }
         cur = next;
