@@ -4,23 +4,17 @@ void split_n_insert(t_token *current, char *value)
 {
     char **splits;
     t_token *new_node;
-    t_token *next_backup;
+    t_token *next;
     int i;
 
     splits = ft_split(value, ' ');
     if (!splits || !splits[0])
     {
-        free(current->value);
         current->value = ft_strdup(value);
         return;
     }
-
-    free(current->value);
     current->value = ft_strdup(splits[0]);
-    
-    next_backup = current->next;
-    
-
+    next = current->next;
     i = 1;
     while (splits[i])
     {
