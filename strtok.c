@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/14 23:08:54 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/15 13:26:47 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ t_token *tokenize(char *input)
 		{
 			if (i > start)
 				add_token(&tokens, _substr(input, start, i - start));
-			if (input[i] == '$')
-			{
-				start = i;
-				i++;
-				while (input[i] && is_expandable2(input[i]))
-					i++;
-				add_token(&tokens, _substr(input, start, i - start));
-			}
+			// if (input[i] == '$')
+			// {
+			// 	start = i;
+			// 	i++;
+			// 	while (input[i] && is_expandable2(input[i]))
+			// 		i++;
+			// 	add_token(&tokens, _substr(input, start, i - start));
+			// }
 			else if (is_append(&input[i]))
 			{
 				add_token(&tokens, _substr(input, i, 2));
