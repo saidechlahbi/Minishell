@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/15 16:41:21 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/15 17:07:05 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
         tmp = tokens;
         while (tmp)
         {
-            printf("%s\n", tmp->value);
+            printf("[%s]\n", tmp->value);
             tmp = tmp->next;
             i++;
         }
