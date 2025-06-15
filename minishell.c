@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/15 13:20:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/15 16:08:48 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,20 @@
 
         tokens = tokenize(input);
         has_dollar(tokens, env);
+        tmp = tokens;
+        while (tmp)
+        {
+            if (tmp->value)
+            {
+                char *new_value = remove_quotes(tmp->value);
+                if (new_value)
+                {
+                    tmp->value = new_value;
+                    restore_quotes(tmp->value);
+                }
+            }
+            tmp = tmp->next;
+        }
         // if (!tokens)
         //     return 1;
         i = 0;
