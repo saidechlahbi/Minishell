@@ -1,56 +1,79 @@
 #include "includes/minishell.h"
 
-char *remove_quotes(char *str)
+void remove_quotes(t_token *tokens)
 {
-    int i = 0;
-    int j = 0;
-    int in_squote = 0;
-    int in_dquote = 0;
-    char *result;
+    t_token *cur;
+    char *new_value;
+    int i, j;
+    int in_squote, in_dquote;
     
-    if (!str)
-        return (NULL);
-    
-    result = malloc(sizeof(char) * (ft_strlen(str) + 1));
-    if (!result)
-        return (NULL);
-    
-    while (str[i])
-    {
-        if (str[i] == '\'' && !in_dquote)
-        {
-            in_squote = !in_squote;
-            i++;
-        }
-        else if (str[i] == '"' && !in_squote)
-        {
-            in_dquote = !in_dquote;
-            i++;
-        }
-        else
-        {
-            result[j] = str[i];
-            i++;
-            j++;
-        }
-    }
-    result[j] = 0;
-    return (result);
-}
-
-void restore_quotes(char *str)
-{
-    int i = 0;
-    
-    if (!str)
+    if (!tokens)
         return;
     
-    while (str[i])
+    cur = tokens;
+    while (cur)
     {
-        if (str[i] == 14)
-            str[i] = '\'';
-        else if (str[i] == 15)
-            str[i] = '"';
-        i++;
+        if (cur->value)
+        {
+            i = 0;
+            j = 0;
+            in_squote = 0;
+            in_dquote = 0;
+            new_value = malloc(sizeof(char) * (ft_strlen(cur->value) + 1));
+            if (!new_value)
+            {
+                cur = cur->next;
+                continue;
+            }
+            while (cur->value[i])
+            {
+                if (cur->value[i] == '\'' && !in_dquote)
+                {
+                    in_squote = !in_squote;
+                    i++;
+                }
+                else if (cur->value[i] == '"' && !in_squote)
+                {
+                    in_dquote = !in_dquote;
+                    i++;
+                }
+                else
+                {
+                    new_value[j] = cur->value[i];
+                    i++;
+                    j++;
+                }
+            }
+            new_value[j] = 0;
+            cur->value = new_value;
+        }
+        cur = cur->next;
+    }
+}
+
+void restore_quotes(t_token *tokens)
+{
+    t_token *cur;
+    int i;
+    
+    if (!tokens)
+        return;
+    
+    cur = tokens;
+    while (cur)
+    {
+        if (cur->value)
+        {
+            i = 0;
+            while (cur->value[i])
+            {
+                if (cur->value[i] == 14)
+                    cur->value[i] = '\'';
+                else if (cur->value[i] == 15)
+                    cur->value[i] = '"';
+                i++;
+            }
+        }
+        cur = cur->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/15 15:57:13 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/15 16:39:31 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ t_env	*get_env(char **envp);
 void	unset(t_env **env, const char *value);
 
 /*------------Utils-------------*/
-void	restore_quotes(char *str);
-char	*remove_quotes(char *str);
+void	restore_quotes(t_token *tokens);
+void	remove_quotes(t_token *tokens);
 void	split_n_insert(t_token *cur);
 int		is_expandable2(char c);
 int		is_expandable(char c);
