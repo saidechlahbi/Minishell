@@ -2,10 +2,25 @@
 
 char *expand(char *var, t_env *env)
 {
+    char *input;
+    int i;
+
+    i = 0;
     while (env)
     {
         if (!ft_strcmp(var, env->key))
-            return (env->value);
+        {
+            input = env->value;
+            while (input[i])
+            {
+                if (input[i] == '\'')
+                    input[i] = 14;
+                else if (input[i] == '"')
+                    input[i] = 15;
+                i++;
+            }
+            return (input);
+        }
         env = env->next;
     }
     return (NULL);
@@ -13,32 +28,32 @@ char *expand(char *var, t_env *env)
 
 char *prep(char *input, t_env *env)
 {
-    int		in_squote;
-	int		in_dquote;
-    int		i;
-    int		start;
+    int in_squote;
+    int in_dquote;
+    int i;
+    int start;
     char *expanded;
     char *value;
 
     in_squote = 0;
-	in_dquote = 0;
+    in_dquote = 0;
     i = 0;
     start = 0;
     expanded = ft_strdup("");
-    while(input[i])
+    while (input[i])
     {
-		if (input[i] == '"' && !in_squote)
-			in_dquote = !in_dquote;
-        if(input[i] == '\'' && !in_dquote)
+        if (input[i] == '"' && !in_squote)
+            in_dquote = !in_dquote;
+        if (input[i] == '\'' && !in_dquote)
             in_squote = !in_squote;
-        if(input[i] == '$' && !in_squote && is_expandable(input[i + 1]))
+        if (input[i] == '$' && !in_squote && is_expandable(input[i + 1]))
         {
             expanded = ft_strjoin(expanded, _substr(input, start, i - start));
             i++;
             if (is_expandable(input[i]))
             {
                 start = i;
-                while(input[i] && is_expandable2(input[i]))
+                while (input[i] && is_expandable2(input[i]))
                     i++;
                 value = expand(_substr(input, start, i - start), env);
                 if (value)
@@ -51,15 +66,15 @@ char *prep(char *input, t_env *env)
     }
     if (i > start)
         expanded = ft_strjoin(expanded, _substr(input, start, i - start));
-   // printf("here1 %s\n", expanded);
+    // printf("here1 %s\n", expanded);
     return (expanded);
 }
 
-void    has_dollar(t_token *tokens, t_env *env)
+void has_dollar(t_token *tokens, t_env *env)
 {
-    t_token    *cur;
-    t_token    *next;
-    char    *expanded;
+    t_token *cur;
+    t_token *next;
+    char *expanded;
 
     cur = tokens;
     while (cur)
@@ -69,8 +84,8 @@ void    has_dollar(t_token *tokens, t_env *env)
         {
             expanded = prep(cur->value, env);
             cur->value = expanded;
-            if(/*has space*/)
-                split_n_insert(cur);
+            // if(/*has space*/)
+            split_n_insert(cur);
         }
         cur = next;
     }

@@ -42,17 +42,9 @@ char **str_tok(char *input)
     int        start = 0;
     int        in_squote = 0;
     int        in_dquote = 0;
-    char    **tokens = NULL;
+    char        **tokens = NULL;
     int     j = 0;
 
-    while(input[i])
-    {
-        if(input[i] == '\'')
-            input[i] = 14;
-        else if(input[i] == '"')
-            input[i] = 15;
-        i++;
-    }
     i = 0;
     tokens = malloc(sizeof(char *) * (count_tok(input) + 1));
     while(input[i])
