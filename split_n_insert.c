@@ -59,16 +59,6 @@ char **str_tok(char *input)
             in_dquote = !in_dquote;
             i++;
         }
-        else if(input[i] == 14 && !in_dquote)
-        {
-            in_squote = !in_squote;
-            i++;
-        }
-        else if(input[i] == 15 && !in_squote)
-        {
-            in_dquote = !in_dquote;
-            i++;
-        }
         else if(!in_squote && !in_dquote && ft_isspace(input[i]))
         {
             if (i > start)
