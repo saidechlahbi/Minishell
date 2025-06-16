@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/15 16:39:31 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/16 14:43:52 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,15 @@
 typedef struct s_token
 {
 	char			*value;
+	int				type;
 	struct s_token	*next;
+	/*
+	types ->
+		0 -> command
+		1 -> operator
+		2 -> expandable
+		3 -> ambiguous
+	*/
 }	t_token;
 
 typedef struct s_env
