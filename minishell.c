@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/16 13:17:45 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/17 15:49:36 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@
             i++;
         }
         printf("\n");
-        // while (env)
-        // {
-        //     printf("[%s] = [%s]\n", env->key, env->value);
-        //     env = env->next;
-        // }
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }
