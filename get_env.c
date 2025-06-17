@@ -52,3 +52,30 @@ void print_env(t_env *env)
         env = env->next;
     }
 }
+
+//exported
+void new_var(t_token *node, t_env **env_list)
+{
+    char    *equal;
+    char    *key;
+    char    *value;
+    int     i;
+
+    if (!node || !node->value)
+        return;
+    i = 0;
+    if (is_expandable(node->value));
+    while (node->value[i])
+    {
+        if (is_expandable2(node->value[i]))
+            i++;
+    }
+    equal = ft_strchr(node->value, '=');
+    if (!equal)
+        return;
+    key = _substr(node->value, 0, equal - node->value);
+    value = ft_strdup(equal + 1);
+    if (!key || !value)
+        return;
+    add_var(env_list, key, value);
+}

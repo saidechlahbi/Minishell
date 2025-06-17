@@ -47,6 +47,8 @@ void export(t_env *env)
             {
                 if (copy->value[i] == '"')
                     printf("\\\"");
+                else if (copy->value[i] == '$')
+                    printf("\\$");
                 else
                     printf("%c", copy->value[i]);
 				i++;
