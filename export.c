@@ -36,6 +36,7 @@ void export(t_env *env)
 {
     t_env *copy = env;
     sort_export(copy);
+	int i;
 
     while (copy)
     {
@@ -43,12 +44,14 @@ void export(t_env *env)
         if (copy->value)
         {
             printf("=\"");
-            for (int i = 0; copy->value[i]; i++)
+			i = 0;
+            while (copy->value[i])
             {
                 if (copy->value[i] == '"')
                     printf("\\\"");
                 else
                     printf("%c", copy->value[i]);
+				i++;
             }
             printf("\"");
         }
