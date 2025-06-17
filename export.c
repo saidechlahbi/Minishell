@@ -7,8 +7,6 @@ t_env *sort_export(t_env *copy)
     char *kc;
     char *vc;
 
-    if (!copy)
-        return NULL;
 	sorted = 0;
     while (!sorted)
     {

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/17 15:49:36 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/17 17:12:14 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
             i++;
         }
         printf("\n");
+        //export(env);
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }
