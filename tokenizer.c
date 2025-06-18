@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strtok.c                                           :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/15 16:49:43 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:29:49 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void add_token(t_token **head, char *value)
+void add_token(t_token **head, char *value, int type)
 {
 	t_token *new;
 	t_token *tmp;
@@ -22,6 +22,7 @@ void add_token(t_token **head, char *value)
 		return;
 	new->value = value;
 	new->next = NULL;
+	new->type = type;
 	if (!*head)
 		*head = new;
 	else
@@ -77,32 +78,24 @@ t_token *tokenize(char *input)
 		else if (!in_squote && !in_dquote && ft_isspace(input[i]))
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start));
+				add_token(&tokens, _substr(input, start, i - start), WORD);
 			i++;
 			while (ft_isspace(input[i]))
 				i++;
 			start = i;
 		}
-		else if (!in_squote && !in_dquote && is_operator(input[i]))
+		else if (!in_squote && !in_dquote && is_operator(input[i]) != -1)
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start));
-			// if (input[i] == '$')
-			// {
-			// 	start = i;
-			// 	i++;
-			// 	while (input[i] && is_expandable2(input[i]))
-			// 		i++;
-			// 	add_token(&tokens, _substr(input, start, i - start));
-			// }
-			else if (is_append(&input[i]))
+				add_token(&tokens, _substr(input, start, i - start), WORD);
+			else if (is_append(&input[i]) != -1)
 			{
-				add_token(&tokens, _substr(input, i, 2));
+				add_token(&tokens, _substr(input, i, 2), is_append(&input[i]));
 				i += 2;
 			}
 			else
 			{
-				add_token(&tokens, _substr(input, i, 1));
+				add_token(&tokens, _substr(input, i, 1), is_operator(input[i]));
 				i++;
 			}
 			start = i;
@@ -111,7 +104,7 @@ t_token *tokenize(char *input)
 			i++;
 	}
 	if (i > start)
-		add_token(&tokens, _substr(input, start, i - start));
+		add_token(&tokens, _substr(input, start, i - start), WORD);
 
 	if (in_squote || in_dquote)
 	{

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/17 17:14:34 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:35:40 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@
         tmp = tokens;
         while (tmp)
         {
-            printf("%s\n", tmp->value);
+            printf("%s\ttype:%d\n", tmp->value, tmp->type);
             tmp = tmp->next;
             i++;
         }
         printf("\n");
         //export(env);
-        print_env(env);
+        //print_env(env);
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }

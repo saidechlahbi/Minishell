@@ -2,12 +2,22 @@
 
 int	is_operator(char c)
 {
-	return (c == '|' || c == '>' || c == '<' /*|| c == '$'*/);
+	if (c == '|')
+		return (PIPE);
+	else if (c == '>')
+		return (RED_OUT);
+	else if (c == '<')
+		return (RED_IN);
+	return (-1);
 }
 
 int	is_append(char *s)
 {
-	return(!ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
+	if(!ft_strncmp(s, ">>", 2))
+		return (APPEND);
+	else if (!ft_strncmp(s, "<<", 2))
+		return (HERE_DOC);
+	return (-1);
 }
 
 int	ft_isspace(char c)

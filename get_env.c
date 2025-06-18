@@ -64,11 +64,13 @@ void new_var(t_token *node, t_env **env_list)
     if (!node || !node->value)
         return;
     i = 0;
-    if (is_expandable(node->value));
-    while (node->value[i])
+    if (is_expandable(node->value[i]))
     {
-        if (is_expandable2(node->value[i]))
-            i++;
+        while (node->value[i])
+        {
+            if (is_expandable2(node->value[i]))
+                i++;
+        }
     }
     equal = ft_strchr(node->value, '=');
     if (!equal)

@@ -3,7 +3,7 @@ CFLAGS		= -g -Wall -Wextra -Werror
 
 # Files
 
-FILES		=   minishell.c utils.c strtok.c expand.c get_env.c unset.c split_n_insert.c rr_quotes.c export.c
+FILES		=   minishell.c utils.c tokenizer.c expand.c get_env.c unset.c split_n_insert.c rr_quotes.c export.c
 
 # Object files
 

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/17 18:23:50 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:29:35 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,19 @@ typedef struct s_token
 	char			*value;
 	int				type;
 	struct s_token	*next;
-	/*
-	types ->
-		0 -> command
-		1 -> operator
-		2 -> expandable
-		3 -> ambiguous
-	*/
 }	t_token;
+
+enum e_type
+{
+	WORD,
+	PIPE,
+	RED_OUT,
+	RED_IN,
+	HERE_DOC,
+	APPEND,
+	EXPANDED,
+	AMBIGIUOS
+};
 
 typedef struct s_env
 {
