@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/18 18:29:35 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/19 18:14:23 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ enum e_type
 	EXPANDED,
 	AMBIGIUOS
 };
+
+typedef struct s_fds
+{
+	int	pipefd1[2];
+	int	pipefd2[2];
+}	t_fds;
 
 typedef struct s_env
 {

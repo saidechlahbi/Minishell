@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/18 18:29:49 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/19 16:47:12 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 void add_token(t_token **head, char *value, int type)
 {

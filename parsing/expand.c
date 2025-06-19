@@ -1,4 +1,4 @@
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 char *expand(char *var, t_env *env)
 {
