@@ -4,21 +4,34 @@ char *expand(char *var, t_env *env)
 {
     char *input;
     int i;
+    int start;
+	int in_quote;
 
     i = 0;
+    start = 0;
+	in_quote = 0;
+    input = ft_strdup("");
     while (env)
     {
         if (!ft_strcmp(var, env->key))
         {
             input = env->value;
-            while (input[i])
+            while (env->value[i])
             {
-                if (input[i] == '\'')
-                    input[i] = 14;
-                else if (input[i] == '"')
-                    input[i] = 15;
+                if (env->value[i] == '\'' || env->value[i] == '"')
+                {
+					in_quote = !in_quote;
+					if (!in_quote)
+						i--;
+                    start = i;	
+						
+                    input = ft_strjoin( _substr(env->value, start, i - start), 14);
+					start = i;
+                }
                 i++;
             }
+			if (i > start)
+				input = ft_strjoin(input, _substr(env->value, start, i - start));
             return (input);
         }
         env = env->next;

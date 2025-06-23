@@ -68,9 +68,7 @@ void restore_quotes(t_token *tokens)
             while (cur->value[i])
             {
                 if (cur->value[i] == 14)
-                    cur->value[i] = '\'';
-                else if (cur->value[i] == 15)
-                    cur->value[i] = '"';
+                    i++;
                 i++;
             }
         }
