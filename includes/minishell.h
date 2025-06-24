@@ -39,6 +39,7 @@ enum e_type
 	RED_OUT,
 	RED_IN,
 	HERE_DOC,
+	DELIMITER,
 	APPEND,
 	AMBIGIUOS
 };
