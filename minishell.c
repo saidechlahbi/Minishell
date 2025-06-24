@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,17 +7,17 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/24 17:18:33 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:47:01 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-    int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
+int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
-    // int i;
+    int i;
     t_token *tokens;
-    // t_token *tmp;
+    t_token *tmp;
     t_env   *env;
 
 	env = get_env(envp);
@@ -32,28 +33,25 @@
         add_history(input);
 
         tokens = tokenize(input);
+        lexing(tokens);
         has_dollar(tokens, env);
         remove_quotes(tokens);
         restore_quotes(tokens);
         // if (!tokens)
         //     return 1;
-        // i = 0;
-        // tmp = tokens;
-        // while (tmp)
-        // {
-            // printf("%s\ttype:%d\n", tmp->value, tmp->type);
-            // tmp = tmp->next;
-            // i++;
-        // }
-        // printf("\n");
-        get_right_expend(tokens->value, env);
-
+        i = 0;
+        tmp = tokens;
+        while (tmp)
+        {
+            printf("%s\ttype:%d\n", tmp->value, tmp->type);
+            tmp = tmp->next;
+            i++;
+        }
+        printf("\n");
         //export(env);
         //print_env(env);
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }
-
     // printf("%s\n",getenv("PATH"));
 }
-

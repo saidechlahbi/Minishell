@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/24 17:35:34 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:18:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
-typedef struct s_proccess
-{
-	t_token *tok;
-}	t_proccess;
-
 typedef struct s_token
 {
 	char			*value;
@@ -32,6 +26,12 @@ typedef struct s_token
 	int				nop;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_proccess
+{
+	t_token *tok;
+	struct s_proccess *next;
+}	t_proccess;
 
 enum e_type
 {
@@ -87,5 +87,8 @@ int		is_operator(char c);
 int		is_append(char *s);
 int		ft_isspace(char c);
 int		is_op(char *s);
+
+/*------------execution-------------*/
+t_proccess *splinting_into_proccess(t_token *token);
 
 #endif
