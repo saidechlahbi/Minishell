@@ -131,15 +131,15 @@ void lexing(t_token *token)
 	}
 	while (token)
 	{
-		if ((token->type == RED_OUT || token->type == APPEND) && token->next)
+		if (token->type == RED_OUT || token->type == APPEND)
 			token->next->type = OUT_FILE;
-		else if (token->type == RED_IN && token->next)
+		else if (token->type == RED_IN)
 			token->next->type = IN_FILE;
-		else if (token->type == HERE_DOC && token->next)
+		else if (token->type == HERE_DOC)
 			token->next->type = DELIMITER;
 		if (token->type == WORD)
 		{
-			if (prev->type == CMD || prev->type == BUILTIN || prev->type == ARG)
+			if (prev->type == CMD || prev->type == BUILTIN)
 				token->type = ARG;
 			else
 				token->type = CMD;
