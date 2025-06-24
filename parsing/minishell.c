@@ -32,6 +32,7 @@
         add_history(input);
 
         tokens = tokenize(input);
+        lexing(tokens);
         has_dollar(tokens, env);
         remove_quotes(tokens);
         restore_quotes(tokens);

@@ -64,6 +64,7 @@ t_env	*get_env(char **envp);
 void	unset(t_env **env, const char *value);
 void	export(t_env *env);
 void	print_env(t_env *env);
+void	lexing(t_token *token);
 
 /*------------Utils-------------*/
 int		is_builtin(char *s);
