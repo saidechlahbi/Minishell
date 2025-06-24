@@ -30,12 +30,13 @@ typedef struct s_token
 enum e_type
 {
 	WORD,
+	CMD,
+	ARG,
 	PIPE,
 	RED_OUT,
 	RED_IN,
 	HERE_DOC,
 	APPEND,
-	EXPANDED,
 	AMBIGIUOS
 };
 
