@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/24 16:19:16 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:35:34 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@
 
 typedef struct s_proccess
 {
-	char **cmd;
-	int *
+	t_token *tok;
 }	t_proccess;
-
 
 typedef struct s_token
 {
@@ -40,12 +38,14 @@ enum e_type
 	WORD,
 	CMD,
 	ARG,
+	BUILTIN,
 	IN_FILE,
 	OUT_FILE,
 	PIPE,
 	RED_OUT,
 	RED_IN,
 	HERE_DOC,
+	DELIMITER,
 	APPEND,
 	AMBIGIUOS
 };
@@ -70,8 +70,10 @@ t_env	*get_env(char **envp);
 void	unset(t_env **env, const char *value);
 void	export(t_env *env);
 void	print_env(t_env *env);
+void	lexing(t_token *token);
 
 /*------------Utils-------------*/
+int		is_builtin(char *s);
 char    *randomize();
 void	new_var(t_token *node, t_env **env_list);
 void	restore_quotes(t_token *tokens);

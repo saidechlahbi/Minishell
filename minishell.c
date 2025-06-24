@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/24 10:51:30 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:18:33 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@
         add_history(input);
 
         tokens = tokenize(input);
-        // has_dollar(tokens, env);
-        // remove_quotes(tokens);
-        // restore_quotes(tokens);
+        has_dollar(tokens, env);
+        remove_quotes(tokens);
+        restore_quotes(tokens);
         // if (!tokens)
         //     return 1;
         // i = 0;

@@ -114,3 +114,38 @@ t_token *tokenize(char *input)
 	validate_input(tokens);
 	return tokens;
 }
+
+void lexing(t_token *token)
+{
+	t_token *prev;
+
+	prev = token;
+	if (token && token->type == WORD)
+	{
+		if (is_builtin(token->value))
+			token->type = BUILTIN;
+		else
+			token->type = CMD;
+		prev = token;
+		token = token->next;
+	}
+	while (token)
+	{
+		if ((token->type == RED_OUT || token->type == APPEND) && token->next)
+			token->next->type = OUT_FILE;
+		else if (token->type == RED_IN && token->next)
+			token->next->type = IN_FILE;
+		else if (token->type == HERE_DOC && token->next)
+			token->next->type = DELIMITER;
+		if (token->type == WORD)
+		{
+			if (prev->type == CMD || prev->type == BUILTIN || prev->type == ARG)
+				token->type = ARG;
+			else
+				token->type = CMD;
+		}
+		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
+			prev = token;
+		token = token->next;
+	}
+}
