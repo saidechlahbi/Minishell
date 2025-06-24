@@ -19,7 +19,7 @@ void remove_quotes(t_token *tokens)
             j = 0;
             in_squote = 0;
             in_dquote = 0;
-            new_value = malloc(sizeof(char) * (ft_strlen(cur->value) + 1));
+            new_value = malloc((ft_strlen(cur->value) + 1));
             if (!new_value)
             {
                 cur = cur->next;

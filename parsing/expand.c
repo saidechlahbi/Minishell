@@ -6,11 +6,13 @@ char *expand(char *var, t_env *env)
     int i;
     int start;
 	int in_quote;
+    char *encapsulizer;
 
     i = 0;
     start = 0;
 	in_quote = 0;
     input = ft_strdup("");
+    encapsulizer = randomize();
     while (env)
     {
         if (!ft_strcmp(var, env->key))
@@ -25,7 +27,7 @@ char *expand(char *var, t_env *env)
 						i--;
                     start = i;	
 						
-                    input = ft_strjoin( _substr(env->value, start, i - start), 14);
+                    input = ft_strjoin( _substr(env->value, start, i - start), encapsulizer);
 					start = i;
                 }
                 i++;
@@ -97,7 +99,6 @@ void has_dollar(t_token *tokens, t_env *env)
         {
             expanded = prep(cur->value, env);
             cur->value = expanded;
-            // if(/*has space*/)
             split_n_insert(cur);
         }
         cur = next;

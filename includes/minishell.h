@@ -15,6 +15,7 @@
 
 #include "libft/libft.h"
 #include <stdio.h>
+#include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -22,6 +23,7 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
+	int				nop;
 	struct s_token	*next;
 }	t_token;
 
@@ -59,7 +61,8 @@ void	export(t_env *env);
 void	print_env(t_env *env);
 
 /*------------Utils-------------*/
-void new_var(t_token *node, t_env **env_list);
+char    *randomize();
+void	new_var(t_token *node, t_env **env_list);
 void	restore_quotes(t_token *tokens);
 void	remove_quotes(t_token *tokens);
 void	split_n_insert(t_token *cur);

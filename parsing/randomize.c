@@ -1,14 +1,5 @@
 #include "../includes/minishell.h"
-#include <fcntl.h>
 
-int	ft_isalnum(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	else if (((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')))
-		return (1);
-	return (0);
-}
 char    *randomize()
 {
     char buffer[200];
@@ -34,9 +25,4 @@ char    *randomize()
     str[j] = '\0';    
     close(fd);
 	return (str);
-}
-
-int main()
-{
-    randomize();
 }
