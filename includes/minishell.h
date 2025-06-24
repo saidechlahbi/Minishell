@@ -32,6 +32,8 @@ enum e_type
 	WORD,
 	CMD,
 	ARG,
+	IN_FILE,
+	OUT_FILE,
 	PIPE,
 	RED_OUT,
 	RED_IN,
