@@ -1,5 +1,13 @@
 #include "../includes/minishell.h"
 
+int	is_builtin(char *s)
+{
+	return (!ft_strncmp(s, "echo", 4) || !ft_strncmp(s, "export", 6)
+		|| !ft_strncmp(s, "unset", 5) || !ft_strncmp(s, "exit", 4)
+		|| !ft_strncmp(s, "pwd", 3) || !ft_strncmp(s, "env", 3)
+		|| !ft_strncmp(s, "cd", 2));
+}
+
 int	is_operator(char c)
 {
 	if (c == '|')

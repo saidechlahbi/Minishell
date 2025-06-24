@@ -66,6 +66,7 @@ void	export(t_env *env);
 void	print_env(t_env *env);
 
 /*------------Utils-------------*/
+int		is_builtin(char *s);
 char    *randomize();
 void	new_var(t_token *node, t_env **env_list);
 void	restore_quotes(t_token *tokens);
