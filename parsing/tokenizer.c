@@ -140,7 +140,7 @@ void	lexing(t_token *token)
 			token->type = ARG;
 		else
 			token->type = CMD;
-		if (token->type == CMD || token->type == BUILTIN)
+		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
 			prev = token;
 		token = token->next;
 	}
