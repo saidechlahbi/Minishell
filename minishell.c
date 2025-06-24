@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "includes/minishell.h"
 
     int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
