@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/21 17:08:12 by schahir          ###   ########.fr       */
+/*   Updated: 2025/06/24 16:19:16 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+
+
+typedef struct s_proccess
+{
+	char **cmd;
+	int *
+}	t_proccess;
+
 
 typedef struct s_token
 {
