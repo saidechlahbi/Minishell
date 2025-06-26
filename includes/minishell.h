@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/24 18:18:44 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/26 16:54:23 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_proccess
-{
-	t_token *tok;
-	struct s_proccess *next;
-}	t_proccess;
-
 enum e_type
 {
 	WORD,
@@ -41,6 +35,7 @@ enum e_type
 	BUILTIN,
 	IN_FILE,
 	OUT_FILE,
+	APP_FILE,
 	PIPE,
 	RED_OUT,
 	RED_IN,
@@ -50,18 +45,32 @@ enum e_type
 	AMBIGIUOS
 };
 
-typedef struct s_fds
-{
-	int	pipefd1[2];
-	int	pipefd2[2];
-}	t_fds;
-
 typedef struct s_env
 {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
+/*-----------execution part-------------*/
+
+typedef struct s_redirection
+{
+	char *file;
+	char *delimiter;
+	int fd;
+	int type;
+	struct s_redirection *next;
+}t_redirectio;
+
+typedef struct s_cmds
+{
+	char **cmd;
+	t_redirectio *redirection;
+	int type;
+	struct s_cmds *next;
+	
+}t_cmds;
 
 /*-----------Parsing-------------*/
 t_token	*tokenize(char *input);
@@ -89,6 +98,6 @@ int		ft_isspace(char c);
 int		is_op(char *s);
 
 /*------------execution-------------*/
-t_proccess *splinting_into_proccess(t_token *token);
+t_cmds *splinting_into_proccess(t_token *token);
 
 #endif

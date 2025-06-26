@@ -15,10 +15,10 @@
 
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
-    int i;
     t_token *tokens;
     t_token *tmp;
     t_env   *env;
+    t_cmds *commands;
 
 	env = get_env(envp);
     while (1)
@@ -39,15 +39,15 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         restore_quotes(tokens);
         // if (!tokens)
         //     return 1;
-        i = 0;
         tmp = tokens;
         while (tmp)
         {
             printf("%s\ttype:%d\n", tmp->value, tmp->type);
             tmp = tmp->next;
-            i++;
         }
         printf("\n");
+
+        commands = splinting_into_proccess(token)
         //export(env);
         //print_env(env);
         if (!ft_strncmp(input, "history -c",10))
