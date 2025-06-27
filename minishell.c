@@ -16,9 +16,9 @@
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
     t_token *tokens;
-    t_token *tmp;
+    // t_token *tmp;
     t_env   *env;
-    t_cmds *commands;
+    // t_cmds *commands;
 
 	env = get_env(envp);
     while (1)
@@ -39,15 +39,22 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         restore_quotes(tokens);
         // if (!tokens)
         //     return 1;
-        tmp = tokens;
-        while (tmp)
-        {
-            printf("%s\ttype:%d\n", tmp->value, tmp->type);
-            tmp = tmp->next;
-        }
-        printf("\n");
+        // tmp = tokens;
+        // while (tmp)
+        // {
+        //     printf("%s\ttype:%d\n", tmp->value, tmp->type);
+        //     tmp = tmp->next;
+        // }
+        // printf("\n");
 
-        commands = splinting_into_proccess(token)
+        pipes(splinting_into_proccess(tokens), env);
+        //   printf("here%p\n", commands);
+        // printf("%s\t %s\n", commands->cmd[0], commands->cmd[1]);
+        // while (commands->redirection)
+        // {
+        //     printf("file %s %s\n", commands->redirection->file, commands->redirection->delimiter);
+        //     commands->redirection = commands->redirection->next;
+        // }
         //export(env);
         //print_env(env);
         if (!ft_strncmp(input, "history -c",10))

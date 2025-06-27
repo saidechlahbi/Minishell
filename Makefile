@@ -7,7 +7,8 @@ CFLAGS		= -g -Wall -Wextra -Werror
 FILES		=   minishell.c parsing/utils.c parsing/tokenizer.c parsing/expand.c parsing/get_env.c \
 				parsing/unset.c parsing/split_n_insert.c parsing/rr_quotes.c parsing/export.c \
 				parsing/randomize.c \
-				execution/flow.c
+				execution/flow.c execution/fix_path.c execution/pipe.c \
+				execution/redirection.c
 
 # Object files
 

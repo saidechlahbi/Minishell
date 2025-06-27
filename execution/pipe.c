@@ -1,131 +1,114 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   pipe.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-// /*   Updated: 2025/06/21 17:13:31 by sechlahb         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
+/*   Updated: 2025/06/27 16:06:00 by sechlahb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-// static char **get_paths(t_env *env)
-// {
-//     char **paths;
+static void first_pipe(t_cmds *commands, char **env, int *f_pipe)
+{
+    int pid = fork();
+    if (pid == 0)
+    { 
+        dup2(f_pipe[1], 1);
+        close(f_pipe[1]);
+        close(f_pipe[0]);
+
+        execve(commands->cmd[0], commands->cmd, env);
+    }
+    return;
+}
+
+static void middle_pipe(t_cmds *commands, char **env, int *f_pipe, int *s_pipe)
+{
+    int pid = fork();
+    if (pid == 0)
+    {
+        dup2(f_pipe[0], 0);
+        close(f_pipe[1]);
+        close(f_pipe[0]);
+        
+        dup2(s_pipe[1], 1);
+        close(s_pipe[1]);
+        close(s_pipe[0]);
+        execve(commands->cmd[0], commands->cmd, env);
+    }
+}
+
+static void last_pipe(t_cmds *commands, char **env, int *f_pipe)
+{
+    int pid = fork();
+    if (pid == 0)
+    {
+        dup2(f_pipe[0], 0);
+        close(f_pipe[1]);
+        close(f_pipe[0]);
     
-//     paths = NULL;
-//     while (env)
-//     {
-//         if (ft_strcmp(env->key , "PATH") == 0)
-//         {
-//             paths = ft_split(env->value, ':');
-//             if (!paths)
-//                 return NULL;
-//             return paths;
-//         }
-//         env = env->next;
-//     }
-//     return NULL;
-// }
+        execve(commands->cmd[0], commands->cmd, env);
+    }
+}
 
-// static char *get_right_path(t_env *env, char *cmd)
-// {
-//     char **paths;
-//     char *cmd_with_path, *str;
+int lst_size(t_cmds *commands)
+{
+    int count;
 
-//     if (!access(cmd, X_OK))
-//         return cmd;
-//     paths = get_paths(env);
-//     if (!paths)
-//         return NULL;
-//     while (*paths)
-//     {
-//         str = ft_strjoin(*paths, "/");
-//         cmd_with_path = ft_strjoin(str, cmd);
-//         free(str);
-//         if (access(cmd_with_path, X_OK) == 0)
-//             return (cmd_with_path);
-//         free(cmd_with_path);
-//         paths++;
-//     }
-//     return NULL;
-// }
-
-// void first_pipe(t_fds fds)
-// {
-//     int pid = fork();
-//     if (pid == 0)
-//     { 
-//         dup2(fds.pipefd1[1], 1);
-//         close(fds.pipefd1[1]);
-//         close(fds.pipefd1[0]);
-//         close(fds.pipefd2[1]);
-//         close(fds.pipefd2[0]);
-//         execve(str, ss, NULL);
-//     }
-//     return;
-// }
-
-// void middle_pipe(t_fds fds)
-// {
-//     int pid = fork();
-//     if (pid == 0)
-//     {
-//         dup2(fds.pipefd1[0], 0);
-//         close(fds.pipefd1[1]);
-//         close(fds.pipefd1[0]);
-//         dup2(fds.pipefd2[1], 1);
-//         close(fds.pipefd2[1]);
-//         close(fds.pipefd2[0]);
-//         execve(str, ss, NULL);
-//     }
-// }
-
-// void last_pipe(t_fds fds)
-// {
-//     int pid = fork();
-//     if (pid == 0)
-//     {
-//         dup2(fds.pipefd1[0], 0);
-//         close(fds.pipefd1[1]);
-//         close(fds.pipefd1[0]);
-        
-
-//         close(fds.pipefd2[1]);
-//         close(fds.pipefd2[0]);
-        
-//         char *str = "/bin/wc";
-//         char *ss[] = {"wc", "-l", NULL};
-//         execve(str, ss, NULL);
-//     }
-// }
-
-// char **get_(t_token *token)
-// {
-//     char ***pipes;
-//     int start;
-
-//     start = 0;
-//     while (token)
-//     {
-//         if (!ft_strcmp(token->value, "<"))
-//     }
-// }
-
-// void pipes(t_token *token, t_env *env)
-// {
-//     t_fds fds;
-
-//     int i = 2;
-//     char *cmd = get_right_path(env, );
-//     first_pipe()
-//     while (i < 2)
-//     {
-        
-//     }
-//     last_pipe()
+    count = 0;
+    while (commands)
+    {
+        count++;
+        commands = commands->next;
+    }
+    return count;
+}
+void alone_cmd(t_cmds *commands, char **env)
+{
+    int pid = fork();
+    if (pid == 0)
+    {
     
-// }
+        execve(commands->cmd[0], commands->cmd, env);
+    }
+}
+
+void pipes(t_cmds *commands, t_env *env)
+{
+    int f_pipe[2];
+    int s_pipe[2];
+    char **envp;
+
+    open_files(commands);
+    fill_by_path(commands, env);
+    envp = env_lst_to_char2(env);
+    if (lst_size(commands) == 1)
+    {
+        alone_cmd(commands, envp);
+        wait(NULL);
+        return;
+    }
+    pipe(f_pipe);
+    first_pipe(commands, envp, f_pipe);
+    commands = commands->next;
+    while (commands->next)
+    {
+        pipe(s_pipe);
+        middle_pipe(commands, envp, f_pipe, s_pipe);
+        close(f_pipe[0]);
+        close(f_pipe[1]);
+        f_pipe[0] = s_pipe[0];
+        f_pipe[1] = s_pipe[1];
+        commands = commands->next;
+    }
+    last_pipe(commands, envp, f_pipe);
+    close(f_pipe[1]);
+    close(f_pipe[0]);
+    wait(NULL);
+    wait(NULL);
+    return;
+}

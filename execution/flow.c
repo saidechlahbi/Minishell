@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/26 17:05:14 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:54:19 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	lstadd_back(t_cmds **lst, t_cmds *new)
 	tmp->next = new;
 }
 
-t_redirectio	*last(t_redirectio *lst)
+t_redirection	*last(t_redirection *lst)
 {
-    t_redirectio	*tmp;
+    t_redirection	*tmp;
 
     tmp = lst;
     if (!lst)
@@ -51,9 +51,9 @@ t_redirectio	*last(t_redirectio *lst)
     return (tmp);
 }
 
-void	add_back(t_redirectio **lst, t_redirectio *new)
+void	add_back(t_redirection **lst, t_redirection *new)
 {
-	t_redirectio	*tmp;
+	t_redirection	*tmp;
 
 	if (!new)
 		return;
@@ -105,8 +105,8 @@ char **fill_cmd(t_token *token)
 
 t_cmds *splinting_into_proccess(t_token *token)
 {
-    t_redirectio *redirection;
-    t_redirectio *red_tmp;
+    t_redirection *redirection;
+    t_redirection *red_tmp;
     t_cmds *commands;
     t_cmds *cmd_tmp;
     
@@ -127,7 +127,7 @@ t_cmds *splinting_into_proccess(t_token *token)
             else if (token->type == RED_IN || token->type == APPEND 
                 || token->type == RED_OUT)
             {
-                red_tmp = malloc(sizeof(t_redirectio));
+                red_tmp = malloc(sizeof(t_redirection));
                 if (!red_tmp)
                     exit(1);
                 red_tmp->file = token->next->value;
@@ -138,7 +138,7 @@ t_cmds *splinting_into_proccess(t_token *token)
             }
             else if (token->type == HERE_DOC)
             {
-                red_tmp = malloc(sizeof(t_redirectio));
+                red_tmp = malloc(sizeof(t_redirection));
                 if (!red_tmp)
                     exit(1);
                 red_tmp->file = randomize();
@@ -159,10 +159,12 @@ t_cmds *splinting_into_proccess(t_token *token)
             cmd_tmp->redirection = redirection;
             cmd_tmp->next = NULL;
         }
-        lstadd_back(&commands, cmd_tmp);
+        if (cmd_tmp)
+            lstadd_back(&commands, cmd_tmp);
         redirection = NULL;
         cmd_tmp = NULL;
-        token = token->next;
+        if (token)
+            token = token->next;
     }
     return commands;
 }

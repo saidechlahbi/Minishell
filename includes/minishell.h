@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/26 16:54:23 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:57:47 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libft/libft.h"
 #include <stdio.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -61,12 +62,12 @@ typedef struct s_redirection
 	int fd;
 	int type;
 	struct s_redirection *next;
-}t_redirectio;
+}t_redirection;
 
 typedef struct s_cmds
 {
 	char **cmd;
-	t_redirectio *redirection;
+	t_redirection *redirection;
 	int type;
 	struct s_cmds *next;
 	
@@ -99,5 +100,8 @@ int		is_op(char *s);
 
 /*------------execution-------------*/
 t_cmds *splinting_into_proccess(t_token *token);
-
+void fill_by_path(t_cmds *commands, t_env *env);
+char **env_lst_to_char2(t_env *env);
+ void open_files(t_cmds *commands);
+void pipes(t_cmds *commands, t_env *env);
 #endif
