@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/19 16:47:12 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:05:32 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,10 @@ void lexing(t_token *token)
 	}
 	while (token)
 	{
-		if (token->type == RED_OUT || token->type == APPEND)
+		if (token->type == RED_OUT)
 			token->next->type = OUT_FILE;
+		if (token->type == APPEND)
+			token->next->type = APP_FILE;
 		else if (token->type == RED_IN)
 			token->next->type = IN_FILE;
 		else if (token->type == HERE_DOC)
