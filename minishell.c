@@ -35,8 +35,6 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         tokens = tokenize(input);
         lexing(tokens);
         has_dollar(tokens, env);
-        remove_quotes(tokens);
-        restore_quotes(tokens);
         // if (!tokens)
         //     return 1;
         // tmp = tokens;

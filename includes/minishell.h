@@ -87,7 +87,7 @@ int		is_builtin(char *s);
 char    *randomize();
 void	new_var(t_token *node, t_env **env_list);
 void	restore_quotes(t_token *tokens);
-void	remove_quotes(t_token *tokens);
+void remove_quotes(t_token *tokens, char *encapsulizer);
 void	split_n_insert(t_token *cur);
 int		is_expandable2(char c);
 int		is_expandable(char c);

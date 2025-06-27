@@ -42,8 +42,8 @@ char **str_tok(char *input)
     int        start = 0;
     int        in_squote = 0;
     int        in_dquote = 0;
-    char        **tokens = NULL;
-    int     j = 0;
+    char       **tokens = NULL;
+    int        j = 0;
 
     i = 0;
     tokens = malloc(sizeof(char *) * (count_tok(input) + 1));
