@@ -7,15 +7,21 @@ int count_tok(char *input, char *encapsulizer)
     int count = 0;
     int in_squote= 0;
     int in_dquote = 0;
+    int ignore = 0;
 
     while(input[i])
     {
-        if(input[i] == '\'' && !in_dquote)
+        if (!ft_strncmp(&input[i], encapsulizer, 19))
+        {
+            i+=19;
+            ignore = !ignore;
+        }
+        else if(input[i] == '\'' && (!in_dquote && !ignore))
         {
             in_squote = !in_squote;
             i++;
         }
-        else if(input[i] == '"' && !in_squote)
+        else if(input[i] == '"' && (!in_squote && !ignore))
         {
             in_dquote = !in_dquote;
             i++;
@@ -55,7 +61,7 @@ char **str_tok(char *input, char *encapsulizer)
             i+=19;
             ignore = !ignore;
         }
-        if(input[i] == '\'' && (!in_dquote && !ignore))
+        else if(input[i] == '\'' && (!in_dquote && !ignore))
         {
             in_squote = !in_squote;
             i++;
