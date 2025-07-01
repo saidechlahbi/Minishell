@@ -16,7 +16,7 @@
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
     t_token *tokens;
-    // t_token *tmp;
+    t_token *tmp;
     t_env   *env;
     // t_cmds *commands;
 
@@ -37,13 +37,13 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         has_dollar(tokens, env);
         // if (!tokens)
         //     return 1;
-        // tmp = tokens;
-        // while (tmp)
-        // {
-        //     printf("%s\ttype:%d\n", tmp->value, tmp->type);
-        //     tmp = tmp->next;
-        // }
-        // printf("\n");
+        tmp = tokens;
+        while (tmp)
+        {
+            printf("%s\ttype:%d\n", tmp->value, tmp->type);
+            tmp = tmp->next;
+        }
+        printf("\n");
 
         pipes(splinting_into_proccess(tokens), env);
         //   printf("here%p\n", commands);

@@ -20,17 +20,17 @@ void remove_quotes(t_token *tokens, char *encapsulizer)
             new_value = malloc((ft_strlen(cur->value) + 1));
             while (cur->value[i])
             {
-                if (encapsulizer && !ft_strncmp(&cur->value[i], encapsulizer, 19))
+                if (!ft_strncmp(&cur->value[i], encapsulizer, 19))
                 {
                     i += 19;
                     expanded = !expanded;
                 }
-                else if (cur->value[i] == '\'' && (!in_dquote || !expanded))
+                else if (cur->value[i] == '\'' && (!in_dquote && !expanded))
                 {
                     in_squote = !in_squote;
                     i++;
                 }
-                else if (cur->value[i] == '"' && (!in_squote || !expanded))
+                else if (cur->value[i] == '"' && (!in_squote && !expanded))
                 {
                     in_dquote = !in_dquote;
                     i++;
