@@ -62,7 +62,6 @@ char *prep(char *input, t_env *env, char *encapsulizer)
     }
     if (i > start)
         expanded = ft_strjoin(expanded, _substr(input, start, i - start));
-    // printf("here1 %s\n", expanded);
     return (expanded);
 }
 
