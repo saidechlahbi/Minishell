@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/27 15:57:47 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/04 11:14:36 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,14 @@ typedef struct s_cmds
 	char **cmd;
 	t_redirection *redirection;
 	int type;
+	int read_from;
+	int write_in;
 	struct s_cmds *next;
 	
 }t_cmds;
 
 /*-----------Parsing-------------*/
+
 t_token	*tokenize(char *input);
 void	has_dollar(t_token *tokens, t_env *env);
 t_env	*get_env(char **envp);
