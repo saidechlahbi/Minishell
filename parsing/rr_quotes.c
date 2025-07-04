@@ -3,44 +3,40 @@
 void remove_quotes(t_token *tokens, char *encapsulizer)
 {
     t_token *cur;
-    char *new_value;
-    int i, j;
-    int in_squote, in_dquote, expanded;
-
+    char *new_val;
+    int in_squote, in_dquote, encapsuled, i, j;
+    
+    in_squote = 0;
+    in_dquote = 0;
+    encapsuled = 0;
     cur = tokens;
     while (cur)
     {
-        if (cur->value)
+        new_val = ft_calloc(1, ft_strlen(cur->value) + 1);
+        i= 0;
+        j = 0;
+        while (cur && cur->value[i])
         {
-            i = 0;
-            j = 0;
-            in_squote = 0;
-            in_dquote = 0;
-            expanded = 0;
-            new_value = malloc((ft_strlen(cur->value) + 1));
-            while (cur->value[i])
+            if (!ft_strncmp(&cur->value[i], encapsulizer, 19))
             {
-                if (!ft_strncmp(&cur->value[i], encapsulizer, 19))
-                {
-                    i += 19;
-                    expanded = !expanded;
-                }
-                else if (cur->value[i] == '\'' && (!in_dquote && !expanded))
-                {
-                    in_squote = !in_squote;
-                    i++;
-                }
-                else if (cur->value[i] == '"' && (!in_squote && !expanded))
-                {
-                    in_dquote = !in_dquote;
-                    i++;
-                }
-                else
-                    new_value[j++] = cur->value[i++];
+                i+=19;
+                encapsuled = !encapsuled;
             }
-            new_value[j] = 0;
-            cur->value = new_value;
+            else if (cur->value[i] == '\'' && !in_dquote && !encapsuled)
+            {
+                in_squote = !in_squote;
+                i++;
+            }
+            else if (cur->value[i] == '"' && !in_squote && !encapsuled)
+            {
+                in_dquote = !in_dquote;
+                i++;
+            }
+            else
+                new_val[j++] = cur->value[i++];
         }
+        new_val[j] = 0;
+        cur->value = new_val;
         cur = cur->next;
     }
 }
