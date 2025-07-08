@@ -13,14 +13,23 @@
 
 #include "includes/minishell.h"
 
+void handle_sigint(int signum)
+{
+    (void)signum;
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
     t_token *tokens;
-    // t_token *tmp;
     t_env   *env;
-    // t_cmds *commands;
 
 	env = get_env(envp);
+    signal(SIGINT, handle_sigint);
+    rl_catch_signals = 0;
     while (1)
     {
         char *input = readline("minishell$ ");
@@ -37,28 +46,10 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         has_dollar(tokens, env);
         remove_quotes(tokens);
         restore_quotes(tokens);
-        // if (!tokens)
-        //     return 1;
-        // tmp = tokens;
-        // while (tmp)
-        // {
-        //     printf("%s\ttype:%d\n", tmp->value, tmp->type);
-        //     tmp = tmp->next;
-        // }
-        // printf("\n");
 
+        // execution(splinting_into_proccess(tokens), env);
         pipes(splinting_into_proccess(tokens), env);
-        //   printf("here%p\n", commands);
-        // printf("%s\t %s\n", commands->cmd[0], commands->cmd[1]);
-        // while (commands->redirection)
-        // {
-        //     printf("file %s %s\n", commands->redirection->file, commands->redirection->delimiter);
-        //     commands->redirection = commands->redirection->next;
-        // }
-        //export(env);
-        //print_env(env);
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }
-    // printf("%s\n",getenv("PATH"));
 }
