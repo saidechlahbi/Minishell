@@ -8,7 +8,8 @@ FILES		=   minishell.c parsing/utils.c parsing/tokenizer.c parsing/expand.c pars
 				parsing/unset.c parsing/split_n_insert.c parsing/rr_quotes.c parsing/export.c \
 				parsing/randomize.c \
 				execution/flow.c execution/fix_path.c execution/pipe.c \
-				execution/redirection.c
+				execution/redirection.c execution/flow_tools.c \
+				execution/execution.c
 
 # Object files
 

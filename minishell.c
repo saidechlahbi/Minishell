@@ -26,10 +26,12 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
 {
     t_token *tokens;
     t_env   *env;
+    int last_exit_statis;
 
 	env = get_env(envp);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
+    last_exit_statis = 0;
     while (1)
     {
         char *input = readline("minishell$ ");
@@ -40,15 +42,15 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         if (!input[0])
             continue;
         add_history(input);
-
+        // if (!ft_strcmp(input, "echo $?"))
+        //     printf("%d\n", last_exit_statis);
         tokens = tokenize(input);
         lexing(tokens);
         has_dollar(tokens, env);
         remove_quotes(tokens);
         restore_quotes(tokens);
 
-        // execution(splinting_into_proccess(tokens), env);
-        pipes(splinting_into_proccess(tokens), env);
+        execution(tokens, env, &last_exit_statis);
         if (!ft_strncmp(input, "history -c",10))
             rl_clear_history();
     }

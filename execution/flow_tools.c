@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:44:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/08 11:45:21 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/09 23:56:15 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_cmds	*lstlast(t_cmds *lst)
+t_cmds	*last_for_cmd(t_cmds *lst)
 {
     t_cmds	*tmp;
 
@@ -24,7 +24,7 @@ t_cmds	*lstlast(t_cmds *lst)
     return (tmp);
 }
 
-void	lstadd_back(t_cmds **lst, t_cmds *new)
+void	add_back_for_cmd(t_cmds **lst, t_cmds *new)
 {
 	t_cmds	*tmp;
 
@@ -35,11 +35,11 @@ void	lstadd_back(t_cmds **lst, t_cmds *new)
 		(*lst) = new;
 		return ;
 	}
-	tmp = lstlast((*lst));
+	tmp = last_for_cmd((*lst));
 	tmp->next = new;
 }
 
-t_redirection	*last(t_redirection *lst)
+t_redirection	*last_for_redirec(t_redirection *lst)
 {
     t_redirection	*tmp;
 
@@ -51,7 +51,7 @@ t_redirection	*last(t_redirection *lst)
     return (tmp);
 }
 
-void	add_back(t_redirection **lst, t_redirection *new)
+void	add_back_for_redirec(t_redirection **lst, t_redirection *new)
 {
 	t_redirection	*tmp;
 
@@ -62,6 +62,6 @@ void	add_back(t_redirection **lst, t_redirection *new)
 		(*lst) = new;
 		return ;
 	}
-	tmp = last((*lst));
+	tmp = last_for_redirec((*lst));
 	tmp->next = new;
 }
