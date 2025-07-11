@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/10 00:43:29 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:20:20 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int count_args_of_cmd(t_token *token)
     return count;
 }
 
-static char **fill_cmd(t_token *token)
+static char **fill_cmd(t_token *token, t_cleaner *garbage)
 {
     char **cmd;
     int count;
@@ -34,23 +34,51 @@ static char **fill_cmd(t_token *token)
     cmd = NULL;
     if (count_args_of_cmd(token) == 0)
         return NULL;
-    cmd = malloc(sizeof(char *) * (count_args_of_cmd(token) + 1));
-    if (!cmd)
-        exit(1);
+    cmd = ft_malloc(sizeof(char *), (count_args_of_cmd(token) + 1), garbage);
     count = 0;
     while (token && token->type != PIPE)
     {
         if (token->type == CMD || token->type == BUILTIN)
-            cmd[count++] = token->value;
+        {
+            cmd[count] = ft_strdup(token->value);
+            if (!cmd[count])
+                get_out_from_here(garbage, 1);
+            add_back_for_cleaner(&garbage, new_cleaner(cmd[count], garbage));
+            count++;
+        }
         if (token->type == ARG)
-            cmd[count++] = token->value;
+        {
+            cmd[count] = ft_strdup(token->value);
+            if (!cmd[count])
+                get_out_from_here(garbage, 1);
+            add_back_for_cleaner(&garbage, new_cleaner(cmd[count], garbage));
+            count++; 
+        }
         token = token->next;
     }
     cmd[count] = NULL;
     return cmd;
 }
 
-static t_redirection *get_redirec(t_token *token)
+static t_redirection *initial_herdoc(t_token *token, t_cleaner *garbage)
+{
+    t_redirection *red_tmp;
+
+    red_tmp = ft_malloc(sizeof(t_redirection), 1, garbage);
+    red_tmp->file = randomize();
+    if (!red_tmp->file)
+        get_out_from_here(garbage, 1);
+    add_back_for_cleaner(&garbage, new_cleaner(red_tmp->file, garbage));
+    red_tmp->delimiter = ft_strdup(token->next->value);
+    if (!red_tmp->delimiter)
+        get_out_from_here(garbage, 1);
+    add_back_for_cleaner(&garbage, new_cleaner(red_tmp->delimiter, garbage));
+    red_tmp->type = token->type;
+    red_tmp->next = NULL;
+    return red_tmp;
+}
+
+static t_redirection *get_redirec(t_token *token, t_cleaner *garbage)
 {
     t_redirection *redirec;
     t_redirection *red_tmp;
@@ -62,23 +90,18 @@ static t_redirection *get_redirec(t_token *token)
         if (token->type == RED_IN || token->type == APPEND 
             || token->type == RED_OUT)
         {
-            red_tmp = malloc(sizeof(t_redirection));
-            if (!red_tmp)
-                exit(1);
-            red_tmp->file = token->next->value;
+            red_tmp = ft_malloc(sizeof(t_redirection), 1, garbage);
+            red_tmp->file = ft_strdup(token->next->value);
+            if (!red_tmp->file)
+                get_out_from_here(garbage, 1);
+            add_back_for_cleaner(&garbage, new_cleaner(red_tmp->file, garbage));
             red_tmp->type = token->next->type;
             red_tmp->next = NULL;
             token = token->next->next;
         }
         else if (token->type == HERE_DOC)
         {
-            red_tmp = malloc(sizeof(t_redirection));
-            if (!red_tmp)
-                exit(1);
-            red_tmp->file = randomize();
-            red_tmp->delimiter = token->next->value;
-            red_tmp->type = token->type;
-            red_tmp->next = NULL;
+            red_tmp = initial_herdoc(token, garbage);
             token = token->next->next;
         }
         else
@@ -89,7 +112,7 @@ static t_redirection *get_redirec(t_token *token)
     return redirec;
 }
 
-t_cmds *splinting_into_proccess(t_token *token)
+t_cmds *splinting_into_proccess(t_token *token, t_cleaner *garbage)
 {
     t_cmds *commands;
     t_cmds *cmd_tmp;
@@ -98,13 +121,11 @@ t_cmds *splinting_into_proccess(t_token *token)
     while (token)
     {
 
-        cmd_tmp = malloc(sizeof(t_cmds));
-        if (!cmd_tmp)
-            exit(1);
+        cmd_tmp = ft_malloc(sizeof(t_cmds), 1, garbage);
         cmd_tmp->type = token->type;
-        cmd_tmp->cmd = fill_cmd(token);
+        cmd_tmp->cmd = fill_cmd(token, garbage);
         cmd_tmp->next = NULL;
-        cmd_tmp->redirection = get_redirec(token);
+        cmd_tmp->redirection = get_redirec(token, garbage);
         while (token && token->type != PIPE)
             token = token->next;
         if (token)

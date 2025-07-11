@@ -9,7 +9,7 @@ FILES		=   minishell.c parsing/utils.c parsing/tokenizer.c parsing/expand.c pars
 				parsing/randomize.c \
 				execution/flow.c execution/fix_path.c execution/pipe.c \
 				execution/redirection.c execution/flow_tools.c \
-				execution/execution.c
+				execution/execution.c cleaner.c execution/exit.c
 
 # Object files
 

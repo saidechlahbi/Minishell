@@ -26,32 +26,30 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
 {
     t_token *tokens;
     t_env   *env;
+    t_cleaner *garbage;
     int last_exit_statis;
 
 	env = get_env(envp);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
     last_exit_statis = 0;
+    garbage = NULL;
     while (1)
     {
-        char *input = readline("minishell$ ");
+        char *input = readline("minishell$ ");  
         if (!input)
             exit(1);
-        if (!ft_strncmp(input, "exit",4))
-            exit(0);
         if (!input[0])
             continue;
+        add_back_for_cleaner(&garbage, new_cleaner(input, garbage));
         add_history(input);
-        // if (!ft_strcmp(input, "echo $?"))
-        //     printf("%d\n", last_exit_statis);
         tokens = tokenize(input);
         lexing(tokens);
         has_dollar(tokens, env);
         remove_quotes(tokens);
         restore_quotes(tokens);
 
-        execution(tokens, env, &last_exit_statis);
-        if (!ft_strncmp(input, "history -c",10))
-            rl_clear_history();
+        execution(tokens, env, &last_exit_statis, garbage);
+        garbage = NULL;
     }
 }

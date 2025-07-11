@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/10 01:03:26 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:53:39 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,9 @@ int				ft_isspace(char c);
 int				is_op(char *s);
 
 /*------------execution-------------*/
-t_cmds 			*splinting_into_proccess(t_token *token);
+void 			execution(t_token *token, t_env *env, int *last_exit_status, t_cleaner *garbage);
+t_cmds 			*splinting_into_proccess(t_token *token, t_cleaner *garbage);
 void 			redirection(t_cmds *commands);
-void 			execution(t_token *token, t_env *env, int *last_exit_status);
 void 			fill_by_path(t_cmds *commands, t_env *env);
 char 			**env_lst_to_char2(t_env *env);
 void 			pipes(t_cmds *commands, char **envp, int *last_exit_status);
@@ -120,7 +120,13 @@ t_cmds			*last_for_cmd(t_cmds *lst);
 void			add_back_for_cmd(t_cmds **lst, t_cmds *new);
 t_redirection	*last_for_redirec(t_redirection *lst);
 void			add_back_for_redirec(t_redirection **lst, t_redirection *new);
-/*----------flow tools------------*/
 
+/*----------cleaner tools------------*/
+void	add_back_for_cleaner(t_cleaner **lst, t_cleaner *new);
+t_cleaner	*new_cleaner(void *content, t_cleaner *garbage);
+void *ft_malloc(size_t type, size_t size, t_cleaner *garbadge);
+void get_out_from_here(t_cleaner *garbage, int status);
 
+/*----------built-in------------*/
+void ft_exit(t_cmds *command, t_cleaner *garbage);
 #endif
