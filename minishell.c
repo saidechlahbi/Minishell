@@ -13,23 +13,34 @@
 
 #include "includes/minishell.h"
 
+void handle_sigint(int signum __attribute__((unused)))
+{
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
     t_token *tokens;
-    t_token *tmp;
     t_env   *env;
-    // t_cmds *commands;
+    t_garbage *garbage;
+    int last_exit_status;
 
 	env = get_env(envp);
+    signal(SIGINT, handle_sigint);
+    rl_catch_signals = 0;
+    last_exit_status = 0;
     while (1)
     {
-        char *input = readline("minishell$ ");
+        garbage = NULL;
+        char *input = readline("minishell$ ");  
         if (!input)
             exit(1);
-        if (!ft_strncmp(input, "exit",4))
-            exit(0);
         if (!input[0])
             continue;
+        add_back_for_cleaner(&garbage, new_cleaner(input, garbage));
         add_history(input);
 
         tokens = tokenize(input);
@@ -37,7 +48,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         has_dollar(tokens, env);
         // if (!tokens)
         //     return 1;
-        tmp = tokens;
+        t_token *tmp = tokens;
         while (tmp)
         {
             printf("%s\ttype:%d\n", tmp->value, tmp->type);
@@ -45,18 +56,6 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         }
         printf("\n");
 
-        pipes(splinting_into_proccess(tokens), env);
-        //   printf("here%p\n", commands);
-        // printf("%s\t %s\n", commands->cmd[0], commands->cmd[1]);
-        // while (commands->redirection)
-        // {
-        //     printf("file %s %s\n", commands->redirection->file, commands->redirection->delimiter);
-        //     commands->redirection = commands->redirection->next;
-        // }
-        //export(env);
-        //print_env(env);
-        if (!ft_strncmp(input, "history -c",10))
-            rl_clear_history();
+        //execution(tokens, env, &last_exit_status, garbage);
     }
-    // printf("%s\n",getenv("PATH"));
 }

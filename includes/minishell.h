@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 14:59:03 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 16:38:03 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 typedef struct s_token
 {
@@ -73,6 +74,12 @@ typedef struct s_cmds
 	
 }t_cmds;
 
+typedef struct s_garbage
+{
+	void *data;
+	struct  s_garbage *next;
+}t_garbage;
+
 /*-----------Parsing-------------*/
 t_token	*tokenize(char *input);
 void	has_dollar(t_token *tokens, t_env *env);
@@ -81,13 +88,6 @@ void	unset(t_env **env, const char *value);
 void	export(t_env *env);
 void	print_env(t_env *env);
 void	lexing(t_token *token);
-
-/*------------execution-------------*/
-t_cmds *splinting_into_proccess(t_token *token);
-void fill_by_path(t_cmds *commands, t_env *env);
-char **env_lst_to_char2(t_env *env);
-void open_files(t_cmds *commands);
-void pipes(t_cmds *commands, t_env *env);
 
 /*------------Utils-------------*/
 int		is_builtin(char *s);
@@ -99,7 +99,7 @@ void	split_n_insert(t_token *cur, char *encapsulizer);
 int		is_expandable2(char c);
 int		is_expandable(char c);
 int		ft_strcmp(char *s1, char *s2);
-char	*_substr(char *str, int start, int len);
+char	*_substr(char *str, int start, int len, t_garbage *garbage);
 int		is_operator(char c);
 int		is_append(char *s);
 int		ft_isspace(char c);
@@ -117,5 +117,27 @@ char	**ft_split(char const *s, char c);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 
+
+
+// /*------------execution-------------*/
+// void 			execution(t_token *token, t_env *env, int *last_exit_status, t_cleaner *garbage);
+// t_cmds 			*splinting_into_proccess(t_token *token, t_garbage *garbage);
+// void 			redirection(t_cmds *commands);
+// void 			fill_by_path(t_cmds *commands, t_env *env);
+// char 			**env_lst_to_char2(t_env *env);
+// void 			pipes(t_cmds *commands, char **envp, int *last_exit_status);
+
+// /*----------flow tools------------*/
+// t_cmds			*last_for_cmd(t_cmds *lst);
+// void			add_back_for_cmd(t_cmds **lst, t_cmds *new);
+// t_redirection	*last_for_redirec(t_redirection *lst);
+// void			add_back_for_redirec(t_redirection **lst, t_redirection *new);
+
+/*----------cleaner tools------------*/
+t_garbage	*new_garbage(void *content, t_garbage *garbage);
+void	add_back_for_garbage(t_garbage **lst, t_garbage *new);
+void *ft_malloc(size_t type, size_t size, t_garbage *garbadge);
+void get_out_from_here(t_garbage *garbage, int status);
+void free_all(t_garbage *garbage);
 
 #endif
