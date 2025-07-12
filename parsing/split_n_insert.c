@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:36 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 18:05:26 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int count_tok(char *input, char *encapsulizer)
     return (count);
 }
 
-char **str_tok(char *input, char *encapsulizer)
+char **str_tok(char *input, char *encapsulizer, t_garbage *garbage)
 {
     int        i;
     int        start = 0;
@@ -65,7 +65,7 @@ char **str_tok(char *input, char *encapsulizer)
     int        ignore = 0;
 
     i = 0;
-    tokens = malloc(sizeof(char *) * (count_tok(input, encapsulizer) + 1));
+    tokens = ft_malloc(sizeof(char *) , (count_tok(input, encapsulizer) + 1), garbage);
     while(input[i])
     {
         if (!ft_strncmp(&input[i], encapsulizer, 19))
@@ -86,7 +86,7 @@ char **str_tok(char *input, char *encapsulizer)
         else if(!in_squote && !in_dquote && ft_isspace(input[i]))
         {
             if (i > start)
-                tokens[j++] = _substr(input, start, i - start);
+                tokens[j++] = _substr(input, start, i - start, garbage);
             i++;
             while (ft_isspace(input[i]))
                 i++;
@@ -96,14 +96,14 @@ char **str_tok(char *input, char *encapsulizer)
             i++;
     }
     if (i > start)
-        tokens[j++] = _substr(input, start, i - start);
+        tokens[j++] = _substr(input, start, i - start, garbage);
     
     tokens[j] = NULL;
     
     return (tokens);
 }
 
-void split_n_insert(t_token *cur, char *enapsulizer)
+void split_n_insert(t_token *cur, char *enapsulizer, t_garbage *garbage)
 {
     char **splits;
     t_token *new;
@@ -112,16 +112,14 @@ void split_n_insert(t_token *cur, char *enapsulizer)
 
     if (!cur->value[0])
         return ;
-    splits = str_tok(cur->value, enapsulizer);
-    cur->value = ft_strdup(splits[0]);
+    splits = str_tok(cur->value, enapsulizer, garbage);
+    cur->value = ft_strdup(splits[0], garbage);
     next = cur->next;
     i = 1;
     while (splits[i])
     {
-        new = malloc(sizeof(t_token));
-        if (!new)
-            break;
-        new->value = ft_strdup(splits[i]);
+        new = ft_malloc(sizeof(t_token), sizeof(t_token), garbage);
+        new->value = ft_strdup(splits[i], garbage);
         new->next = cur->next;
         cur->next = new;
         cur = new;

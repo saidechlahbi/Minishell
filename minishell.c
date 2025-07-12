@@ -28,24 +28,25 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
     t_garbage *garbage;
     int last_exit_status;
 
-	env = get_env(envp);
+    garbage = NULL;
+	env = get_env(envp, garbage);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
     last_exit_status = 0;
+    (void)last_exit_status;
     while (1)
     {
-        garbage = NULL;
         char *input = readline("minishell$ ");  
         if (!input)
-            exit(1);
+        exit(1);
         if (!input[0])
-            continue;
-        add_back_for_cleaner(&garbage, new_cleaner(input, garbage));
+        continue;
+        add_back_for_garbage(&garbage, new_garbage(input, garbage));
         add_history(input);
-
-        tokens = tokenize(input);
+        
+        tokens = tokenize(input, garbage);
         lexing(tokens);
-        has_dollar(tokens, env);
+        has_dollar(tokens, env, garbage);
         // if (!tokens)
         //     return 1;
         t_token *tmp = tokens;
@@ -55,7 +56,8 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
             tmp = tmp->next;
         }
         printf("\n");
-
+        
         //execution(tokens, env, &last_exit_status, garbage);
+        garbage = NULL;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:05 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 17:29:40 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    add_var(t_env **head, char *key, char *value)
 	}
 }
 
-t_env *get_env(char **envp)
+t_env *get_env(char **envp, t_garbage *garbage)
 {
     t_env *vars = NULL;
     int     i = 0;
@@ -47,8 +47,8 @@ t_env *get_env(char **envp)
         equal = ft_strchr(envp[i], '=');
         if (equal)
         {
-            key = _substr(envp[i], 0, equal - envp[i]);
-            value = ft_strdup(equal + 1);
+            key = _substr(envp[i], 0, equal - envp[i], garbage);
+            value = ft_strdup(equal + 1, garbage);
             add_var(&vars, key, value);
         }
         i++;
@@ -67,7 +67,7 @@ void print_env(t_env *env)
 }
 
 //exported
-void new_var(t_token *node, t_env **env_list)
+void new_var(t_token *node, t_env **env_list, t_garbage *garbage)
 {
     char    *equal;
     char    *key;
@@ -88,8 +88,8 @@ void new_var(t_token *node, t_env **env_list)
     equal = ft_strchr(node->value, '=');
     if (!equal)
         return;
-    key = _substr(node->value, 0, equal - node->value);
-    value = ft_strdup(equal + 1);
+    key = _substr(node->value, 0, equal - node->value, garbage);
+    value = ft_strdup(equal + 1, garbage);
     if (!key || !value)
         return;
     add_var(env_list, key, value);

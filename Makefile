@@ -5,10 +5,10 @@ CFLAGS		= -g -Wall -Wextra -Werror
 # Files
 FILES		=   minishell.c \
 				parsing/tokenizer.c parsing/expand.c parsing/split_n_insert.c parsing/rr_quotes.c parsing/randomize.c \
-				builtins/cd.c builtins/echo.c builtins/export.c builtins/get_env.c builtins/pwd.c builtins/unset.c builtins/exit.c \
+				builtins/cd.c builtins/echo.c builtins/export.c builtins/get_env.c builtins/pwd.c builtins/unset.c \
 				utils/utils00.c utils/utils01.c utils/utils02.c utils/utils03.c utils/utils04.c utils/utils05.c \
 				utils/cleaner.c utils/free_all.c \
-				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
+				#execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
 				execution/execution.c 
 
 # Object files

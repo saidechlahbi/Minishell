@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:51:34 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 14:58:35 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 17:32:08 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	ft_countwords(const char *str, char d)
 	return (count);
 }
 
-static char	*ft_worddup(const char *str, char d)
+static char	*ft_worddup(const char *str, char d, t_garbage *garbage)
 {
 	int		len;
 	char	*copy;
@@ -47,9 +47,7 @@ static char	*ft_worddup(const char *str, char d)
 	if (!str)
 		return (NULL);
 	len = ft_wordlen(str, d);
-	copy = malloc(len + 1);
-	if (!copy)
-		return (NULL);
+	copy = ft_malloc(len + 1, 1, garbage);
 	ft_strlcpy(copy, str, len + 1);
 	return (copy);
 }
@@ -62,7 +60,7 @@ static char	**ft_free_split(char **strs, int count)
 	return (NULL);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c, t_garbage *garbage)
 {
 	char	**strs;
 	int		i;
@@ -70,16 +68,14 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	if (!s)
 		return (NULL);
-	strs = malloc(sizeof(char *) * (ft_countwords(s, c) + 1));
-	if (!strs)
-		return (NULL);
+	strs = ft_malloc(sizeof(char *), ft_countwords(s, c) + 1, garbage);
 	while (*s)
 	{
 		while (*s == c)
 			s++;
 		if (*s)
 		{
-			strs[i] = ft_worddup(s, c);
+			strs[i] = ft_worddup(s, c, garbage);
 			if (!strs[i])
 				return (ft_free_split(strs, i));
 			i++;

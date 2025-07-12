@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:46 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 17:21:15 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void validate_input(t_token *token)
 	}
 }
 
-t_token *tokenize(char *input)
+t_token *tokenize(char *input, t_garbage *garbage)
 {
 	t_token *tokens = NULL;
 	int i = 0;
@@ -78,7 +78,7 @@ t_token *tokenize(char *input)
 		else if (!in_squote && !in_dquote && ft_isspace(input[i]))
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start), WORD);
+				add_token(&tokens, _substr(input, start, i - start, garbage), WORD);
 			i++;
 			while (ft_isspace(input[i]))
 				i++;
@@ -87,15 +87,15 @@ t_token *tokenize(char *input)
 		else if (!in_squote && !in_dquote && is_operator(input[i]) != -1)
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start), WORD);
+				add_token(&tokens, _substr(input, start, i - start, garbage), WORD);
 			else if (is_append(&input[i]) != -1)
 			{
-				add_token(&tokens, _substr(input, i, 2), is_append(&input[i]));
+				add_token(&tokens, _substr(input, i, 2, garbage), is_append(&input[i]));
 				i += 2;
 			}
 			else
 			{
-				add_token(&tokens, _substr(input, i, 1), is_operator(input[i]));
+				add_token(&tokens, _substr(input, i, 1, garbage), is_operator(input[i]));
 				i++;
 			}
 			start = i;
@@ -104,7 +104,7 @@ t_token *tokenize(char *input)
 			i++;
 	}
 	if (i > start)
-		add_token(&tokens, _substr(input, start, i - start), WORD);
+		add_token(&tokens, _substr(input, start, i - start, garbage), WORD);
 
 	if (in_squote || in_dquote)
 	{
