@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/11 23:11:06 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:40:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,5 @@ void execution(t_token *token, t_env *env, int *last_exit_status, t_cleaner *gar
         return ;
     redirection(commands);
     fill_by_path(commands, env);
-    ft_exit(commands, garbage);
-    //pipes(commands, env_lst_to_char2(env), last_exit_status);
+    pipes(commands, env_lst_to_char2(env), last_exit_status);
 }

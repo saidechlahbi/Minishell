@@ -13,9 +13,8 @@
 
 #include "includes/minishell.h"
 
-void handle_sigint(int signum)
+void handle_sigint(int signum __attribute__((unused)))
 {
-    (void)signum;
     write(1, "\n", 1);
     rl_on_new_line();
     rl_replace_line("", 0);
@@ -26,16 +25,16 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
 {
     t_token *tokens;
     t_env   *env;
-    t_cleaner *garbage;
+    t_garbage *garbage;
     int last_exit_statis;
 
 	env = get_env(envp);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
     last_exit_statis = 0;
-    garbage = NULL;
     while (1)
     {
+        garbage = NULL;
         char *input = readline("minishell$ ");  
         if (!input)
             exit(1);
@@ -49,7 +48,6 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         remove_quotes(tokens);
         restore_quotes(tokens);
 
-        execution(tokens, env, &last_exit_statis, garbage);
-        garbage = NULL;
+        //execution(tokens, env, &last_exit_statis, garbage);
     }
 }

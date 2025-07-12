@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/27 20:09:45 by sechlahb          #+#    #+#             */
-/*   Updated: 2024/11/02 23:14:47 by sechlahb         ###   ########.fr       */
+/*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/12 14:14:01 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_toupper(int c)
+#include "../includes/minishell.h"
+
+int ft_cd(char **args)
 {
-	if (c >= 'a' && c <= 'z')
-		c -= 32;
-	return (c);
+    char *path;
+
+    if (args[1] == NULL) {
+        path = getenv("HOME");
+        if (path == NULL) {
+            ft_putstr_fd("cd: HOME not set\n", 2);
+            return 1;
+        }
+    } else {
+        path = args[1];
+    }
+    if (chdir(path) != 0) {
+        perror("cd");
+        return 1;
+    }
 }
