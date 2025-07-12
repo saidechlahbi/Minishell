@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:59:52 by schahir          ###   ########.fr       */
+/*   Created: 2025/07/12 13:32:10 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/12 14:54:38 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int ft_cd(char **args)
+int    ft_pwd(void)
 {
-    char *path;
-    
-    if (args[1] == NULL) {
-        path = getenv("HOME");
-        if (path == NULL) {
-            ft_putstr_fd("cd: HOME not set\n", 2);
-            return 1;
-        }
-    }
-    else
-        path = args[1];
-    if (chdir(path) != 0)
-    {
-        perror("cd");
-        return 1;
-    }
+    char    *pwd;
+
+    pwd = getcwd(NULL, 0);
+    ft_putstr_fd(pwd, 1);
+    ft_putstr_fd("\n", 1);
+    return (free(pwd), 0);   
 }

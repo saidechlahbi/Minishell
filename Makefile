@@ -3,49 +3,35 @@ CC			= cc
 CFLAGS		= -g -Wall -Wextra -Werror
 
 # Files
-
-FILES		=   minishell.c parsing/utils.c parsing/tokenizer.c parsing/expand.c parsing/get_env.c \
-				parsing/unset.c parsing/split_n_insert.c parsing/rr_quotes.c parsing/export.c \
-				parsing/randomize.c \
-				execution/flow.c execution/fix_path.c execution/pipe.c \
-				execution/redirection.c
+FILES		=   minishell.c \
+				parsing/tokenizer.c parsing/expand.c parsing/split_n_insert.c parsing/rr_quotes.c parsing/randomize.c \
+				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c \
+				builtins/cd.c builtins/echo.c builtins/export.c builtins/get_env.c builtins/pwd.c builtins/unset.c \
+				utils/utils00.c utils/utils01.c utils/utils02.c utils/utils03.c utils/utils04.c utils/utils05.c
 
 # Object files
 
 OBJ			= $(FILES:.c=.o)
 
-# libft
-
-LIBFT_PATH	= includes/libft
-LIBFT		= $(LIBFT_PATH)/libft.a
-
-
 # Name
-
 NAME 		= minishell
 
 # Header
-
 HEADER 		=  includes/minishell.h
 
 
 # Rules
-
 all: $(NAME) 
 
-$(LIBFT) :
-	@make -C $(LIBFT_PATH)
-
-$(NAME): $(OBJ) $(HEADER) $(LIBFT)
-	@$(CC) $(FLAGS) $(OBJ)  $(LIBFT) -lreadline  -o $(NAME)
+$(NAME): $(OBJ) $(HEADER)
+	@$(CC) $(FLAGS) $(OBJ) -lreadline  -o $(NAME)
 
 clean:
 	@rm -f $(OBJ)
-	@make clean -C $(LIBFT_PATH)
 
 fclean: clean
 	@rm -f $(NAME)
-	@make fclean -C $(LIBFT_PATH)
+
 re: fclean all
 
 .PHONY: all clean fclean re

@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/27 15:57:47 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:59:03 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "libft/libft.h"
+#include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/wait.h>
@@ -53,7 +54,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-/*-----------execution part-------------*/
 
 typedef struct s_redirection
 {
@@ -82,6 +82,13 @@ void	export(t_env *env);
 void	print_env(t_env *env);
 void	lexing(t_token *token);
 
+/*------------execution-------------*/
+t_cmds *splinting_into_proccess(t_token *token);
+void fill_by_path(t_cmds *commands, t_env *env);
+char **env_lst_to_char2(t_env *env);
+void open_files(t_cmds *commands);
+void pipes(t_cmds *commands, t_env *env);
+
 /*------------Utils-------------*/
 int		is_builtin(char *s);
 char    *randomize();
@@ -97,11 +104,18 @@ int		is_operator(char c);
 int		is_append(char *s);
 int		ft_isspace(char c);
 int		is_op(char *s);
+void	ft_putstr_fd(char *s, int fd);
+size_t	ft_strlen(const char *str);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *src);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strchr(const char *str, int c);
+char 	*ft_strstr(const char *str, const char *target);
+void	*ft_calloc(size_t nmemb, size_t size);
+int		ft_isalnum(int c);
+char	**ft_split(char const *s, char c);
+char	*ft_strncpy(char *dest, const char *src, size_t n);
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 
-/*------------execution-------------*/
-t_cmds *splinting_into_proccess(t_token *token);
-void fill_by_path(t_cmds *commands, t_env *env);
-char **env_lst_to_char2(t_env *env);
- void open_files(t_cmds *commands);
-void pipes(t_cmds *commands, t_env *env);
+
 #endif

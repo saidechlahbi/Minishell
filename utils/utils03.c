@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:03:31 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 14:06:52 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 14:42:25 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *ft_strstr(const char *str, const char *target)
     return NULL;
 }
 
-void	ft_bzero(void *s, size_t n)
+static void	ft_bzero(void *s, size_t n)
 {
 	size_t	i;
 	char	*str;
