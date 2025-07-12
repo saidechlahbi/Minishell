@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/12 13:32:05 by schahir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void    add_var(t_env **head, char *key, char *value)
@@ -48,7 +60,8 @@ void print_env(t_env *env)
 {
     while (env)
     {
-        printf("%s = %s\n", env->key, env->value);
+        if (env->key && env->value)
+            printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
 }

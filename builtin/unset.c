@@ -1,41 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randomize.c                                        :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/12 13:32:28 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:29 by schahir          ###   ########.fr       */
+/*   Created: 2025/07/12 13:32:12 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/12 13:32:13 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char    *randomize()
+void unset(t_env **env, const char *value)
 {
-    char buffer[200];
-    char *str;
-    int i = 0;
-    int j = 0;
+    t_env *cur = *env;
+    t_env *prev = NULL;
 
-    int fd = open("/dev/random", O_RDONLY);
-    if (fd == -1)
-        return (NULL);
-    read(fd,buffer,200);
-    str = malloc(20);
-    while (j < 19)
+    while (cur)
     {
-        if (i >= 200)
+        if (!strcmp(cur->key, value))
         {
-            read(fd,buffer,200);
-            i = 0;
+            if (prev == NULL)
+                *env = cur->next;
+            else
+                prev->next = cur->next;
+            return;
         }
-        if (ft_isalnum(buffer[i]))
-            str[j++] = buffer[i];
-        i++;
+        prev = cur;
+        cur = cur->next;
     }
-    str[j] = '\0';    
-    close(fd);
-	return (str);
 }
