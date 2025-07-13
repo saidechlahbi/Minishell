@@ -31,6 +31,7 @@ t_token *parsing(char *input, int *status, t_garbage *garbage, t_env *env __attr
     if (validate_input(tokens, status))
         return NULL;
     lexing(tokens);
+    //check here_doc delimiter "/'/nq
     has_dollar(tokens, env, garbage);
     return tokens;
 }
@@ -40,10 +41,13 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
     t_token *tokens;
     t_env   *env;
     t_garbage *garbage;
+    t_garbage *garbage_env;
     int status;
 
     garbage = NULL;
-	env = get_env(envp, garbage);
+    garbage_env = NULL;
+    garbage_env = new_garbage(malloc(2), garbage_env);
+	env = get_env(envp, garbage_env);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
     status = 0;
@@ -64,18 +68,20 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
             garbage = NULL;
             continue;
         }
-        t_token *tmp = tokens;
-        while (tmp)
-        {
-            printf("%s\ttype:%d\n", tmp->value, tmp->type);
-            tmp = tmp->next;
-        }
-        printf("\n");
+        // t_token *tmp = tokens;
+        // while (tmp)
+        // {
+        //     printf("%s\ttype:%d\n", tmp->value, tmp->type);
+        //     tmp = tmp->next;
+        // }
+        // printf("\n");
         //print_export(env);
-        //execution(tokens, env, &last_exit_status, garbage);
+        //execution(tokens, env, &status, garbage);
         free_all(garbage);
+        free(garbage_env);
         // printf("%d\n", sizee(garbage));
         garbage = NULL;
+        exit(0);
     }
 }
 

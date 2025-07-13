@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 14:11:22 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 17:16:04 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage)
 	t_garbage	*now;
 
 	now = (t_garbage *)malloc(sizeof(t_garbage));
+	
 	if (!now)
 		get_out_from_here(garbage, 1);
 	now->data = content;
