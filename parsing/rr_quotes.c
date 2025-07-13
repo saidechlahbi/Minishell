@@ -6,13 +6,13 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:32 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 11:12:37 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void remove_quotes(t_token *tokens, char *encapsulizer)
+void remove_quotes(t_token *tokens, char *encapsulizer, t_garbage *garbage)
 {
     t_token *cur;
     char *new_val;
@@ -24,7 +24,7 @@ void remove_quotes(t_token *tokens, char *encapsulizer)
     cur = tokens;
     while (cur)
     {
-        new_val = ft_calloc(1, ft_strlen(cur->value) + 1);
+        new_val = ft_malloc(1, ft_strlen(cur->value) + 1, garbage);
         i= 0;
         j = 0;
         while (cur && cur->value[i])

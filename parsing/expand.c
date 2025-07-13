@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 10:47:30 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 11:11:36 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,5 @@ void has_dollar(t_token *tokens, t_env *env, t_garbage *garbage)
         }
         cur = next;
     }
-    remove_quotes(tokens, encapsulizer);
+    remove_quotes(tokens, encapsulizer, garbage);
 }
