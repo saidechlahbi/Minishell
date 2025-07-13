@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 12:31:35 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 13:48:44 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,31 +81,32 @@ t_env *find_key(t_env *env, char *key)
     return (NULL);
 }
 
-void export_variable( t_env **env, char *arg)
+void export_variable(t_env **env, char *arg)
 {
     t_garbage *garbage;
     char    *equal;
     char    *newk;
     char    *newv;
+    t_env   *existing;
     int     i;
 
+    garbage = NULL;
     if (!arg || !arg[0])
         return;
     i = 0;
     if (is_expandable(arg[i]))
     {
-        while (arg[i])
-        {
-            if (is_expandable2(arg[i]))
-                i++;
-        }
+        while (arg[i] && is_expandable2(arg[i]))
+            i++;
     }
     if (arg[i])
     {
-        if (arg[i] == '+')
+        if (arg[i] == '+' && arg[i + 1] == '=')
+            i += 2;
+        else if (arg[i] == '=')
             i++;
-        if(arg[i] != '=')
-            return ;
+        else
+            return;
     }
     equal = ft_strchr(arg, '=');
     if (!equal)
@@ -113,25 +114,26 @@ void export_variable( t_env **env, char *arg)
         newk = ft_strdup(arg, garbage);
         newv = NULL;
     }
-    else if (arg[*(equal - 1)] == '+')
+    else if (equal > arg && *(equal - 1) == '+')
     {
         newk = _substr(arg, 0, equal - 1 - arg, garbage);
-        if (!find_key(env, newk))
+        existing = find_key(*env, newk);
+        if (!existing || !existing->value)
             newv = ft_strdup(equal + 1, garbage);
         else
-            newv = ft_strjoin(*env->value, newv, garbage);
+            newv = ft_strjoin(existing->value, equal + 1, garbage);
     }
     else
-    {   
+    {
         newk = _substr(arg, 0, equal - arg, garbage);
         newv = ft_strdup(equal + 1, garbage);
     }
-    if (!find_key(env, newk))
+    existing = find_key(*env, newk);
+    if (!existing)
         add_var(env, newk, newv, garbage);
     else
-        *env->value = newv;
+        existing->value = newv;
 }
-
 
 void export(t_env **env, char **args)
 {
