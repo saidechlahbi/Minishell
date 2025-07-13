@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 14:40:52 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:28:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int herdoc_count(t_token *token)
     return count;
 }
 
-void execution(t_token *token, t_env *env, int *last_exit_status, t_cleaner *garbage)
+void execution(t_token *token, t_env *env, int *last_exit_status, t_garbage *garbage)
 {
     t_cmds *commands;
 
@@ -40,6 +40,6 @@ void execution(t_token *token, t_env *env, int *last_exit_status, t_cleaner *gar
     if (!commands)
         return ;
     redirection(commands);
-    fill_by_path(commands, env);
-    pipes(commands, env_lst_to_char2(env), last_exit_status);
+    fill_by_path(commands, env, garbage);
+    pipes(commands, env_lst_to_char2(env, garbage), last_exit_status);
 }

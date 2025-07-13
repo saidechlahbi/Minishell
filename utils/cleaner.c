@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 16:20:32 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:32:29 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 t_garbage	*new_garbage(void *content, t_garbage *garbage)
 {

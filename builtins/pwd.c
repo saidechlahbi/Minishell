@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:10 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 14:26:58 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:54:38 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int    ft_pwd(void)
     char    *pwd;
 
     pwd = getcwd(NULL, 0);
-    ft_putstr_fd(1, pwd);
-    ft_putstr_fd(1, "\n");
-    free(pwd);
+    ft_putstr_fd(pwd, 1);
+    ft_putstr_fd("\n", 1);
+    return (free(pwd), 0);   
 }

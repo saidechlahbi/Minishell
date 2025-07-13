@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:42:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 00:27:22 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:58:36 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,36 @@ static int	_atoi(const char *str, unsigned char *exit_value)
 {
 	long long		result;
     int digit;
-	int		signe;
+	int		sign;
 
-	signe = 1;
+	sign = 1;
 	result = 0;
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
-			signe = -1;
+			sign = -1;
 		str++;
 	}
 	while (*str >= '0' && *str <= '9')
 	{
 		digit = *str - '0';
 
-		if (signe == 1)
+		if (sign == 1)
 		{
 			if (result > (LLONG_MAX - digit) / 10)
 				return 1;
 		}
 		else
 		{
-			// Notice the -LLONG_MIN == LLONG_MAX + 1 → this check is tricky
 			if (result > (-(LLONG_MIN + digit)) / 10)
 				return 1;
 		}
-
 		result = result * 10 + digit;
 		str++;
 	}
-	*exit_value = (unsigned char)(result * signe);
+	*exit_value = (unsigned char)(result * sign);
     return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:02 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/12 19:11:11 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_env *sort_export(t_env *copy)
     return (copy);
 }
 
-void export(t_env *env)
+void print_export(t_env *env)
 {
     t_env *copy = env;
     sort_export(copy);
@@ -69,5 +69,37 @@ void export(t_env *env)
         }
         printf("\n");
         copy = copy->next;
+    }
+}
+
+t_env *find_key(t_env *env, char *key)
+{
+    while (env)
+    {
+        if (!ft_strcmp(env->key, key))
+            return env;
+        env = env->next;
+    }
+    return (NULL);
+}
+void export_variable(t_env **env, char *arg)
+{
+    
+}
+
+void export(t_env **env, char **args)
+{
+    int i;
+    
+    if (!args || !args[1])
+    {
+        print_export(*env);
+        return;
+    }
+    i = 1;
+    while (args[i])
+    {
+        export_variable(env, args[i]);
+        i++;
     }
 }

@@ -1,77 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rr_quotes.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 13:32:32 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/13 00:57:46 by sechlahb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-void remove_quotes(t_token *tokens)
+void remove_quotes(t_token *tokens, char *encapsulizer)
 {
     t_token *cur;
-    char *new_value;
-    int i, j;
-    int in_squote, in_dquote;
+    char *new_val;
+    int in_squote, in_dquote, encapsuled, i, j;
     
-    if (!tokens)
-        return;
-    
+    in_squote = 0;
+    in_dquote = 0;
+    encapsuled = 0;
     cur = tokens;
     while (cur)
     {
-        if (cur->value)
+        new_val = ft_calloc(1, ft_strlen(cur->value) + 1);
+        i= 0;
+        j = 0;
+        while (cur && cur->value[i])
         {
-            i = 0;
-            j = 0;
-            in_squote = 0;
-            in_dquote = 0;
-            new_value = malloc((ft_strlen(cur->value) + 1));
-            if (!new_value)
+            if (!ft_strncmp(&cur->value[i], encapsulizer, 19))
             {
-                cur = cur->next;
-                continue;
+                i+=19;
+                encapsuled = !encapsuled;
             }
-            while (cur->value[i])
+            else if (cur->value[i] == '\'' && !in_dquote && !encapsuled)
             {
-                if (cur->value[i] == '\'' && !in_dquote)
-                {
-                    in_squote = !in_squote;
-                    i++;
-                }
-                else if (cur->value[i] == '"' && !in_squote)
-                {
-                    in_dquote = !in_dquote;
-                    i++;
-                }
-                else
-                {
-                    new_value[j] = cur->value[i];
-                    i++;
-                    j++;
-                }
-            }
-            new_value[j] = 0;
-            cur->value = new_value;
-        }
-        cur = cur->next;
-    }
-}
-
-void restore_quotes(t_token *tokens)
-{
-    t_token *cur;
-    int i;
-    
-    if (!tokens)
-        return;
-    
-    cur = tokens;
-    while (cur)
-    {
-        if (cur->value)
-        {
-            i = 0;
-            while (cur->value[i])
-            {
-                if (cur->value[i] == 14)
-                    i++;
+                in_squote = !in_squote;
                 i++;
             }
+            else if (cur->value[i] == '"' && !in_squote && !encapsuled)
+            {
+                in_dquote = !in_dquote;
+                i++;
+            }
+            else
+                new_val[j++] = cur->value[i++];
         }
+        new_val[j] = 0;
+        cur->value = new_val;
         cur = cur->next;
     }
 }

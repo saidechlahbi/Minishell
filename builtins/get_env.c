@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 14:26:26 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:29:40 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    add_var(t_env **head, char *key, char *value)
 	}
 }
 
-t_env *get_env(char **envp)
+t_env *get_env(char **envp, t_garbage *garbage)
 {
     t_env *vars = NULL;
     int     i = 0;
@@ -47,43 +47,14 @@ t_env *get_env(char **envp)
         equal = ft_strchr(envp[i], '=');
         if (equal)
         {
-            key = _substr(envp[i], 0, equal - envp[i]);
-            value = ft_strdup(equal + 1);
+            key = _substr(envp[i], 0, equal - envp[i], garbage);
+            value = ft_strdup(equal + 1, garbage);
             add_var(&vars, key, value);
         }
         i++;
     }
     return vars;
 }
-
-void new_var(t_token *node, t_env **env_list)
-{
-    char    *equal;
-    char    *key;
-    char    *value;
-    int     i;
-    
-    if (!node || !node->value)
-    return;
-    i = 0;
-    if (is_expandable(node->value[i]))
-    {
-        while (node->value[i])
-        {
-            if (is_expandable2(node->value[i]))
-            i++;
-        }
-    }
-    equal = ft_strchr(node->value, '=');
-    if (!equal)
-    return;
-    key = _substr(node->value, 0, equal - node->value);
-    value = ft_strdup(equal + 1);
-    if (!key || !value)
-    return;
-    add_var(env_list, key, value);
-}
-
 
 void print_env(t_env *env)
 {
@@ -93,4 +64,33 @@ void print_env(t_env *env)
             printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
+}
+
+//exported
+void new_var(t_token *node, t_env **env_list, t_garbage *garbage)
+{
+    char    *equal;
+    char    *key;
+    char    *value;
+    int     i;
+
+    if (!node || !node->value)
+        return;
+    i = 0;
+    if (is_expandable(node->value[i]))
+    {
+        while (node->value[i])
+        {
+            if (is_expandable2(node->value[i]))
+                i++;
+        }
+    }
+    equal = ft_strchr(node->value, '=');
+    if (!equal)
+        return;
+    key = _substr(node->value, 0, equal - node->value, garbage);
+    value = ft_strdup(equal + 1, garbage);
+    if (!key || !value)
+        return;
+    add_var(env_list, key, value);
 }

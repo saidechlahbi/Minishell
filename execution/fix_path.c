@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/10 01:05:59 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:25:50 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char **env_lst_to_char2(t_env *env)
+char **env_lst_to_char2(t_env *env, t_garbage *garbage)
 {
     t_env *tmp;
     char **envp;
@@ -26,12 +26,12 @@ char **env_lst_to_char2(t_env *env)
         count++;
         tmp = tmp->next;
     }
-    envp = malloc (sizeof(char *) * (count + 1));
+    envp = ft_malloc (sizeof(char *) * (count + 1), 1 , garbage);
     count = 0;
     while (env)
     {
-        str = ft_strjoin(env->key, "=");
-        envp[count++] = ft_strjoin(str, env->value);
+        str = ft_strjoin(env->key, "=", garbage);
+        envp[count++] = ft_strjoin(str, env->value, garbage);
         free(str);
         env = env->next;
     }
@@ -39,7 +39,7 @@ char **env_lst_to_char2(t_env *env)
     return envp;
 }
 
-static char **get_paths(t_env *env)
+static char **get_paths(t_env *env, t_garbage *garbage)
 {
     char **paths;
     
@@ -48,7 +48,7 @@ static char **get_paths(t_env *env)
     {
         if (ft_strcmp(env->key , "PATH") == 0)
         {
-            paths = ft_split(env->value, ':');
+            paths = ft_split(env->value, ':', garbage);
             if (!paths)
                 return NULL;
             return paths;
@@ -58,20 +58,20 @@ static char **get_paths(t_env *env)
     return NULL;
 }
 
-static char *get_right_path(t_env *env, char *cmd)
+static char *get_right_path(t_env *env, char *cmd, t_garbage *garbage)
 {
     char **paths;
     char *cmd_with_path, *str;
 
     if (!access(cmd, X_OK))
-        return ft_strdup(cmd);
-    paths = get_paths(env);
+        return ft_strdup(cmd, garbage);
+    paths = get_paths(env, garbage);
     if (!paths)
         return NULL;
     while (*paths)
     {
-        str = ft_strjoin(*paths, "/");
-        cmd_with_path = ft_strjoin(str, cmd);
+        str = ft_strjoin(*paths, "/", garbage);
+        cmd_with_path = ft_strjoin(str, cmd, garbage);
         free(str);
         if (access(cmd_with_path, X_OK) == 0)
             return (cmd_with_path);
@@ -81,7 +81,7 @@ static char *get_right_path(t_env *env, char *cmd)
     return NULL;
 }
 
-void fill_by_path(t_cmds *commands, t_env *env)
+void fill_by_path(t_cmds *commands, t_env *env, t_garbage *garbage)
 {
     char *cmd;
 
@@ -89,7 +89,7 @@ void fill_by_path(t_cmds *commands, t_env *env)
     {
         if (commands->cmd)
         {
-            cmd = get_right_path(env, commands->cmd[0]);
+            cmd = get_right_path(env, commands->cmd[0], garbage);
             if (cmd)
             {
                 free(commands->cmd[0]);
