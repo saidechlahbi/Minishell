@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 10:46:44 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 11:42:29 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void    add_var(t_env **head, char *key, char *value, t_garbage *garbage)
 	t_env	*tmp;
 
 	new = ft_malloc(sizeof(t_env), 1, garbage);
-	if (!new)
-		return ;
 	new->key = key;
 	new->value = value;
 	new->next = NULL;
@@ -64,33 +62,4 @@ void print_env(t_env *env)
             printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
-}
-
-//exported
-void new_var(t_token *node, t_env **env_list, t_garbage *garbage)
-{
-    char    *equal;
-    char    *key;
-    char    *value;
-    int     i;
-
-    if (!node || !node->value)
-        return;
-    i = 0;
-    if (is_expandable(node->value[i]))
-    {
-        while (node->value[i])
-        {
-            if (is_expandable2(node->value[i]))
-                i++;
-        }
-    }
-    equal = ft_strchr(node->value, '=');
-    if (!equal)
-        return;
-    key = _substr(node->value, 0, equal - node->value, garbage);
-    value = ft_strdup(equal + 1, garbage);
-    if (!key || !value)
-        return;
-    add_var(env_list, key, value, garbage);
 }
