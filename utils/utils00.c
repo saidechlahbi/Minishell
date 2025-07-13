@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils00.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:33:00 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 15:53:04 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:45:03 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,10 @@ int is_op(char *s)
 	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) 
 	|| !ft_strncmp(s, "<", 1) || !ft_strncmp(s, ">>", 2) 
 	|| !ft_strncmp(s, "<<", 2));
+}
+
+int is_error(char *s)
+{
+	return (!ft_strncmp(s, ">", 1) || !ft_strncmp(s, "<", 1)
+	|| !ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
 }

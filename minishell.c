@@ -21,34 +21,49 @@ void handle_sigint(int signum __attribute__((unused)))
     rl_redisplay();
 }
 
+t_token *parsing(char *input, int *status, t_garbage *garbage, t_env *env __attribute__((unused)))
+{
+    t_token *tokens;
+
+    tokens = tokenize(input, garbage, status);
+    if (!tokens)
+        return NULL;
+    if (validate_input(tokens, status))
+        return NULL;
+    lexing(tokens);
+    has_dollar(tokens, env, garbage);
+    return tokens;
+}
+
 int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
 {
     t_token *tokens;
     t_env   *env;
     t_garbage *garbage;
-    int last_exit_status;
+    int status;
 
     garbage = NULL;
 	env = get_env(envp, garbage);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
-    last_exit_status = 0;
-    (void)last_exit_status;
+    status = 0;
     while (1)
     {
         char *input = readline("minishell$ ");  
         if (!input)
         exit(1);
         if (!input[0])
-        continue;
+            continue;
         add_back_for_garbage(&garbage, new_garbage(input, garbage));
         add_history(input);
         
-        tokens = tokenize(input, garbage);
-        lexing(tokens);
-        has_dollar(tokens, env, garbage);
-        // if (!tokens)
-        //     return 1;
+        tokens = parsing(input, &status, garbage, env);
+        if (!tokens)
+        {
+            free_all(garbage);
+            garbage = NULL;
+            continue;
+        }
         t_token *tmp = tokens;
         while (tmp)
         {
@@ -58,6 +73,10 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         printf("\n");
         //print_export(env);
         //execution(tokens, env, &last_exit_status, garbage);
+        free_all(garbage);
+        // printf("%d\n", sizee(garbage));
         garbage = NULL;
     }
 }
+
+

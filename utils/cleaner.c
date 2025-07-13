@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 17:32:29 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 14:11:22 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	tmp->next = new;
 }
 
-void *ft_malloc(size_t type, size_t size, t_garbage *garbadge)
+void *ft_malloc(size_t type, size_t size, t_garbage *garbage)
 {
     void *data;
 
-    data = ft_calloc(size, type);
+    data = ft_calloc(size, type, garbage);
     if (!data)
-        get_out_from_here(garbadge, 1);
-    add_back_for_garbage(&garbadge, new_garbage(data, garbadge));
+        get_out_from_here(garbage, 1);
+    add_back_for_garbage(&garbage, new_garbage(data, garbage));
     return data;
 }

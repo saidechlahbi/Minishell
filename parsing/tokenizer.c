@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 10:44:21 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 15:46:50 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,31 @@ void add_token(t_token **head, char *value, int type, t_garbage *garbage)
 	}
 }
 
-void validate_input(t_token *token)
+int validate_input(t_token *token, int *status)
 {
 	t_token *cur;
 
 	if (!token || !ft_strncmp(token->value, "|", 1))
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);
-		return;
+		*status = 2;
+		return 1;
 	}
 	cur = token;
 	while (cur)
 	{
-		if ((is_op(cur->value) && cur->next && is_op(cur->next->value)) || (is_op(cur->value) && !cur->next))
+		if ((is_error(cur->value) && cur->next && is_op(cur->next->value)) || (is_op(cur->value) && !cur->next))
 		{
 			ft_putstr_fd("Error : Syntax\n", 2);
-			return;
+			*status = 2;
+			return 1;
 		}
 		cur = cur->next;
 	}
+	return 0;
 }
 
-t_token *tokenize(char *input, t_garbage *garbage)
+t_token *tokenize(char *input, t_garbage *garbage, int *exit_status)
 {
 	t_token *tokens = NULL;
 	int i = 0;
@@ -109,9 +112,9 @@ t_token *tokenize(char *input, t_garbage *garbage)
 	if (in_squote || in_dquote)
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);
+		*exit_status = 2;
 		return NULL;
 	}
-	validate_input(tokens);
 	return tokens;
 }
 
