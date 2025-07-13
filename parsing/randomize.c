@@ -6,13 +6,13 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:28 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 13:32:29 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 10:42:23 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char    *randomize()
+char    *randomize(t_garbage *garbage)
 {
     char buffer[200];
     char *str;
@@ -23,7 +23,7 @@ char    *randomize()
     if (fd == -1)
         return (NULL);
     read(fd,buffer,200);
-    str = malloc(20);
+    str = ft_malloc(20, 1, garbage);
     while (j < 19)
     {
         if (i >= 200)

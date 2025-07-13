@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 19:11:11 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 10:46:10 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_env *sort_export(t_env *copy)
 {
     int sorted;
-    t_env *tmp;
     char *kc;
     char *vc;
 
@@ -23,20 +22,19 @@ t_env *sort_export(t_env *copy)
     while (!sorted)
     {
         sorted = 1;
-        tmp = copy;
-        while (tmp->next)
+        while (copy->next)
         {
-            if (ft_strcmp(tmp->key, tmp->next->key) > 0)
+            if (ft_strcmp(copy->key, copy->next->key) > 0)
             {
-                kc = tmp->key;
-                tmp->key = tmp->next->key;
-                tmp->next->key = kc;
-                vc = tmp->value;
-                tmp->value = tmp->next->value;
-                tmp->next->value = vc;
+                kc = copy->key;
+                copy->key = copy->next->key;
+                copy->next->key = kc;
+                vc = copy->value;
+                copy->value = copy->next->value;
+                copy->next->value = vc;
                 sorted = 0;
             }
-            tmp = tmp->next;
+            copy = copy->next;
         }
     }
     return (copy);
@@ -72,34 +70,35 @@ void print_export(t_env *env)
     }
 }
 
-t_env *find_key(t_env *env, char *key)
-{
-    while (env)
-    {
-        if (!ft_strcmp(env->key, key))
-            return env;
-        env = env->next;
-    }
-    return (NULL);
-}
-void export_variable(t_env **env, char *arg)
-{
-    
-}
+// t_env *find_key(t_env *env, char *key)
+// {
+//     while (env)
+//     {
+//         if (!ft_strcmp(env->key, key))
+//             return env;
+//         env = env->next;
+//     }
+//     return (NULL);
+// }
 
-void export(t_env **env, char **args)
-{
-    int i;
+// void export_variable(t_env **env, char *arg)
+// {
     
-    if (!args || !args[1])
-    {
-        print_export(*env);
-        return;
-    }
-    i = 1;
-    while (args[i])
-    {
-        export_variable(env, args[i]);
-        i++;
-    }
-}
+// }
+
+// void export(t_env **env, char **args)
+// {
+//     int i;
+    
+//     if (!args || !args[1])
+//     {
+//         print_export(*env);
+//         return;
+//     }
+//     i = 1;
+//     while (args[i])
+//     {
+//         export_variable(env, args[i]);
+//         i++;
+//     }
+// }

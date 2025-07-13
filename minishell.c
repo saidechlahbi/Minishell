@@ -56,7 +56,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
             tmp = tmp->next;
         }
         printf("\n");
-        
+        print_export(env);
         //execution(tokens, env, &last_exit_status, garbage);
         garbage = NULL;
     }

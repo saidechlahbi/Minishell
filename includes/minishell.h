@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 18:50:02 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 10:47:49 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,11 @@ void	unset(t_env **env, const char *value);
 void	export(t_env *env);
 void	print_env(t_env *env);
 void	lexing(t_token *token);
+void	print_export(t_env *env);
 
 /*------------Utils-------------*/
 int		is_builtin(char *s);
-char    *randomize();
+char    *randomize(t_garbage *garbage);
 void	new_var(t_token *node, t_env **env_list, t_garbage *garbage);
 void	restore_quotes(t_token *tokens);
 void	remove_quotes(t_token *tokens, char *encapsulizer);

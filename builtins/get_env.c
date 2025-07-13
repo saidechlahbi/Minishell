@@ -6,18 +6,18 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 17:29:40 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 10:46:44 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void    add_var(t_env **head, char *key, char *value)
+void    add_var(t_env **head, char *key, char *value, t_garbage *garbage)
 {
     t_env	*new;
 	t_env	*tmp;
 
-	new = malloc(sizeof(t_env));
+	new = ft_malloc(sizeof(t_env), 1, garbage);
 	if (!new)
 		return ;
 	new->key = key;
@@ -49,7 +49,7 @@ t_env *get_env(char **envp, t_garbage *garbage)
         {
             key = _substr(envp[i], 0, equal - envp[i], garbage);
             value = ft_strdup(equal + 1, garbage);
-            add_var(&vars, key, value);
+            add_var(&vars, key, value, garbage);
         }
         i++;
     }
@@ -92,5 +92,5 @@ void new_var(t_token *node, t_env **env_list, t_garbage *garbage)
     value = ft_strdup(equal + 1, garbage);
     if (!key || !value)
         return;
-    add_var(env_list, key, value);
+    add_var(env_list, key, value, garbage);
 }

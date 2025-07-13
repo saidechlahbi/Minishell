@@ -6,18 +6,18 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 17:21:15 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/13 10:44:21 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void add_token(t_token **head, char *value, int type)
+void add_token(t_token **head, char *value, int type, t_garbage *garbage)
 {
 	t_token *new;
 	t_token *tmp;
 
-	new = malloc(sizeof(t_token));
+	new = ft_malloc(sizeof(t_token), 1, garbage);
 	if (!new)
 		return;
 	new->value = value;
@@ -78,7 +78,7 @@ t_token *tokenize(char *input, t_garbage *garbage)
 		else if (!in_squote && !in_dquote && ft_isspace(input[i]))
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start, garbage), WORD);
+				add_token(&tokens, _substr(input, start, i - start, garbage), WORD, garbage);
 			i++;
 			while (ft_isspace(input[i]))
 				i++;
@@ -87,15 +87,15 @@ t_token *tokenize(char *input, t_garbage *garbage)
 		else if (!in_squote && !in_dquote && is_operator(input[i]) != -1)
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start, garbage), WORD);
+				add_token(&tokens, _substr(input, start, i - start, garbage), WORD, garbage);
 			else if (is_append(&input[i]) != -1)
 			{
-				add_token(&tokens, _substr(input, i, 2, garbage), is_append(&input[i]));
+				add_token(&tokens, _substr(input, i, 2, garbage), is_append(&input[i]), garbage);
 				i += 2;
 			}
 			else
 			{
-				add_token(&tokens, _substr(input, i, 1, garbage), is_operator(input[i]));
+				add_token(&tokens, _substr(input, i, 1, garbage), is_operator(input[i]), garbage);
 				i++;
 			}
 			start = i;
@@ -104,7 +104,7 @@ t_token *tokenize(char *input, t_garbage *garbage)
 			i++;
 	}
 	if (i > start)
-		add_token(&tokens, _substr(input, start, i - start, garbage), WORD);
+		add_token(&tokens, _substr(input, start, i - start, garbage), WORD, garbage);
 
 	if (in_squote || in_dquote)
 	{
