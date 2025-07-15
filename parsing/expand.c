@@ -6,13 +6,13 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 23:20:28 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 11:28:58 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char *expand(char *var, t_env *env,char *encapsulizer, t_garbage *garbage)
+char *expand(char *var, t_env *env, char *encapsulizer, t_garbage *garbage)
 {
     char *input;
 
@@ -25,6 +25,17 @@ char *expand(char *var, t_env *env,char *encapsulizer, t_garbage *garbage)
             input = ft_strjoin(input, encapsulizer, garbage);
             return (input);
         }
+        env = env->next;
+    }
+    return (NULL);
+}
+
+char    *exdoc(char *var, t_env *env, t_garbage *s_garbage)
+{
+    while (env)
+    {
+        if (!ft_strcmp(var, env->key))
+            return env->value;
         env = env->next;
     }
     return (NULL);

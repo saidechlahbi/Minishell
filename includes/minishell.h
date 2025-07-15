@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 10:35:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 11:29:22 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int		validate_input(t_token *token, int *status);
 void    add_var(t_env **head, char *key, char *value, t_garbage *garbage);
 int		is_builtin(char *s);
 char    *randomize(t_garbage *garbage);
+char    *exdoc(char *var, t_env *env, t_garbage *s_garbage);
 void	new_var(t_token *node, t_env **env_list, t_garbage *garbage);
 void 	remove_quotes(t_token *tokens, char *encapsulizer, t_garbage *garbage);
 void	split_n_insert(t_token *cur, char *encapsulizer, t_garbage *garbage);
