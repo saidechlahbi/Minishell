@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 22:56:41 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:41:06 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	add_var(t_env **head, char *key, char *value, t_garbage *garbage)
+void	add_var(t_env **head, char *key, char *value, t_garbage **garbage)
 {
 	t_env	*new;
 	t_env	*tmp;
@@ -47,9 +47,9 @@ t_env	*get_env(char **envp, t_garbage **garbage)
 		equal = ft_strchr(envp[i], '=');
 		if (equal)
 		{
-			key = _substr(envp[i], 0, equal - envp[i], *garbage);
-			value = ft_strdup(equal + 1, *garbage);
-			add_var(&vars, key, value, *garbage);
+			key = _substr(envp[i], 0, equal - envp[i], garbage);
+			value = ft_strdup(equal + 1, garbage);
+			add_var(&vars, key, value, garbage);
 		}
 		i++;
 	}
