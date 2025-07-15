@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 10:33:46 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 11:32:06 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,17 +158,12 @@ void lexing(t_token *token)
 int delimiter(char *token)
 {
 	int	i;
-	int inq;
 
-	inq = 0;
 	i = 0;
 	while (token[i])
 	{
 		if (token[i] == '\'' || token[i] == '"')
-		{
-			inq = 1;
-			break;
-		}
+			return (1);
 	}
-	return (inq);
+	return (0);
 }
