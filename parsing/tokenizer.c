@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 10:25:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 10:33:46 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,23 +155,20 @@ void lexing(t_token *token)
 	}
 }
 
-void delimiter(t_token *token)
+int delimiter(char *token)
 {
 	int	i;
 	int inq;
 
 	inq = 0;
-	while (token)
+	i = 0;
+	while (token[i])
 	{
-		if (token->type = DELIMITER)
+		if (token[i] == '\'' || token[i] == '"')
 		{
-			i = 0;
-			while (token->value[i])
-			{
-				if (token->value[i] == '\'' || token->value[i] == '"')
-					token->inq = 1;
-			}
+			inq = 1;
+			break;
 		}
-		token = token->next;
 	}
+	return (inq);
 }
