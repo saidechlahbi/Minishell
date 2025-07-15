@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 18:02:54 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 18:11:55 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,6 @@ t_env *create_copy(t_env *env, t_garbage **garbage)
         env = env->next;
     }
     return (head);
-}
-
-int f(int f)
-{
-	static int stored;
-	if (f < 0)
-		return (stored);
-	stored = f;
-	return stored;
 }
 
 t_env	*sort_export(t_env *copy)
