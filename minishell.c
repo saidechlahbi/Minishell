@@ -31,6 +31,7 @@ t_token *parsing(char *input, int *status, t_garbage *garbage, t_env *env __attr
     if (validate_input(tokens, status))
         return NULL;
     lexing(tokens);
+    delimiter(tokens);
     has_dollar(tokens, env, garbage);
     return tokens;
 }
@@ -80,7 +81,6 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
         free(garbage_env);
         // printf("%d\n", sizee(garbage));
         garbage = NULL;
-        exit(0);
     }
 }
 

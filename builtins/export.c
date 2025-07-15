@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 22:30:52 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 11:48:56 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,8 @@ void export_variable(t_env **env, char *arg)
         return;
     i = 0;
     if (is_expandable(arg[i]))
-    {
         while (arg[i] && is_expandable2(arg[i]))
             i++;
-    }
     if (arg[i])
     {
         if (arg[i] == '+' && arg[i + 1] == '=')
