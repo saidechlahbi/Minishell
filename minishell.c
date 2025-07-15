@@ -31,7 +31,6 @@ t_token *parsing(char *input, int *status, t_garbage *garbage, t_env *env __attr
     if (validate_input(tokens, status))
         return NULL;
     lexing(tokens);
-    delimiter(tokens);
     has_dollar(tokens, env, garbage);
     return tokens;
 }

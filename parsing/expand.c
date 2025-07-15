@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 11:28:58 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 11:40:11 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char *expand(char *var, t_env *env, char *encapsulizer, t_garbage *garbage)
     return (NULL);
 }
 
-char    *exdoc(char *var, t_env *env, t_garbage *s_garbage)
+char    *exdoc(char *var, t_env *env)
 {
     while (env)
     {
