@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 15:46:50 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 10:25:33 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,27 @@ void lexing(t_token *token)
 		}
 		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
 			prev = token;
+		token = token->next;
+	}
+}
+
+void delimiter(t_token *token)
+{
+	int	i;
+	int inq;
+
+	inq = 0;
+	while (token)
+	{
+		if (token->type = DELIMITER)
+		{
+			i = 0;
+			while (token->value[i])
+			{
+				if (token->value[i] == '\'' || token->value[i] == '"')
+					token->inq = 1;
+			}
+		}
 		token = token->next;
 	}
 }

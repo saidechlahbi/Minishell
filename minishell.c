@@ -31,7 +31,7 @@ t_token *parsing(char *input, int *status, t_garbage *garbage, t_env *env __attr
     if (validate_input(tokens, status))
         return NULL;
     lexing(tokens);
-    //check here_doc delimiter "/'/nq
+    delimiter(tokens);
     has_dollar(tokens, env, garbage);
     return tokens;
 }
@@ -60,7 +60,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
             continue;
         add_back_for_garbage(&garbage, new_garbage(input, garbage));
         add_history(input);
-        
+
         tokens = parsing(input, &status, garbage, env);
         if (!tokens)
         {
