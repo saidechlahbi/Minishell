@@ -47,7 +47,7 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
     garbage = NULL;
     garbage_env = NULL;
     garbage_env = new_garbage(malloc(2), garbage_env);
-	env = get_env(envp, garbage_env);
+	env = get_env(envp, &garbage_env);
     signal(SIGINT, handle_sigint);
     rl_catch_signals = 0;
     status = 0;
@@ -68,13 +68,13 @@ int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  cha
             garbage = NULL;
             continue;
         }
-        // t_token *tmp = tokens;
-        // while (tmp)
-        // {
-        //     printf("%s\ttype:%d\n", tmp->value, tmp->type);
-        //     tmp = tmp->next;
-        // }
-        // printf("\n");
+        t_token *tmp = tokens;
+        while (tmp)
+        {
+            printf("%s\ttype:%d\n", tmp->value, tmp->type);
+            tmp = tmp->next;
+        }
+        printf("\n");
         //print_export(env);
         //execution(tokens, env, &status, garbage);
         free_all(garbage);
