@@ -50,7 +50,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 
 	garbage = NULL;
 	garbage_env = NULL;
-	garbage_env = new_garbage(malloc(2), garbage_env);
+	add_back_for_garbage(&garbage_env, new_garbage(malloc(2), garbage_env));
 	env = get_env(envp, &garbage_env);
 	signal(SIGINT, handle_sigint);
 	rl_catch_signals = 0;
@@ -81,8 +81,9 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		// print_export(env);
 		// execution(tokens, env, &status, garbage);
 		free_all(garbage);
-		// free(garbage_env);
+		free_all(garbage_env);
 		// printf("%d\n", sizee(garbage));
 		garbage = NULL;
+		exit(1);
 	}
 }
