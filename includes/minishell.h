@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 15:27:07 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 18:03:22 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,34 +77,33 @@ typedef struct s_cmds
 typedef struct s_garbage
 {
 	void *data;
-	int a;
 	struct  s_garbage *next;
 }t_garbage;
 
 /*-----------Parsing-------------*/
-t_token	*tokenize(char *input, t_garbage *garbage, int *status);
-void	has_dollar(t_token *tokens, t_env *env, t_garbage *garbage);
+t_token	*tokenize(char *input, t_garbage **garbage, int *status);
+void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage);
 t_env *get_env(char **envp, t_garbage **garbage);
 void	unset(t_env **env, const char *value);
-void export(t_env **env, char **args);
+void 	export(t_env **env, char **args, t_garbage **garbage);
 void	print_env(t_env *env);
 void	lexing(t_token *token);
-void	print_export(t_env *env);
+void	print_export(t_env *env, t_garbage **garbage);
 int		validate_input(t_token *token, int *status);
 
 /*------------Utils-------------*/
-void    add_var(t_env **head, char *key, char *value, t_garbage *garbage);
+void    add_var(t_env **head, char *key, char *value, t_garbage **garbage);
 int		is_builtin(char *s);
-char    *randomize(t_garbage *garbage);
+char    *randomize(t_garbage **garbage);
 char    *exdoc(char *var, t_env *env);
-void	new_var(t_token *node, t_env **env_list, t_garbage *garbage);
-void 	remove_quotes(t_token *tokens, char *encapsulizer, t_garbage *garbage);
-void	split_n_insert(t_token *cur, char *encapsulizer, t_garbage *garbage);
+void	new_var(t_token *node, t_env **env_list, t_garbage **garbage);
+void 	remove_quotes(t_token *tokens, char *encapsulizer, t_garbage **garbage);
+void	split_n_insert(t_token *cur, char *encapsulizer, t_garbage **garbage);
 void	delimiter(t_token *token);
 int		is_expandable2(char c);
 int		is_expandable(char c);
 int		ft_strcmp(char *s1, char *s2);
-char	*_substr(char *str, int start, int len, t_garbage *garbage);
+char	*_substr(char *str, int start, int len, t_garbage **garbage);
 int		is_error(char *s);
 int		is_operator(char c);
 int		is_append(char *s);
@@ -112,17 +111,16 @@ int		ft_isspace(char c);
 int		is_op(char *s);
 void	ft_putstr_fd(char *s, int fd);
 size_t	ft_strlen(const char *str);
-char	*ft_strjoin(char const *s1, char const *s2, t_garbage *garbage);
-char	*ft_strdup(const char *src, t_garbage *garbage);
+char	*ft_strjoin(char const *s1, char const *s2, t_garbage **garbage);
+char	*ft_strdup(const char *src, t_garbage **garbage);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *str, int c);
 char 	*ft_strstr(const char *str, const char *target);
-void	*ft_calloc(size_t nmemb, size_t size, t_garbage *garbage);
+void	*ft_calloc(size_t nmemb, size_t size, t_garbage **garbage);
 int		ft_isalnum(int c);
-char	**ft_split(char const *s, char c, t_garbage *garbage);
+char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
-void	add_back_for_garbage(t_garbage **lst, t_garbage *new);
 
 
 // /*------------execution-------------*/
@@ -142,7 +140,7 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new);
 /*----------cleaner tools------------*/
 t_garbage	*new_garbage(void *content, t_garbage *garbage);
 void	add_back_for_garbage(t_garbage **lst, t_garbage *new);
-void *ft_malloc(size_t type, size_t size, t_garbage *garbadge);
+void *ft_malloc(size_t type, size_t size, t_garbage **garbadge);
 void get_out_from_here(t_garbage *garbage, int status);
 void free_all(t_garbage *garbage);
 

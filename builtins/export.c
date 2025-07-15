@@ -6,11 +6,56 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 17:18:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 18:02:54 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+t_env *create_copy(t_env *env, t_garbage **garbage)
+{
+    t_env *new_node;
+    t_env *head;
+    t_env *tail;
+	
+	head = NULL;
+	tail = NULL;
+    while (env)
+    {
+        new_node = ft_malloc(sizeof(t_env), 1, garbage);
+        new_node->key = ft_malloc(strlen(env->key) + 1, 1, garbage);
+        ft_strncpy(new_node->key, env->key, ft_strlen(env->key));
+        if (env->value)
+        {
+            new_node->value = ft_malloc(strlen(env->value) + 1, 1, garbage);
+            ft_strncpy(new_node->value, env->value, ft_strlen(env->value));
+        }
+        else
+            new_node->value = NULL;
+        new_node->next = NULL;
+        if (!head)
+        {
+            head = new_node;
+            tail = new_node;
+        }
+        else
+        {
+            tail->next = new_node;
+            tail = new_node;
+        }
+        env = env->next;
+    }
+    return (head);
+}
+
+int f(int f)
+{
+	static int stored;
+	if (f < 0)
+		return (stored);
+	stored = f;
+	return stored;
+}
 
 t_env	*sort_export(t_env *copy)
 {
@@ -40,18 +85,13 @@ t_env	*sort_export(t_env *copy)
 	return (copy);
 }
 
-t_env *create_copy(t_env *env)
-{
-	copy = 	
-}
-
-void	print_export(t_env *env)
+void	print_export(t_env *env, t_garbage **garbage)
 {
 	t_env	*copy;
 	int		i;
 
-	copy = create_copy(env);
-	sort_export(copy);
+	copy = create_copy(env, garbage);
+	copy = sort_export(copy);
 	while (copy)
 	{
 		printf("declare -x %s", copy->key);
@@ -86,16 +126,14 @@ t_env	*find_key(t_env *env, char *key)
 	return (NULL);
 }
 
-void	export_variable(t_env **env, char *arg)
+void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 {
-	t_garbage	*garbage;
 	char		*equal;
 	char		*newk;
 	char		*newv;
 	t_env		*existing;
 	int			i;
 
-	garbage = NULL;
 	i = 0;
 	if (is_expandable(arg[i]))
 		while (arg[i] && is_expandable2(arg[i]))
@@ -136,19 +174,19 @@ void	export_variable(t_env **env, char *arg)
 		existing->value = newv;
 }
 
-void	export(t_env **env, char **args)
+void	export(t_env **env, char **args, t_garbage **garbage)
 {
 	int	i;
 
 	if (!args || !args[1])
 	{
-		print_export(*env);
+		print_export(*env, garbage);
 		return ;
 	}
 	i = 1;
 	while (args[i])
 	{
-		export_variable(env, args[i]);
+		export_variable(env, args[i], garbage);
 		i++;
 	}
 }

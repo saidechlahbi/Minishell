@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_n_insert.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 10:15:03 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:27:03 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	count_tok(char *input, char *encapsulizer)
 	return (count);
 }
 
-char	**str_tok(char *input, char *encapsulizer, t_garbage *garbage)
+char	**str_tok(char *input, char *encapsulizer, t_garbage **garbage)
 {
 	int		i;
 	int		start;
@@ -114,7 +114,7 @@ char	**str_tok(char *input, char *encapsulizer, t_garbage *garbage)
 	return (tokens);
 }
 
-void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage *garbage)
+void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
 {
 	char	**splits;
 	t_token	*new;

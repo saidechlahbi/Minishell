@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils01.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:20 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 16:39:07 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:33:56 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_expandable2(char c)
 			&& c <= 57) || c == 95);
 }
 
-char	*_substr(char *str, int start, int len, t_garbage *garbage)
+char	*_substr(char *str, int start, int len, t_garbage **garbage)
 {
 	char	*res;
 

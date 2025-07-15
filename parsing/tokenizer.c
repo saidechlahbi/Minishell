@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 14:03:03 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:45:18 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	add_token(t_token **head, char *value, int type, t_garbage *garbage)
+void	add_token(t_token **head, char *value, int type, t_garbage **garbage)
 {
 	t_token	*new;
 	t_token	*tmp;
 
 	new = ft_malloc(sizeof(t_token), 1, garbage);
-	if (!new)
-		return ;
 	new->value = value;
 	new->next = NULL;
 	new->type = type;
@@ -59,7 +57,7 @@ int	validate_input(t_token *token, int *status)
 	return (0);
 }
 
-t_token	*tokenize(char *input, t_garbage *garbage, int *exit_status)
+t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
 {
 	t_token	*tokens;
 	int		i;

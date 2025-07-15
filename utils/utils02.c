@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils02.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 15:09:43 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:34:07 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*ft_strcat(char *dest, const char *src)
 	return (dest);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, t_garbage *garbage)
+char	*ft_strjoin(char const *s1, char const *s2, t_garbage **garbage)
 {
 	char	*str;
 
@@ -68,7 +68,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_garbage *garbage)
 	return (str);
 }
 
-char	*ft_strdup(const char *src, t_garbage *garbage)
+char	*ft_strdup(const char *src, t_garbage **garbage)
 {
 	char *dest;
 

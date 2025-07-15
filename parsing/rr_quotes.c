@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   rr_quotes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:32 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 11:12:37 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:27:16 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	remove_quotes(t_token *tokens, char *encapsulizer, t_garbage *garbage)
+void	remove_quotes(t_token *tokens, char *encapsulizer, t_garbage **garbage)
 {
 	t_token	*cur;
 	char	*new_val;

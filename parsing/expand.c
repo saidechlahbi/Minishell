@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 14:03:23 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:26:34 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*expand(char *var, t_env *env, char *encapsulizer, t_garbage *garbage)
+char	*expand(char *var, t_env *env, char *encapsulizer, t_garbage **garbage)
 {
 	char	*input;
 
@@ -41,7 +41,7 @@ char	*exdoc(char *var, t_env *env)
 	return (NULL);
 }
 
-char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage *garbage)
+char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
 {
 	int		in_squote;
 	int		in_dquote;
@@ -87,7 +87,7 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage *garbage)
 	return (expanded);
 }
 
-void	has_dollar(t_token *tokens, t_env *env, t_garbage *garbage)
+void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 {
 	t_token	*cur;
 	t_token	*next;

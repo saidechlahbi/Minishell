@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   randomize.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:28 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 10:42:23 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:25:18 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*randomize(t_garbage *garbage)
+char	*randomize(t_garbage **garbage)
 {
 	char	buffer[200];
 	char	*str;

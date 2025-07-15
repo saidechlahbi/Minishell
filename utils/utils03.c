@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils03.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:03:31 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/13 14:10:08 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:35:55 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ static void	ft_bzero(void *s, size_t n)
 		str[i++] = 0;
 }
 
-void	*ft_calloc(size_t nmemb, size_t size, t_garbage *garbage)
+void	*ft_calloc(size_t nmemb, size_t size, t_garbage **garbage)
 {
 	void	*s;
 
 	s = malloc(size * nmemb);
 	if (!s)
-		get_out_from_here(garbage, 1);
+		get_out_from_here(*garbage, 1);
 	ft_bzero(s, (size * nmemb));
 	return (s);
 }

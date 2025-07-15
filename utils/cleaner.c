@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 17:16:04 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:38:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	tmp->next = new;
 }
 
-void	*ft_malloc(size_t type, size_t size, t_garbage *garbage)
+void	*ft_malloc(size_t type, size_t size, t_garbage **garbage)
 {
 	void	*data;
 
 	data = ft_calloc(size, type, garbage);
 	if (!data)
-		get_out_from_here(garbage, 1);
-	add_back_for_garbage(&garbage, new_garbage(data, garbage));
+		get_out_from_here(*garbage, 1);
+	add_back_for_garbage(garbage, new_garbage(data, *garbage));
 	return (data);
 }
