@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/12 17:32:29 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:38:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage)
 
 static t_garbage	*last_for_garbage(t_garbage *lst)
 {
-    t_garbage	*tmp;
+	t_garbage	*tmp;
 
-    tmp = lst;
-    if (!lst)
-        return (NULL);
-    while (tmp->next != NULL)
-        tmp = tmp->next;
-    return (tmp);
+	tmp = lst;
+	if (!lst)
+		return (NULL);
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
@@ -41,7 +41,7 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	t_garbage	*tmp;
 
 	if (!new)
-		return;
+		return ;
 	if (!(*lst))
 	{
 		(*lst) = new;
@@ -51,13 +51,13 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	tmp->next = new;
 }
 
-void *ft_malloc(size_t type, size_t size, t_garbage *garbadge)
+void	*ft_malloc(size_t type, size_t size, t_garbage **garbage)
 {
-    void *data;
+	void	*data;
 
-    data = ft_calloc(size, type);
-    if (!data)
-        get_out_from_here(garbadge, 1);
-    add_back_for_garbage(&garbadge, new_garbage(data, garbadge));
-    return data;
+	data = ft_calloc(size, type, garbage);
+	if (!data)
+		get_out_from_here(*garbage, 1);
+	add_back_for_garbage(garbage, new_garbage(data, *garbage));
+	return (data);
 }

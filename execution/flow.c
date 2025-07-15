@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 00:17:32 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/13 01:29:54 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static t_redirection *initial_herdoc(t_token *token, t_garbage *garbage)
     t_redirection *red_tmp;
 
     red_tmp = ft_malloc(sizeof(t_redirection), 1, garbage);
-    red_tmp->file = randomize();
+    red_tmp->file = randomize(garbage);
     if (!red_tmp->file)
         get_out_from_here(garbage, 1);
     add_back_for_garbage(&garbage, new_garbage(red_tmp->file, garbage));

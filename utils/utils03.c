@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils03.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:03:31 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 14:42:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:35:55 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,20 @@ char	*ft_strchr(const char *str, int c)
 	return (0);
 }
 
-char *ft_strstr(const char *str, const char *target)
+char	*ft_strstr(const char *str, const char *target)
 {
-    size_t target_len;
+	size_t	target_len;
 
-    target_len = ft_strlen(target);
-    if (target_len == 0)
-        return (char *)str;
-    while (*str)
-    {
-        if (ft_strncmp(str, target, target_len) == 0)
-            return (char *)str;
-        str++;
-    }
-    return NULL;
+	target_len = ft_strlen(target);
+	if (target_len == 0)
+		return ((char *)str);
+	while (*str)
+	{
+		if (ft_strncmp(str, target, target_len) == 0)
+			return ((char *)str);
+		str++;
+	}
+	return (NULL);
 }
 
 static void	ft_bzero(void *s, size_t n)
@@ -64,13 +64,13 @@ static void	ft_bzero(void *s, size_t n)
 		str[i++] = 0;
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size, t_garbage **garbage)
 {
 	void	*s;
 
-	s = malloc (size * nmemb);
+	s = malloc(size * nmemb);
 	if (!s)
-		return (NULL);
+		get_out_from_here(*garbage, 1);
 	ft_bzero(s, (size * nmemb));
 	return (s);
 }

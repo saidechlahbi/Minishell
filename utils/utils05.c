@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils05.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:51:34 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 17:32:08 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:34:39 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	ft_countwords(const char *str, char d)
 	return (count);
 }
 
-static char	*ft_worddup(const char *str, char d, t_garbage *garbage)
+static char	*ft_worddup(const char *str, char d, t_garbage **garbage)
 {
 	int		len;
 	char	*copy;
@@ -60,7 +60,7 @@ static char	**ft_free_split(char **strs, int count)
 	return (NULL);
 }
 
-char	**ft_split(char const *s, char c, t_garbage *garbage)
+char	**ft_split(char const *s, char c, t_garbage **garbage)
 {
 	char	**strs;
 	int		i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils02.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:56:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/12 17:08:58 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:34:07 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,22 @@ static char	*ft_strcat(char *dest, const char *src)
 	return (dest);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, t_garbage *garbage)
+char	*ft_strjoin(char const *s1, char const *s2, t_garbage **garbage)
 {
 	char	*str;
 
 	if (!s1 || !s2)
 		return (0);
-	str = ft_malloc(1 , (ft_strlen(s1) + ft_strlen(s2) + 1), garbage);
+	str = ft_malloc(1, (ft_strlen(s1) + ft_strlen(s2) + 1), garbage);
 	ft_strcpy(str, s1);
 	ft_strcat(str, s2);
 	str[ft_strlen(str)] = 0;
 	return (str);
 }
 
-char	*ft_strdup(const char *src, t_garbage *garbage)
+char	*ft_strdup(const char *src, t_garbage **garbage)
 {
-	char	*dest;
+	char *dest;
 
 	dest = ft_malloc(ft_strlen(src) + 1, 1, garbage);
 	ft_strcpy(dest, src);
