@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 14:00:39 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:27:07 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_cmds
 typedef struct s_garbage
 {
 	void *data;
+	int a;
 	struct  s_garbage *next;
 }t_garbage;
 

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 15:00:21 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:18:33 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,17 @@ t_env	*sort_export(t_env *copy)
 	return (copy);
 }
 
+t_env *create_copy(t_env *env)
+{
+	copy = 	
+}
+
 void	print_export(t_env *env)
 {
 	t_env	*copy;
 	int		i;
 
-	copy = env;
+	copy = create_copy(env);
 	sort_export(copy);
 	while (copy)
 	{
