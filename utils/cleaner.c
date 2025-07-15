@@ -17,7 +17,6 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage)
 	t_garbage	*now;
 
 	now = (t_garbage *)malloc(sizeof(t_garbage));
-	
 	if (!now)
 		get_out_from_here(garbage, 1);
 	now->data = content;
@@ -27,14 +26,14 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage)
 
 static t_garbage	*last_for_garbage(t_garbage *lst)
 {
-    t_garbage	*tmp;
+	t_garbage	*tmp;
 
-    tmp = lst;
-    if (!lst)
-        return (NULL);
-    while (tmp->next != NULL)
-        tmp = tmp->next;
-    return (tmp);
+	tmp = lst;
+	if (!lst)
+		return (NULL);
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
@@ -42,7 +41,7 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	t_garbage	*tmp;
 
 	if (!new)
-		return;
+		return ;
 	if (!(*lst))
 	{
 		(*lst) = new;
@@ -52,13 +51,13 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	tmp->next = new;
 }
 
-void *ft_malloc(size_t type, size_t size, t_garbage *garbage)
+void	*ft_malloc(size_t type, size_t size, t_garbage *garbage)
 {
-    void *data;
+	void	*data;
 
-    data = ft_calloc(size, type, garbage);
-    if (!data)
-        get_out_from_here(garbage, 1);
-    add_back_for_garbage(&garbage, new_garbage(data, garbage));
-    return data;
+	data = ft_calloc(size, type, garbage);
+	if (!data)
+		get_out_from_here(garbage, 1);
+	add_back_for_garbage(&garbage, new_garbage(data, garbage));
+	return (data);
 }

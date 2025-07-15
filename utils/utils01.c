@@ -14,12 +14,13 @@
 
 int	is_expandable(char c)
 {
-	return((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 95);
+	return ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 95);
 }
 
 int	is_expandable2(char c)
 {
-	return((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c >= 48 && c <= 57) || c == 95);
+	return ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c >= 48
+			&& c <= 57) || c == 95);
 }
 
 char	*_substr(char *str, int start, int len, t_garbage *garbage)
@@ -32,7 +33,7 @@ char	*_substr(char *str, int start, int len, t_garbage *garbage)
 	return (res);
 }
 
-int		ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
 	size_t	i;
 

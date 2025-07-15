@@ -37,20 +37,20 @@ char	*ft_strchr(const char *str, int c)
 	return (0);
 }
 
-char *ft_strstr(const char *str, const char *target)
+char	*ft_strstr(const char *str, const char *target)
 {
-    size_t target_len;
+	size_t	target_len;
 
-    target_len = ft_strlen(target);
-    if (target_len == 0)
-        return (char *)str;
-    while (*str)
-    {
-        if (ft_strncmp(str, target, target_len) == 0)
-            return (char *)str;
-        str++;
-    }
-    return NULL;
+	target_len = ft_strlen(target);
+	if (target_len == 0)
+		return ((char *)str);
+	while (*str)
+	{
+		if (ft_strncmp(str, target, target_len) == 0)
+			return ((char *)str);
+		str++;
+	}
+	return (NULL);
 }
 
 static void	ft_bzero(void *s, size_t n)
@@ -68,7 +68,7 @@ void	*ft_calloc(size_t nmemb, size_t size, t_garbage *garbage)
 {
 	void	*s;
 
-	s = malloc (size * nmemb);
+	s = malloc(size * nmemb);
 	if (!s)
 		get_out_from_here(garbage, 1);
 	ft_bzero(s, (size * nmemb));

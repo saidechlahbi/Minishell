@@ -61,7 +61,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_garbage *garbage)
 
 	if (!s1 || !s2)
 		return (0);
-	str = ft_malloc(1 , (ft_strlen(s1) + ft_strlen(s2) + 1), garbage);
+	str = ft_malloc(1, (ft_strlen(s1) + ft_strlen(s2) + 1), garbage);
 	ft_strcpy(str, s1);
 	ft_strcat(str, s2);
 	str[ft_strlen(str)] = 0;
@@ -70,7 +70,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_garbage *garbage)
 
 char	*ft_strdup(const char *src, t_garbage *garbage)
 {
-	char	*dest;
+	char *dest;
 
 	dest = ft_malloc(ft_strlen(src) + 1, 1, garbage);
 	ft_strcpy(dest, src);

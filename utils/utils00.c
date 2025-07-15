@@ -33,7 +33,7 @@ int	is_operator(char c)
 
 int	is_append(char *s)
 {
-	if(!ft_strncmp(s, ">>", 2))
+	if (!ft_strncmp(s, ">>", 2))
 		return (APPEND);
 	else if (!ft_strncmp(s, "<<", 2))
 		return (HERE_DOC);
@@ -45,15 +45,14 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-int is_op(char *s)
+int	is_op(char *s)
 {
-	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) 
-	|| !ft_strncmp(s, "<", 1) || !ft_strncmp(s, ">>", 2) 
-	|| !ft_strncmp(s, "<<", 2));
+	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) || !ft_strncmp(s,
+			"<", 1) || !ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
 }
 
-int is_error(char *s)
+int	is_error(char *s)
 {
-	return (!ft_strncmp(s, ">", 1) || !ft_strncmp(s, "<", 1)
-	|| !ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
+	return (!ft_strncmp(s, ">", 1) || !ft_strncmp(s, "<", 1) || !ft_strncmp(s,
+			">>", 2) || !ft_strncmp(s, "<<", 2));
 }
