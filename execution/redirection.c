@@ -6,97 +6,38 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:54:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/10 01:18:24 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:27:08 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void read_from_stdin(t_redirection *redirec)
-{
-    char *line;
-
-    line = readline("> ");
-    if (!line)
-        exit(1);
-    while (line && ft_strcmp(line, redirec->delimiter))
-    {
-        write(redirec->fd, line, ft_strlen(line));
-        free(line);
-        line = readline("> ");
-        if (!line)
-            exit(1);
-    }
-    free(line);
-}
-
-static void open_herdoc(t_redirection *redirec, int *pid)
-{    
-    redirec->fd = open(redirec->file, O_CREAT | O_WRONLY, 0644);
-    if (redirec->fd == -1)
-        perror(redirec->file);
-    unlink(redirec->file);
-    *pid = fork();
-    if (*pid == -1)
-    {
-        perror("fork");
-        exit(1);
-    }
-    if (*pid == 0)
-    {
-        signal(SIGINT, SIG_DFL);
-        read_from_stdin(redirec);
-        exit(0);
-    }
-    close(redirec->fd);
-    redirec->fd = open(redirec->file, O_CREAT | O_WRONLY, 0644);
-    if (redirec->fd == -1)
-        perror(redirec->file);
-    unlink(redirec->file);
-}
-
-static void open_files(t_cmds *commands)
+int open_files(t_cmds *command)
 {
     t_redirection *redirec;
-    int pid;
-    int status;
 
-    if (!commands->redirection)
-        return;
-    pid = 0;
-    while (commands)
+    redirec = commands->redirection;
+    while (redirec)
     {
-        redirec = commands->redirection;
-        while (redirec)
+        if (redirec->type == IN_FILE)
         {
-            if (redirec->type == IN_FILE)
-            {
-                redirec->fd = open(redirec->file, O_RDONLY, 0644);
-                if (redirec->fd == -1)
-                    break;
-            }
-            else if (redirec->type == OUT_FILE)
-            {
-                redirec->fd = open(redirec->file, O_WRONLY | O_CREAT, 0644);
-                if (redirec->fd == -1)
-                    break;
-            }
-            else if (redirec->type == APP_FILE)
-            {
-                redirec->fd = open(redirec->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-                if (redirec->fd == -1)
-                    break;
-            }
-            else if (redirec->type == HERE_DOC)
-            {
-                open_herdoc(redirec, &pid);
-                waitpid(pid, &status, 0);
-                if (WIFEXITED(status) != 0)
-                    break;
-            }
-            redirec = redirec->next;
+            redirec->fd = open(redirec->file, O_RDONLY, 0644);
+            if (redirec->fd == -1)
+                return (printf("minishell: %s: No such file or directory\n", redirect->file), 0);
         }
-        commands = commands->next;
+        else if (redirec->type == OUT_FILE)
+        {
+            redirec->fd = open(redirec->file, O_WRONLY | O_CREAT, 0644);
+            if (redirec->fd == -1)
+                return (printf("minishell: %s: No such file or directory\n", redirect->file), 0);
+        }
+        else if (redirec->type == APP_FILE)
+        {
+            redirec->fd = open(redirec->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (redirec->fd == -1)
+                return (printf("minishell: %s: No such file or directory\n", redirect->file), 0);
+        }
+        redirec = redirec->next;
     }
 }
 
@@ -121,4 +62,19 @@ void redirection(t_cmds *commands)
         commands = commands->next;
     }
     return;
+}
+
+static int is_fd_open_fstat(int fd) {
+    struct stat st;
+    return fstat(fd, &st) == 0;
+}
+
+void close_all_fds_fstat(int start)
+{
+    while (start <= 1024)
+    {
+        if (is_fd_open_fstat(fd))
+            close(fd);
+        start ++;
+    }
 }

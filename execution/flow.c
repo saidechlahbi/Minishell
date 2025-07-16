@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 01:29:54 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/16 03:42:31 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int count_args_of_cmd(t_token *token)
     return count;
 }
 
-static char **fill_cmd(t_token *token, t_garbage *garbage)
+static char **fill_cmd(t_token *token, t_garbage **garbage)
 {
     char **cmd;
     int count;
@@ -41,17 +41,11 @@ static char **fill_cmd(t_token *token, t_garbage *garbage)
         if (token->type == CMD || token->type == BUILTIN)
         {
             cmd[count] = ft_strdup(token->value, garbage);
-            if (!cmd[count])
-                get_out_from_here(garbage, 1);
-            add_back_for_garbage(&garbage, new_garbage(cmd[count], garbage));
             count++;
         }
         if (token->type == ARG)
         {
             cmd[count] = ft_strdup(token->value, garbage);
-            if (!cmd[count])
-                get_out_from_here(garbage, 1);
-            add_back_for_garbage(&garbage, new_garbage(cmd[count], garbage));
             count++; 
         }
         token = token->next;
@@ -60,25 +54,19 @@ static char **fill_cmd(t_token *token, t_garbage *garbage)
     return cmd;
 }
 
-static t_redirection *initial_herdoc(t_token *token, t_garbage *garbage)
+static t_redirection *initial_herdoc(t_token *token, t_garbage **garbage)
 {
     t_redirection *red_tmp;
 
     red_tmp = ft_malloc(sizeof(t_redirection), 1, garbage);
     red_tmp->file = randomize(garbage);
-    if (!red_tmp->file)
-        get_out_from_here(garbage, 1);
-    add_back_for_garbage(&garbage, new_garbage(red_tmp->file, garbage));
     red_tmp->delimiter = ft_strdup(token->next->value, garbage);
-    if (!red_tmp->delimiter)
-        get_out_from_here(garbage, 1);
-    add_back_for_garbage(&garbage, new_garbage(red_tmp->delimiter, garbage));
     red_tmp->type = token->type;
     red_tmp->next = NULL;
     return red_tmp;
 }
 
-static t_redirection *get_redirec(t_token *token, t_garbage *garbage)
+static t_redirection *get_redirec(t_token *token, t_garbage **garbage)
 {
     t_redirection *redirec;
     t_redirection *red_tmp;
@@ -92,9 +80,6 @@ static t_redirection *get_redirec(t_token *token, t_garbage *garbage)
         {
             red_tmp = ft_malloc(sizeof(t_redirection), 1, garbage);
             red_tmp->file = ft_strdup(token->next->value, garbage);
-            if (!red_tmp->file)
-                get_out_from_here(garbage, 1);
-            add_back_for_garbage(&garbage, new_garbage(red_tmp->file, garbage));
             red_tmp->type = token->next->type;
             red_tmp->next = NULL;
             token = token->next->next;
@@ -112,7 +97,7 @@ static t_redirection *get_redirec(t_token *token, t_garbage *garbage)
     return redirec;
 }
 
-t_cmds *splinting_into_proccess(t_token *token, t_garbage *garbage)
+t_cmds *splinting_into_proccess(t_token *token, t_garbage **garbage)
 {
     t_cmds *commands;
     t_cmds *cmd_tmp;

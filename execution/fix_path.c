@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 00:25:50 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/16 03:49:22 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char **env_lst_to_char2(t_env *env, t_garbage *garbage)
+char **env_lst_to_char2(t_env *env, t_garbage **garbage)
 {
     t_env *tmp;
     char **envp;
@@ -39,7 +39,7 @@ char **env_lst_to_char2(t_env *env, t_garbage *garbage)
     return envp;
 }
 
-static char **get_paths(t_env *env, t_garbage *garbage)
+static char **get_paths(t_env *env, t_garbage **garbage)
 {
     char **paths;
     
@@ -58,7 +58,7 @@ static char **get_paths(t_env *env, t_garbage *garbage)
     return NULL;
 }
 
-static char *get_right_path(t_env *env, char *cmd, t_garbage *garbage)
+static char *get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 {
     char **paths;
     char *cmd_with_path, *str;
@@ -81,7 +81,7 @@ static char *get_right_path(t_env *env, char *cmd, t_garbage *garbage)
     return NULL;
 }
 
-void fill_by_path(t_cmds *commands, t_env *env, t_garbage *garbage)
+void fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
 {
     char *cmd;
 

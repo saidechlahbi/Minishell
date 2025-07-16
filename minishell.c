@@ -37,22 +37,41 @@ t_token	*parsing(char *input, int *status, t_garbage **garbage,
 	return (tokens);
 }
 
+void set_not(t_garbage *garbage)
+{
+	while (garbage)
+	{
+		garbage->var = 1;
+		garbage = garbage->next;
+	}
+	return ;
+}
+
+int dddd(t_garbage *garbage)
+{
+	int count = 0;
+	while (garbage)
+	{
+		count++;
+		garbage = garbage->next;
+	}
+	return count;
+}
+
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
 {
 	t_token		*tokens;
 	t_env		*env;
 	t_garbage	*garbage;
-	t_garbage	*garbage_env;
 	int			status;
 	char		*input;
-	t_token		*tmp;
 
 	garbage = NULL;
-	garbage_env = NULL;
-	env = get_env(envp, &garbage_env);
-	signal(SIGINT, handle_sigint);
+	env = get_env(envp, &garbage);
+	set_not(garbage);
 	rl_catch_signals = 0;
+	signal(SIGINT, handle_sigint);
 	status = 0;
 	while (1)
 	{
@@ -70,18 +89,8 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			garbage = NULL;
 			continue ;
 		}
-		tmp = tokens;
-		while (tmp)
-		{
-			printf("%s\ttype:%d\n", tmp->value, tmp->type);
-			tmp = tmp->next;
-		}
-		printf("\n");
-		// print_export(env);
-		// execution(tokens, env, &status, garbage);
+		execution(tokens, env, &status, &garbage);
 		free_all(garbage);
-		free_all(garbage_env);
-		// printf("%d\n", sizee(garbage));
 		garbage = NULL;
 		exit(1);
 	}

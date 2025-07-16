@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/13 00:28:59 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:35:35 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,40 @@ static int herdoc_count(t_token *token)
     return count;
 }
 
-void execution(t_token *token, t_env *env, int *last_exit_status, t_garbage *garbage)
+int size(t_cmds *commands)
+{
+    int count;
+
+    count = 0;
+    while (commands)
+    {
+        count++;
+        commands = commands->next;
+    }
+    return count;
+}
+
+void execution(t_token *token, t_env *env, int *exit_status, t_garbage **garbage)
 {
     t_cmds *commands;
+    char **envp;
 
+    envp = env_lst_to_char2(env, garbage);
     if (herdoc_count(token) >= 17)
     {
         ft_putstr_fd("minishell: maximum here-document count exceeded", 2);
-        *last_exit_status = 2;
+        *exit_status = 2;
         return ;
     }
     commands = splinting_into_proccess(token, garbage);
     if (!commands)
         return ;
-    redirection(commands);
+    herdoc(commands, exit_status);
+    if (exit_status > 0)
+        return ;
     fill_by_path(commands, env, garbage);
-    pipes(commands, env_lst_to_char2(env, garbage), last_exit_status);
+    if (size(commands) == 1)
+        one_command(commands, envp, garbage);
+    else
+        pipes(commands, envp, exit_status, garbage);
 }

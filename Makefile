@@ -8,9 +8,10 @@ FILES		=   minishell.c \
 				utils/utils00.c utils/utils01.c utils/utils02.c utils/utils03.c utils/utils04.c utils/utils05.c \
 				utils/cleaner.c utils/free_all.c \
 				builtins/env.c \
+				execution/execution.c \
+				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
+				execution/herdoc.c execution/one_cmd.c \
 				#builtins/cd.c builtins/echo.c builtins/export.c builtins/env.c builtins/pwd.c builtins/unset.c \
-				#execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
-				execution/execution.c 
 
 # Object files
 
