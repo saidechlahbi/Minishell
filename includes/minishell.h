@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/16 14:27:21 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/18 01:47:14 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <termios.h> 
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <sys/stat.h>
+
+extern int g_global_signal;
 
 typedef struct s_token
 {
@@ -71,8 +75,10 @@ typedef struct s_cmds
 	t_redirection *redirection;
 	int type;
 	int executable;
+	int pid;
+	int write_in;
+	int read_from;
 	struct s_cmds *next;
-	
 }t_cmds;
 
 typedef struct s_garbage
@@ -124,17 +130,22 @@ char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 
-
 /*------------execution-------------*/
 void 			execution(t_token *token, t_env *env, int *last_exit_status, t_garbage **garbage);
 t_cmds 			*splinting_into_proccess(t_token *token, t_garbage **garbage);
-void 			redirection(t_cmds *commands);
-void 			fill_by_path(t_cmds *commands, t_env *env, t_garbage *garbage);
+void 			fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage);
 char 			**env_lst_to_char2(t_env *env, t_garbage **garbage);
-void 			pipes(t_cmds *commands, char **envp, int *last_exit_status, t_garbage **garbage);
-void 			herdoc(t_cmds *commands)
+void 			pipes(t_cmds *commands, char **envp, int *exit_status, t_garbage *garbage);
+void 			one_command(t_cmds *commands, char **env, int *exit_status, t_garbage *garbage);
+int 			herdoc(t_cmds *commands, int *exit_status, t_garbage *garbage);
+int 			check_is_built_in(char *cmd);
+void 			execution_cmd(t_cmds *command, char **envp, t_garbage *garbage);
+void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
+int 			ft_size(t_cmds *commands);
+
+/*------------redirection-------------*/
 int 			open_files(t_cmds *command);
-void 			redirection(t_cmds *commands);
+void 			redirection(t_cmds *command);
 void 			close_all_fds_fstat(int start);
 
 /*----------flow tools------------*/

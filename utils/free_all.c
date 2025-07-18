@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:33:24 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/16 03:31:59 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:37:17 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	get_out_from_here(t_garbage *garbage, int status)
 {
 	t_garbage	*tmp;
 
+    close_all_fds_fstat(0);
 	while (garbage)
 	{
 		tmp = garbage->next;

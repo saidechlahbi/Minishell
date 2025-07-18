@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 17:45:18 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:07:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void	delimiter(t_token *token)
 			{
 				if (token->value[i] == '\'' || token->value[i] == '"')
 					token->inq = 1;
+				i++;// konti nassiha
 			}
 		}
 		token = token->next;

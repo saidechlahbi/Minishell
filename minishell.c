@@ -13,12 +13,20 @@
 
 #include "includes/minishell.h"
 
+int g_global_signal = 0;
+
 void	handle_sigint(int signum __attribute__((unused)))
 {
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (g_global_signal == 0)
+	{
+		write(1, "\n", 1);             // Move to new line
+		rl_on_new_line();              // Tell readline we're on a new line
+		rl_replace_line("", 0);        // Clear the current input
+		rl_redisplay();                // Redraw the prompt
+	}
+	else
+		write(1, "\n", 1);
+	g_global_signal = 0;
 }
 
 t_token	*parsing(char *input, int *status, t_garbage **garbage,
@@ -47,17 +55,6 @@ void set_not(t_garbage *garbage)
 	return ;
 }
 
-int dddd(t_garbage *garbage)
-{
-	int count = 0;
-	while (garbage)
-	{
-		count++;
-		garbage = garbage->next;
-	}
-	return count;
-}
-
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
 {
@@ -67,11 +64,13 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	int			status;
 	char		*input;
 
-	garbage = NULL;
+	g_global_signal = 0;
+	garbage = &(t_garbage){0};
 	env = get_env(envp, &garbage);
 	set_not(garbage);
 	rl_catch_signals = 0;
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	status = 0;
 	while (1)
 	{
@@ -91,7 +90,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		}
 		execution(tokens, env, &status, &garbage);
 		free_all(garbage);
-		garbage = NULL;
-		exit(1);
+		close_all_fds_fstat(3);
 	}
 }

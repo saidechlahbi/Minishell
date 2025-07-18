@@ -10,7 +10,7 @@ FILES		=   minishell.c \
 				builtins/env.c \
 				execution/execution.c \
 				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
-				execution/herdoc.c execution/one_cmd.c \
+				execution/herdoc.c execution/one_cmd.c  execution/pipe_tools.c \
 				#builtins/cd.c builtins/echo.c builtins/export.c builtins/env.c builtins/pwd.c builtins/unset.c \
 
 # Object files

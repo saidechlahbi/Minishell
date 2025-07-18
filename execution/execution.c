@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/16 14:35:35 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/18 02:49:56 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,14 @@ void execution(t_token *token, t_env *env, int *exit_status, t_garbage **garbage
     commands = splinting_into_proccess(token, garbage);
     if (!commands)
         return ;
-    herdoc(commands, exit_status);
-    if (exit_status > 0)
+    if (!herdoc(commands, exit_status, *garbage))
         return ;
+    char str[6];
+    int a = read(commands->redirection->fd, str, 6);
+    printf("%d %s\n", a, str);
     fill_by_path(commands, env, garbage);
     if (size(commands) == 1)
-        one_command(commands, envp, garbage);
+        one_command(commands, envp, exit_status, *garbage);
     else
-        pipes(commands, envp, exit_status, garbage);
+        pipes(commands, envp, exit_status, *garbage);
 }

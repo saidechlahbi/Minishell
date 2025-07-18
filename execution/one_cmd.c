@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/16 04:45:04 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/18 00:13:12 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void execute_cmd(t_cmds *commands, char **env, int *pid, t_garbage *garbage)
     *pid = fork();
     if (*pid == 0)
     {
-        if (redirection(commands) == 0)
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+        if (open_files(commands) == 0)
             get_out_from_here(garbage, 1);
         if (commands->executable == 0)
         {
@@ -31,12 +33,15 @@ void execute_cmd(t_cmds *commands, char **env, int *pid, t_garbage *garbage)
             dup2(commands->write_in, 1);
         execve(commands->cmd[0], commands->cmd, env);
         perror("execve");
+        close_all_fds_fstat(0);
         get_out_from_here(garbage, 1);
     }
+    else
+        g_global_signal = -1;
     return ;
 }
 
-int check_is_built_in(char *cmd)
+int check_which_built_are(char *cmd)
 {
     char *built_in[8];
     int i;
@@ -65,11 +70,12 @@ void one_command(t_cmds *commands, char **env, int *exit_status, t_garbage *garb
     int status;
 
     // execute_built_in();
-    if (check_is_built_in(commands->cmd[0]))
+    if (commands->type == BUILTIN)
         return ;
     else
     {
-        execute_cmd(cmd, env, &pid, garbage);
+        execute_cmd(commands, env, &pid, garbage);
         waitpid(pid, &status, 0);
+        *exit_status = WEXITSTATUS(status);
     }
 }
