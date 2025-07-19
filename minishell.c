@@ -33,7 +33,7 @@ void	handle_sigint(int signum __attribute__((unused)))
 }
 
 t_token	*parsing(char *input, int *status, t_garbage **garbage,
-		t_env *env __attribute__((unused)))
+		t_env *env)
 {
 	t_token	*tokens;
 
@@ -44,7 +44,7 @@ t_token	*parsing(char *input, int *status, t_garbage **garbage,
 		return (NULL);
 	lexing(tokens);
 	delimiter(tokens);
-	has_dollar(tokens, env, garbage);
+	has_dollar(tokens, env, garbage, (*garbage)->status);
 	return (tokens);
 }
 
@@ -92,7 +92,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			garbage = NULL;
 			continue ;
 		}
-		execution(tokens, env, &status, &garbage);
+		execution(tokens, &env, &status, &garbage);
 		close_all_fds_fstat(3);
 		free_all(&garbage);
 	}

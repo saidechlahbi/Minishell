@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/18 18:59:07 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:15:56 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void execute_cmd(t_cmds *commands, char **env, int *pid, t_garbage *garbage)
+static void execute_cmd(t_cmds *commands, int *pid, t_garbage *garbage)
 {
     *pid = fork();
     if (*pid == 0)
@@ -31,7 +31,7 @@ void execute_cmd(t_cmds *commands, char **env, int *pid, t_garbage *garbage)
             dup2(commands->read_from, 0);
         if (commands->write_in)
             dup2(commands->write_in, 1);
-        execve(commands->cmd[0], commands->cmd, env);
+        execve(commands->cmd[0], commands->cmd, commands->envp);
         perror("execve");
         close_all_fds_fstat(0);
         get_out_from_here(garbage, 1);
@@ -41,40 +41,22 @@ void execute_cmd(t_cmds *commands, char **env, int *pid, t_garbage *garbage)
     return ;
 }
 
-int check_which_built_are(char *cmd)
-{
-    char *built_in[8];
-    int i;
-
-    built_in[0] = "echo";
-    built_in[1] = "cd";
-    built_in[2] = "pwd";
-    built_in[3] = "export";
-    built_in[4] = "unset";
-    built_in[5] = "env";
-    built_in[6] = "exit";
-    built_in[7] = NULL;
-    i = 0;
-    while (built_in[i])
-    {
-        if (ft_strcmp(built_in[i], cmd) == 0)
-            return 1;
-        i++;
-    }
-    return 0;
-}
-
-void one_command(t_cmds *commands, char **env, int *exit_status, t_garbage *garbage)
+void one_command(t_cmds *commands, t_env **env, int *exit_status, t_garbage **garbage)
 {
     int pid;
     int status;
 
-    // execute_built_in();
-    if (commands->type == BUILTIN)
+    if (!commands->cmd)
+    {
+        if (open_files(commands) == 0)
+            *exit_status = 1;
         return ;
+    }
+    if (commands->type == BUILTIN)
+        execute_built_in(commands->cmd, env, garbage);
     else
     {
-        execute_cmd(commands, env, &pid, garbage);
+        execute_cmd(commands, &pid, *garbage);
         waitpid(pid, &status, 0);
         *exit_status = WEXITSTATUS(status);
     }

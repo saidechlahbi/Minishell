@@ -6,21 +6,21 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/18 18:59:11 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:24:09 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void execution_cmd(t_cmds *command, char **envp, t_garbage *garbage)
+void execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
 {
     if (command->type == BUILTIN)
-        return;
+        execute_built_in(command->cmd, env, garbage);
     else
     {
-        execve(command->cmd[0], command->cmd, envp);
+        execve(command->cmd[0], command->cmd, command->envp);
         perror("execve");
-        get_out_from_here(garbage, 1);
+        get_out_from_here(*garbage, 1);
     }
     return ;
 }

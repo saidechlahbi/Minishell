@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 18:02:54 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 22:15:43 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,6 @@ t_env *create_copy(t_env *env, t_garbage **garbage)
     return (head);
 }
 
-int f(int f)
-{
-	static int stored;
-	if (f < 0)
-		return (stored);
-	stored = f;
-	return stored;
-}
-
 t_env	*sort_export(t_env *copy)
 {
 	int		sorted;
@@ -87,7 +78,7 @@ t_env	*sort_export(t_env *copy)
 
 void	print_export(t_env *env, t_garbage **garbage)
 {
-	t_env	*copy;
+	t_env	**copy;
 	int		i;
 
 	copy = create_copy(env, garbage);

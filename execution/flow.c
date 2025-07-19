@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/16 03:42:31 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 20:43:43 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static t_redirection *initial_herdoc(t_token *token, t_garbage **garbage)
     red_tmp->file = randomize(garbage);
     red_tmp->delimiter = ft_strdup(token->next->value, garbage);
     red_tmp->type = token->type;
+    red_tmp->inq = token->next->inq;
     red_tmp->next = NULL;
     return red_tmp;
 }
@@ -97,7 +98,7 @@ static t_redirection *get_redirec(t_token *token, t_garbage **garbage)
     return redirec;
 }
 
-t_cmds *splinting_into_proccess(t_token *token, t_garbage **garbage)
+t_cmds *splinting_into_proccess(t_token *token, char **envp, t_garbage **garbage)
 {
     t_cmds *commands;
     t_cmds *cmd_tmp;
@@ -109,6 +110,7 @@ t_cmds *splinting_into_proccess(t_token *token, t_garbage **garbage)
         cmd_tmp = ft_malloc(sizeof(t_cmds), 1, garbage);
         cmd_tmp->type = token->type;
         cmd_tmp->cmd = fill_cmd(token, garbage);
+        cmd_tmp->envp = envp;
         cmd_tmp->next = NULL;
         cmd_tmp->redirection = get_redirec(token, garbage);
         while (token && token->type != PIPE)

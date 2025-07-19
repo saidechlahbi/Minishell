@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 01:54:36 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 22:07:40 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_redirection
 	char *delimiter;
 	int fd;
 	int type;
+	int inq;
 	struct s_redirection *next;
 }t_redirection;
 
@@ -78,6 +79,7 @@ typedef struct s_cmds
 	int pid;
 	int write_in;
 	int read_from;
+	char **envp;
 	struct s_cmds *next;
 }t_cmds;
 
@@ -85,19 +87,17 @@ typedef struct s_garbage
 {
 	void *data;
 	int var;
+	int status;
 	struct  s_garbage *next;
 }t_garbage;
 
 /*-----------Parsing-------------*/
 t_token	*tokenize(char *input, t_garbage **garbage, int *status);
-void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage);
+void    has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status);
 t_env 	*get_env(char **envp, t_garbage **garbage);
-void	unset(t_env **env, const char *value);
-void 	export(t_env **env, char **args);
-void	print_env(t_env *env);
 void	lexing(t_token *token);
-void	print_export(t_env *env);
 int		validate_input(t_token *token, int *status);
+char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status);
 
 /*------------Utils-------------*/
 void    add_var(t_env **head, char *key, char *value, t_garbage **garbage);
@@ -129,19 +129,29 @@ int		ft_isalnum(int c);
 char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+char	*ft_itoa(long n, t_garbage **garbage);
 
 /*------------execution-------------*/
-void 			execution(t_token *token, t_env *env, int *last_exit_status, t_garbage **garbage);
-t_cmds 			*splinting_into_proccess(t_token *token, t_garbage **garbage);
+void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
+t_cmds 			*splinting_into_proccess(t_token *token,char **envp, t_garbage **garbage);
 void 			fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage);
 char 			**env_lst_to_char2(t_env *env, t_garbage **garbage);
-void 			pipes(t_cmds *commands, char **envp, int *exit_status, t_garbage *garbage);
-void 			one_command(t_cmds *commands, char **env, int *exit_status, t_garbage *garbage);
-int 			herdoc(t_cmds *commands, int *exit_status, t_garbage *garbage);
+void 			pipes(t_cmds *commands, int *exit_status, t_env **env, t_garbage **garbage);
+void 			one_command(t_cmds *commands, t_env **env, int *exit_status, t_garbage **garbage);
+int 			herdoc(t_cmds *commands, int *exit_status, t_env *env, t_garbage **garbage);
 int 			check_is_built_in(char *cmd);
-void 			execution_cmd(t_cmds *command, char **envp, t_garbage *garbage);
+void 			execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage);
 void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
 int 			ft_size(t_cmds *commands);
+
+/*------------built-in-------------*/
+void 			execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
+void	ft_echo(char **args);
+int 	check_which_built_are(char *cmd);
+int		ft_pwd(void);
+void 	unset(t_env **env, char **args, t_garbage *garbage);
+void	print_env(t_env *env);
+void	export(t_env **env, char **args, t_garbage **garbage);
 
 /*------------redirection-------------*/
 int 			open_files(t_cmds *command);

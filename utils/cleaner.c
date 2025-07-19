@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/17 14:08:23 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 20:47:50 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage)
 		get_out_from_here(garbage, 1);
 	now->data = content;
 	now->var = 0;
+	now->status = 0;
 	now->next = NULL;
 	return (now);
 }
