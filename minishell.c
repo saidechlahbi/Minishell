@@ -44,7 +44,7 @@ t_token	*parsing(char *input, int *status, t_garbage **garbage,
 		return (NULL);
 	lexing(tokens);
 	delimiter(tokens);
-	has_dollar(tokens, env, garbage, status);
+	has_dollar(tokens, env, garbage, *status);
 	return (tokens);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/17 14:07:52 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:52:33 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void	delimiter(t_token *token)
 			{
 				if (token->value[i] == '\'' || token->value[i] == '"')
 					token->inq = 1;
-				i++;// konti nassiha
+				i++;
 			}
 		}
 		token = token->next;
