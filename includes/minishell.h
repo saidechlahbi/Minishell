@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 19:50:10 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 20:27:09 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct s_garbage
 t_token	*tokenize(char *input, t_garbage **garbage, int *status);
 void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status);
 t_env 	*get_env(char **envp, t_garbage **garbage);
-void	unset(t_env **env, const char *value);
+void unset(t_env **env, char **args, t_garbage *garbage);
 void 	export(t_env **env, char **args);
 void	print_env(t_env *env);
 void	lexing(t_token *token);
