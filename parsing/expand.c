@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 17:32:10 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 18:32:03 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*exdoc(char *var, t_env *env)
 	return (NULL);
 }
 
-char	*prepdoc(char *input, t_env *env, t_garbage *garbage)
+char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
 {
 	int		start;
 	int		i;
@@ -53,6 +53,13 @@ char	*prepdoc(char *input, t_env *env, t_garbage *garbage)
 	i = 0;
 	while (input[i])
 	{
+		if (input[i] == '$' && input[i + 1] == '?')
+		{
+			expanded = ft_strjoin(expanded, _substr(input, start, i-start, garbage),garbage);
+			i+=2;
+			start = i;
+			expanded = ft_strjoin(expanded, ft_itoa(status), garbage);
+		}
 		if (input[i] == '$' && is_expandable(input[i + 1]))
 		{
 			expanded = ft_strjoin(expanded, _substr(input, start, i-start, garbage),garbage);
@@ -69,11 +76,11 @@ char	*prepdoc(char *input, t_env *env, t_garbage *garbage)
 			i++;
 		if (i > start)
 			expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
+		}
 	return (expanded);
-	}
 }
 
-char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
+char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage, int status)
 {
 	int		in_squote;
 	int		in_dquote;
@@ -93,6 +100,13 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
 			in_dquote = !in_dquote;
 		if (input[i] == '\'' && !in_dquote)
 			in_squote = !in_squote;
+		if (input[i] == '$' && !in_squote && input[i + 1] == '?')
+		{
+			expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
+			i+=2;
+			start = i;
+			expanded =ft_strjoin(expanded, ft_itoa(status), garbage);
+		}
 		if (input[i] == '$' && !in_squote && is_expandable(input[i + 1]))
 		{
 			expanded = ft_strjoin(expanded, _substr(input, start, i - start,
@@ -119,7 +133,7 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
 	return (expanded);
 }
 
-void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
+void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
 {
 	t_token	*cur;
 	t_token	*next;
@@ -133,7 +147,7 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 		next = cur->next;
 		if (ft_strchr(cur->value, '$') && cur->type != DELIMITER)
 		{
-			expanded = prep(cur->value, env, encapsulizer, garbage);
+			expanded = prep(cur->value, env, encapsulizer, garbage, status);
 			cur->value = expanded;
 			split_n_insert(cur, encapsulizer, garbage);
 		}
