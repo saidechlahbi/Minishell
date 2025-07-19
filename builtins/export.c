@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 22:15:43 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 22:31:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_env	*sort_export(t_env *copy)
 
 void	print_export(t_env *env, t_garbage **garbage)
 {
-	t_env	**copy;
+	t_env	*copy;
 	int		i;
 
 	copy = create_copy(env, garbage);
