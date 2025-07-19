@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/18 02:49:56 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/18 22:52:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ void execution(t_token *token, t_env *env, int *exit_status, t_garbage **garbage
         return ;
     if (!herdoc(commands, exit_status, *garbage))
         return ;
-    char str[6];
-    int a = read(commands->redirection->fd, str, 6);
-    printf("%d %s\n", a, str);
     fill_by_path(commands, env, garbage);
     if (size(commands) == 1)
         one_command(commands, envp, exit_status, *garbage);

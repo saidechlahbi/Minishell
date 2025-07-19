@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/18 01:47:14 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 01:54:36 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,8 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage);
 void	add_back_for_garbage(t_garbage **lst, t_garbage *new);
 void *ft_malloc(size_t type, size_t size, t_garbage **garbadge);
 void get_out_from_here(t_garbage *garbage, int status);
-void free_all(t_garbage *garbage);
+void free_all(t_garbage **garbage);
+
+//  void reset_terminal(void);
 
 #endif

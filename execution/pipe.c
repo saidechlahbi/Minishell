@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/18 00:48:54 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:09:06 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ static int wait_commands(int size, t_cmds * cmd)
     {
         waitpid(cmd->pid, &status[i], 0);
         cmd = cmd->next;
+        i++;
     }
     if (WIFSIGNALED(status[size - 1]))
         return (WTERMSIG(status[size - 1]) + 128);

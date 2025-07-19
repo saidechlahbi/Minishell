@@ -6,28 +6,35 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:33:24 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/17 03:37:17 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 01:00:01 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void free_all(t_garbage *garbage)
+void free_all(t_garbage **garbage)
 {
-    t_garbage *current = garbage;
-    t_garbage *tmp;
+    t_garbage *current;
+    t_garbage *prev;
+    t_garbage *next;
 
-    while (current && current->next)
+    current  = *garbage;
+    prev = NULL;
+    while (current)
     {
-        if (current->next->var == 0)
+        next = current->next;
+        if (current->var == 0)
         {
-            tmp = current->next;
-            current->next = tmp->next;
-            free(tmp->data);
-            free(tmp);
+            if (prev)
+                prev->next = next;
+            else
+                *garbage = next;
+            free(current->data);
+            free(current);
         }
         else
-            current = current->next;
+            prev = current;
+        current = next;
     }
 }
 
@@ -35,13 +42,14 @@ void	get_out_from_here(t_garbage *garbage, int status)
 {
 	t_garbage	*tmp;
 
-    close_all_fds_fstat(0);
 	while (garbage)
 	{
+        if (garbage->data)
+		    free(garbage->data);
 		tmp = garbage->next;
-		free(garbage->data);
 		free(garbage);
 		garbage = tmp;
 	}
+    rl_clear_history();
 	exit(status);
 }

@@ -19,13 +19,16 @@ void	handle_sigint(int signum __attribute__((unused)))
 {
 	if (g_global_signal == 0)
 	{
-		write(1, "\n", 1);             // Move to new line
+		write(1, "\n", 1);              // Move to new line
 		rl_on_new_line();              // Tell readline we're on a new line
-		rl_replace_line("", 0);        // Clear the current input
-		rl_redisplay();                // Redraw the prompt
+		rl_replace_line("", 0);       // Clear the current input
+		rl_redisplay();              // Redraw the prompt
 	}
 	else
+	{
+		// rl_done = 1; 
 		write(1, "\n", 1);
+	}
 	g_global_signal = 0;
 }
 
@@ -65,15 +68,16 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	char		*input;
 
 	g_global_signal = 0;
-	garbage = &(t_garbage){0};
+	garbage = NULL;
 	env = get_env(envp, &garbage);
 	set_not(garbage);
-	rl_catch_signals = 0;
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	status = 0;
 	while (1)
 	{
+		// reset_terminal();
+    	// rl_reset_line_state();
 		input = readline("minishell$ ");
 		if (!input)
 			exit(1);
@@ -84,12 +88,12 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		tokens = parsing(input, &status, &garbage, env);
 		if (!tokens)
 		{
-			free_all(garbage);
+			free_all(&garbage);
 			garbage = NULL;
 			continue ;
 		}
 		execution(tokens, env, &status, &garbage);
-		free_all(garbage);
 		close_all_fds_fstat(3);
+		free_all(&garbage);
 	}
 }
