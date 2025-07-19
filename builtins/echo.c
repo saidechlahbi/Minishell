@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:58 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 15:03:57 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 21:49:18 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_echo(char **args)
 
 	i = 1;
 	n = 0;
-	while (args[i++])
+	while (args[i])
 	{
 		j = 0;
 		if (args[i][j] == '-')
@@ -30,12 +30,14 @@ void	ft_echo(char **args)
 		if (args[i][j])
 			break ;
 		n = 1;
+		i++;
 	}
-	while (args[i++])
+	while (args[i])
 	{
 		ft_putstr_fd(args[i], 1);
 		if (args[i + 1])
 			write(1, " ", 1);
+		i++;
 	}
 	if (!n)
 		write(1, "\n", 1);

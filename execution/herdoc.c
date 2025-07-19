@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 04:44:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 01:56:34 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:06:10 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 //     tcsetattr(STDIN_FILENO, TCSANOW, &term);
 // }
 
-static void read_from_stdin(t_redirection *redirec, int fd)
+static void read_from_stdin(t_redirection *redirec, int fd, t_env *env, t_garbage **garbage)
 {
     char *line;
+
     while (1)
     {
-        // reset_terminal();
         line = readline("> ");
         if (!line)
         {
@@ -39,15 +39,17 @@ static void read_from_stdin(t_redirection *redirec, int fd)
             free(line);
             break;
         }
-        write(fd, line, ft_strlen(line));
+        if (redirec->inq == 0)
+            ft_putstr_fd(prepdoc(line, env, garbage, (*garbage)->status), fd);
+        else         
+            write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
         free(line);
-        // reset_terminal();
     }
     return ;
 }
 
-static void open_herdoc(t_redirection *redirec, int *pid, t_garbage *garbage)
+static void open_herdoc(t_redirection *redirec, int *pid, t_env *env, t_garbage **garbage)
 {    
     int fd;
     
@@ -60,13 +62,13 @@ static void open_herdoc(t_redirection *redirec, int *pid, t_garbage *garbage)
     if (*pid == -1)
     {
         perror("fork");
-        get_out_from_here(garbage, 1);
+        get_out_from_here(*garbage, 1);
     }
     if (*pid == 0)
     {
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
-        read_from_stdin(redirec, fd);
+        read_from_stdin(redirec, fd, env, garbage);
         // close_all_fds_fstat(3);
         // get_out_from_here(garbage, 0);
         exit(1);
@@ -75,46 +77,47 @@ static void open_herdoc(t_redirection *redirec, int *pid, t_garbage *garbage)
         g_global_signal = -1;
 }
 
-static int list_resdirect(t_redirection *redirec, int *exit_status, int *status, t_garbage *garbage)
+static int list_resdirect(t_redirection *redirec, int *exit_status, t_env *env, t_garbage **garbage)
 {
    int pid;
+   int status;
    
    while (redirec)
    {
        if (redirec->type == HERE_DOC)
        {
-            *status = 0;
-            open_herdoc(redirec, &pid, garbage);
-            waitpid(pid, status, 0);
-            if (WIFSIGNALED(*status))
+            status = 0;
+            open_herdoc(redirec, &pid, env, garbage);
+            waitpid(pid, &status, 0);
+            if (WIFSIGNALED(status))
             {
-                *exit_status = WTERMSIG(*status) + 128;
+                *exit_status = WTERMSIG(status) + 128;
                 return 0;
             }
         }
         redirec = redirec->next;
     }
+    if (WIFEXITED(status))
+        *exit_status = WEXITSTATUS(status);
     return 1;
 }
 
-int herdoc(t_cmds *commands, int *exit_status, t_garbage *garbage)
+int herdoc(t_cmds *commands, int *exit_status, t_env *env, t_garbage **garbage)
 {
     t_redirection *redirec;
-    int status;
 
-    status = 0;
     while (commands)
     {
         redirec = commands->redirection;
-        if (list_resdirect(redirec, exit_status, &status, garbage))
+        if (!redirec)
+        {
+            commands = commands->next;
+            continue;
+        }
+        if (list_resdirect(redirec, exit_status, env, garbage))
             commands = commands->next;
         else
             return 0;
-    }
-    if (WIFEXITED(status))
-    {
-        *exit_status = WEXITSTATUS(status);
-        return 1;
     }
     return 1;
 }

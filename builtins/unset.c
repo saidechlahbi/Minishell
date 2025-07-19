@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:12 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 20:25:40 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 22:02:00 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,12 @@ void	unset_helper(t_env **env, t_garbage *garbage, char *str)
 
 void unset(t_env **env, char **args, t_garbage *garbage)
 {
-    t_env *cur;
-    t_env *prev;
-	t_garbage *tmp;
     int i;
 
 	i = 1;
     while (args[i])
     {
-		help(env, garbage, args[i]);
+		unset_helper(env, garbage, args[i]);
         i++;
     }
 }

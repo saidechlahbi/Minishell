@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/18 22:52:52 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 21:01:43 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,37 @@ int size(t_cmds *commands)
     return count;
 }
 
-void execution(t_token *token, t_env *env, int *exit_status, t_garbage **garbage)
+static void seting(t_garbage *garage, int status)
+{
+    while (garage)
+    {
+        garage->status = status;
+        garage = garage->next;
+    }
+    return;
+}
+
+void execution(t_token *token, t_env **env, int *exit_status, t_garbage **garbage)
 {
     t_cmds *commands;
     char **envp;
 
-    envp = env_lst_to_char2(env, garbage);
+    envp = env_lst_to_char2(*env, garbage);
     if (herdoc_count(token) >= 17)
     {
         ft_putstr_fd("minishell: maximum here-document count exceeded", 2);
         *exit_status = 2;
         return ;
     }
-    commands = splinting_into_proccess(token, garbage);
+    commands = splinting_into_proccess(token, envp, garbage);
     if (!commands)
         return ;
-    if (!herdoc(commands, exit_status, *garbage))
+    seting(*garbage, *exit_status);
+    if (!herdoc(commands, exit_status, *env, garbage))
         return ;
-    fill_by_path(commands, env, garbage);
+    fill_by_path(commands, *env, garbage);
     if (size(commands) == 1)
-        one_command(commands, envp, exit_status, *garbage);
+        one_command(commands, env, exit_status, garbage);
     else
-        pipes(commands, envp, exit_status, *garbage);
+        pipes(commands, exit_status, env, garbage);
 }
