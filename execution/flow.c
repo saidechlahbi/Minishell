@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 20:43:43 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 22:45:55 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,17 @@ t_cmds *splinting_into_proccess(t_token *token, char **envp, t_garbage **garbage
     {
 
         cmd_tmp = ft_malloc(sizeof(t_cmds), 1, garbage);
-        cmd_tmp->type = token->type;
+        
         cmd_tmp->cmd = fill_cmd(token, garbage);
         cmd_tmp->envp = envp;
         cmd_tmp->next = NULL;
         cmd_tmp->redirection = get_redirec(token, garbage);
         while (token && token->type != PIPE)
+        {
+            if (token->type == BUILTIN || token->type == CMD)
+                cmd_tmp->type = token->type;
             token = token->next;
+        }
         if (token)
             token = token->next;
         add_back_for_cmd(&commands, cmd_tmp);

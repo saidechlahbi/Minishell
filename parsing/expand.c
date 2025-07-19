@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 19:49:39 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 23:02:50 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
 		}
 		else
 			i++;
-		if (i > start)
-			expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
-		}
+	}
+	if (i > start)
+		expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
 	return (expanded);
 }
 
