@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 18:32:03 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 19:49:39 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
 			expanded = ft_strjoin(expanded, _substr(input, start, i-start, garbage),garbage);
 			i+=2;
 			start = i;
-			expanded = ft_strjoin(expanded, ft_itoa(status), garbage);
+			expanded = ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
 		}
 		if (input[i] == '$' && is_expandable(input[i + 1]))
 		{
@@ -105,7 +105,7 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage, int
 			expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
 			i+=2;
 			start = i;
-			expanded =ft_strjoin(expanded, ft_itoa(status), garbage);
+			expanded =ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
 		}
 		if (input[i] == '$' && !in_squote && is_expandable(input[i + 1]))
 		{
