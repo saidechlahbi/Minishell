@@ -13,12 +13,23 @@
 
 #include "includes/minishell.h"
 
+int g_global_signal = 0;
+
 void	handle_sigint(int signum __attribute__((unused)))
 {
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (g_global_signal == 0)
+	{
+		write(1, "\n", 1);              // Move to new line
+		rl_on_new_line();              // Tell readline we're on a new line
+		rl_replace_line("", 0);       // Clear the current input
+		rl_redisplay();              // Redraw the prompt
+	}
+	else
+	{
+		// rl_done = 1; 
+		write(1, "\n", 1);
+	}
+	g_global_signal = 0;
 }
 
 t_token	*parsing(char *input, int *status, t_garbage **garbage,
@@ -37,6 +48,16 @@ t_token	*parsing(char *input, int *status, t_garbage **garbage,
 	return (tokens);
 }
 
+void set_not(t_garbage *garbage)
+{
+	while (garbage)
+	{
+		garbage->var = 1;
+		garbage = garbage->next;
+	}
+	return ;
+}
+
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
 {
@@ -45,15 +66,18 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	t_garbage	*garbage;
 	int			status;
 	char		*input;
-	t_token		*tmp;
 
+	g_global_signal = 0;
 	garbage = NULL;
 	env = get_env(envp, &garbage);
+	set_not(garbage);
 	signal(SIGINT, handle_sigint);
-	rl_catch_signals = 0;
+	signal(SIGQUIT, SIG_IGN);
 	status = 0;
 	while (1)
 	{
+		// reset_terminal();
+    	// rl_reset_line_state();
 		input = readline("minishell$ ");
 		if (!input)
 			exit(1);
@@ -64,19 +88,19 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		tokens = parsing(input, &status, &garbage, env);
 		if (!tokens)
 		{
-			free_all(garbage);
+			free_all(&garbage);
 			garbage = NULL;
 			continue ;
 		}
-		tmp = tokens;
+		t_token *tmp = tokens;
 		while (tmp)
 		{
-			printf("%s\ttype:%d\n", tmp->value, tmp->type);
+			printf("%s %d\n", tmp->value, tmp->type);
 			tmp = tmp->next;
 		}
-		printf("\n");
-		free_all(garbage);
-		garbage = NULL;
-		exit(1);
+		execution(tokens, env, &status, &garbage);
+		close_all_fds_fstat(3);
+		free_all(&garbage);
+
 	}
 }

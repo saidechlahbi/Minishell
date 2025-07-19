@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:51:34 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 17:34:39 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:35:33 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ static char	*ft_worddup(const char *str, char d, t_garbage **garbage)
 	return (copy);
 }
 
-static char	**ft_free_split(char **strs, int count)
-{
-	while (count--)
-		free(strs[count]);
-	free(strs);
-	return (NULL);
-}
-
 char	**ft_split(char const *s, char c, t_garbage **garbage)
 {
 	char	**strs;
@@ -77,7 +69,7 @@ char	**ft_split(char const *s, char c, t_garbage **garbage)
 		{
 			strs[i] = ft_worddup(s, c, garbage);
 			if (!strs[i])
-				return (ft_free_split(strs, i));
+				get_out_from_here(*garbage, 1);
 			i++;
 		}
 		while (*s && *s != c)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/15 18:03:22 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/19 01:54:36 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <termios.h> 
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <sys/stat.h>
+
+extern int g_global_signal;
 
 typedef struct s_token
 {
@@ -70,25 +74,29 @@ typedef struct s_cmds
 	char **cmd;
 	t_redirection *redirection;
 	int type;
+	int executable;
+	int pid;
+	int write_in;
+	int read_from;
 	struct s_cmds *next;
-	
 }t_cmds;
 
 typedef struct s_garbage
 {
 	void *data;
+	int var;
 	struct  s_garbage *next;
 }t_garbage;
 
 /*-----------Parsing-------------*/
 t_token	*tokenize(char *input, t_garbage **garbage, int *status);
 void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage);
-t_env *get_env(char **envp, t_garbage **garbage);
+t_env 	*get_env(char **envp, t_garbage **garbage);
 void	unset(t_env **env, const char *value);
-void 	export(t_env **env, char **args, t_garbage **garbage);
+void 	export(t_env **env, char **args);
 void	print_env(t_env *env);
 void	lexing(t_token *token);
-void	print_export(t_env *env, t_garbage **garbage);
+void	print_export(t_env *env);
 int		validate_input(t_token *token, int *status);
 
 /*------------Utils-------------*/
@@ -122,26 +130,37 @@ char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 
+/*------------execution-------------*/
+void 			execution(t_token *token, t_env *env, int *last_exit_status, t_garbage **garbage);
+t_cmds 			*splinting_into_proccess(t_token *token, t_garbage **garbage);
+void 			fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage);
+char 			**env_lst_to_char2(t_env *env, t_garbage **garbage);
+void 			pipes(t_cmds *commands, char **envp, int *exit_status, t_garbage *garbage);
+void 			one_command(t_cmds *commands, char **env, int *exit_status, t_garbage *garbage);
+int 			herdoc(t_cmds *commands, int *exit_status, t_garbage *garbage);
+int 			check_is_built_in(char *cmd);
+void 			execution_cmd(t_cmds *command, char **envp, t_garbage *garbage);
+void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
+int 			ft_size(t_cmds *commands);
 
-// /*------------execution-------------*/
-// void 			execution(t_token *token, t_env *env, int *last_exit_status, t_cleaner *garbage);
-// t_cmds 			*splinting_into_proccess(t_token *token, t_garbage *garbage);
-// void 			redirection(t_cmds *commands);
-// void 			fill_by_path(t_cmds *commands, t_env *env);
-// char 			**env_lst_to_char2(t_env *env);
-// void 			pipes(t_cmds *commands, char **envp, int *last_exit_status);
+/*------------redirection-------------*/
+int 			open_files(t_cmds *command);
+void 			redirection(t_cmds *command);
+void 			close_all_fds_fstat(int start);
 
-// /*----------flow tools------------*/
-// t_cmds			*last_for_cmd(t_cmds *lst);
-// void			add_back_for_cmd(t_cmds **lst, t_cmds *new);
-// t_redirection	*last_for_redirec(t_redirection *lst);
-// void			add_back_for_redirec(t_redirection **lst, t_redirection *new);
+/*----------flow tools------------*/
+t_cmds			*last_for_cmd(t_cmds *lst);
+void			add_back_for_cmd(t_cmds **lst, t_cmds *new);
+t_redirection	*last_for_redirec(t_redirection *lst);
+void			add_back_for_redirec(t_redirection **lst, t_redirection *new);
 
 /*----------cleaner tools------------*/
 t_garbage	*new_garbage(void *content, t_garbage *garbage);
 void	add_back_for_garbage(t_garbage **lst, t_garbage *new);
 void *ft_malloc(size_t type, size_t size, t_garbage **garbadge);
 void get_out_from_here(t_garbage *garbage, int status);
-void free_all(t_garbage *garbage);
+void free_all(t_garbage **garbage);
+
+//  void reset_terminal(void);
 
 #endif

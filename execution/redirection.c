@@ -6,55 +6,71 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:54:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/27 16:46:53 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:29:00 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	open_her_doc(t_redirection *redirec)
+int open_files(t_cmds *command)
 {
-	char	*line;
-	int		fd;
+    t_redirection *redirec;
 
-	redirec->fd = open(redirec->file, O_CREAT | O_WRONLY, 0644);
-	unlink(redirec->file);
-	line = readline(">");
-	while (line && ft_strcmp(line, redirec->delimiter))
-	{
-		write(redirec->fd, line, ft_strlen(line));
-		free(line);
-		line = readline(">");
-	}
-	free(line);
-	fd = open(redirec->file, O_CREAT | O_WRONLY, 0644);
-	close(redirec->fd);
-	unlink(redirec->file);
-	redirec->fd = fd;
+    redirec = command->redirection;
+    while (redirec)
+    {
+        if (redirec->type == IN_FILE)
+        {
+            redirec->fd = open(redirec->file, O_RDONLY, 0644);
+            if (redirec->fd == -1)
+                return (printf("minishell: %s: No such file or directory\n", redirec->file), 0);
+        }
+        else if (redirec->type == OUT_FILE)
+        {
+            redirec->fd = open(redirec->file, O_WRONLY | O_CREAT, 0644);
+            if (redirec->fd == -1)
+                return (printf("minishell: %s: No such file or directory\n", redirec->file), 0);
+        }
+        else if (redirec->type == APP_FILE)
+        {
+            redirec->fd = open(redirec->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (redirec->fd == -1)
+                return (printf("minishell: %s: No such file or directory\n", redirec->file), 0);
+        }
+        redirec = redirec->next;
+    }
+    return 1;
 }
 
-void	open_files(t_cmds *commands)
+void redirection(t_cmds *command)
 {
-	t_redirection	*redirec;
+    t_redirection *tmp;
 
-	if (!commands->redirection)
-		return ;
-	while (commands)
-	{
-		redirec = commands->redirection;
-		while (redirec)
-		{
-			if (redirec->type == IN_FILE)
-				redirec->fd = open(redirec->file, O_RDONLY, 0644);
-			else if (redirec->type == OUT_FILE)
-				redirec->fd = open(redirec->file, O_RDONLY | O_CREAT, 0644);
-			else if (redirec->type == APP_FILE)
-				redirec->fd = open(redirec->file, O_RDONLY | O_CREAT | O_APPEND,
-						0644);
-			else if (redirec->type == HERE_DOC)
-				open_her_doc(redirec);
-			redirec = redirec->next;
-		}
-		commands = commands->next;
-	}
+    command->read_from = 0;
+    command->write_in = 0;
+    tmp = command->redirection;
+    while (tmp)
+    {
+        if (tmp->type == IN_FILE || tmp->type == HERE_DOC)
+            command->read_from = tmp->fd;
+        else if (tmp->type == OUT_FILE || tmp->type == APP_FILE)
+            command->write_in = tmp->fd;
+        tmp = tmp->next;
+    }
+    return;
+}
+
+static int is_fd_open_fstat(int fd) {
+    struct stat st;
+    return fstat(fd, &st) == 0;
+}
+
+void close_all_fds_fstat(int start)
+{
+    while (start < 1024)
+    {
+        if (is_fd_open_fstat(start))
+            close(start);
+        start ++;
+    }
 }

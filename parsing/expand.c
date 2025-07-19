@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 17:26:34 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:32:10 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,38 @@ char	*exdoc(char *var, t_env *env)
 		env = env->next;
 	}
 	return (NULL);
+}
+
+char	*prepdoc(char *input, t_env *env, t_garbage *garbage)
+{
+	int		start;
+	int		i;
+	char	*expanded;
+	char	*value;
+	
+	start = 0;
+	expanded = ft_strdup("", garbage);
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '$' && is_expandable(input[i + 1]))
+		{
+			expanded = ft_strjoin(expanded, _substr(input, start, i-start, garbage),garbage);
+			i++;
+			start = i;
+			while(input[i] && is_expandable2(input[i]))
+				i++;
+			value = exdoc(_substr(input, start, i - start, garbage), env);
+			if (value)
+				expanded = ft_strjoin(expanded, value, garbage);
+			start = i;
+		}
+		else
+			i++;
+		if (i > start)
+			expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
+	return (expanded);
+	}
 }
 
 char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
