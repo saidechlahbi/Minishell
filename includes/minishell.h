@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 22:07:40 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/20 00:11:21 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
+	int 			is_ambg;
+	int				expanded;
 	int				inq;
 	struct s_token	*next;
 }	t_token;
@@ -49,7 +51,8 @@ enum e_type
 	HERE_DOC,
 	DELIMITER,
 	APPEND,
-	AMBIGIUOS
+	AMBIGIUOS,
+	EXPANDED
 };
 
 typedef struct s_env

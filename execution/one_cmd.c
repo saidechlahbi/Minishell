@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 21:15:56 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/20 01:35:11 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void execute_cmd(t_cmds *commands, int *pid, t_garbage *garbage)
             printf("%s: command not found\n", commands->cmd[0]);
             get_out_from_here(garbage, 127);
         }
+        if (commands->cmd[0][0] == 0)
+            get_out_from_here(garbage, 1);
         redirection(commands);
         if (commands->read_from)
             dup2(commands->read_from, 0);

@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 23:02:50 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/20 02:07:22 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,4 +154,5 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
 		cur = next;
 	}
 	remove_quotes(tokens, encapsulizer, garbage);
+	lexing(tokens);
 }
