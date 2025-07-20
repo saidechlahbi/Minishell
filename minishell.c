@@ -92,7 +92,12 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			garbage = NULL;
 			continue ;
 		}
-		execution(tokens, &env, &status, &garbage);
+		while (tokens)
+		{
+			printf("%s\t%d\n", tokens->value, tokens->type);
+			tokens= tokens->next;
+		}
+		// execution(tokens, &env, &status, &garbage);
 		close_all_fds_fstat(3);
 		free_all(&garbage);
 	}

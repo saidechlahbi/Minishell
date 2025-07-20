@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 22:31:44 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/20 21:00:10 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@ t_env *create_copy(t_env *env, t_garbage **garbage)
     t_env *new_node;
     t_env *head;
     t_env *tail;
-	
-	head = NULL;
-	tail = NULL;
+
+    head = NULL;
+    tail = NULL;
     while (env)
     {
         new_node = ft_malloc(sizeof(t_env), 1, garbage);
         new_node->key = ft_malloc(strlen(env->key) + 1, 1, garbage);
         ft_strncpy(new_node->key, env->key, ft_strlen(env->key));
+        new_node->key[ft_strlen(env->key)] = '\0';
         if (env->value)
         {
             new_node->value = ft_malloc(strlen(env->value) + 1, 1, garbage);
             ft_strncpy(new_node->value, env->value, ft_strlen(env->value));
+            new_node->value[ft_strlen(env->value)] = '\0';
         }
         else
             new_node->value = NULL;
@@ -48,62 +50,68 @@ t_env *create_copy(t_env *env, t_garbage **garbage)
     return (head);
 }
 
-t_env	*sort_export(t_env *copy)
+t_env *sort_export(t_env *head)
 {
-	int		sorted;
-	char	*kc;
-	char	*vc;
+    int sorted;
+    t_env *current;
+    char *kc;
+    char *vc;
 
-	sorted = 0;
-	while (!sorted)
-	{
-		sorted = 1;
-		while (copy->next)
-		{
-			if (ft_strcmp(copy->key, copy->next->key) > 0)
-			{
-				kc = copy->key;
-				copy->key = copy->next->key;
-				copy->next->key = kc;
-				vc = copy->value;
-				copy->value = copy->next->value;
-				copy->next->value = vc;
-				sorted = 0;
-			}
-			copy = copy->next;
-		}
-	}
-	return (copy);
+    if (!head)
+        return (NULL);
+    
+    sorted = 0;
+    while (!sorted)
+    {
+        sorted = 1;
+        current = head;
+        while (current && current->next)
+        {
+            if (ft_strcmp(current->key, current->next->key) > 0)
+            {
+                kc = current->key;
+                current->key = current->next->key;
+                current->next->key = kc;
+                vc = current->value;
+                current->value = current->next->value;
+                current->next->value = vc;
+                sorted = 0;
+            }
+            current = current->next;
+        }
+    }
+    return (head);
 }
 
-void	print_export(t_env *env, t_garbage **garbage)
+void print_export(t_env *env, t_garbage **garbage)
 {
-	t_env	*copy;
-	int		i;
+    t_env *copy;
+    int i;
 
-	copy = create_copy(env, garbage);
-	copy = sort_export(copy);
-	while (copy)
-	{
-		printf("declare -x %s", copy->key);
-		if (copy->value)
-		{
-			printf("=\"");
-			i = 0;
-			while (copy->value[i++])
-			{
-				if (copy->value[i] == '"')
-					printf("\\\"");
-				else if (copy->value[i] == '$')
-					printf("\\$");
-				else
-					printf("%c", copy->value[i]);
-			}
-			printf("\"");
-		}
-		printf("\n");
-		copy = copy->next;
-	}
+    copy = create_copy(env, garbage);
+    copy = sort_export(copy);
+    while (copy)
+    {
+        printf("declare -x %s", copy->key);
+        if (copy->value)
+        {
+            printf("=\"");
+            i = 0;
+            while (copy->value[i])
+            {
+                if (copy->value[i] == '"')
+                    printf("\\\"");
+                else if (copy->value[i] == '$')
+                    printf("\\$");
+                else
+                    printf("%c", copy->value[i]);
+                i++;
+            }
+            printf("\"");
+        }
+        printf("\n");
+        copy = copy->next;
+    }
 }
 
 t_env	*find_key(t_env *env, char *key)
