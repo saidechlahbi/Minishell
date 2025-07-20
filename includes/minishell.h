@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 22:08:20 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/20 23:04:40 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int		validate_input(t_token *token, int *status);
 char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status);
 
 /*------------Utils-------------*/
+void	export_variable(t_env **env, char *arg, t_garbage **garbage);
 void    add_var(t_env **head, char *key, char *value, t_garbage **garbage);
 int		is_builtin(char *s);
 char    *randomize(t_garbage **garbage);
@@ -155,8 +156,7 @@ int		ft_pwd(void);
 void 	unset(t_env **env, char **args, t_garbage *garbage);
 void	print_env(t_env *env);
 void	export(t_env **env, char **args, t_garbage **garbage);
-int ft_cd(char **args, t_env **env, t_garbage **garbage);
-void	export_variable(t_env **env, char *arg, t_garbage **garbage);
+int		ft_cd(char **args, t_env **env, t_garbage **garbage);
 
 /*------------redirection-------------*/
 int 			open_files(t_cmds *command);
