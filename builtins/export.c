@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/21 00:42:45 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/21 00:48:07 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,10 @@ void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 		while (arg[i] && is_expandable2(arg[i]))
 			i++;
 	if (arg[i] && arg[i] != '=')
+    {
         perror("export");
+        return ;
+    }
 	equal = ft_strchr(arg, '=');
 	if (!equal)
 	{
