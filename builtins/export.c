@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/20 21:00:10 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/21 00:42:45 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,16 @@ t_env	*find_key(t_env *env, char *key)
 	return (NULL);
 }
 
+void save_data(t_garbage *garbage)
+{
+    if (!garbage)
+        return ;
+    while (garbage->next)
+        garbage = garbage->next;
+    if (garbage)
+        garbage->var = 1;
+}
+
 void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 {
 	char		*equal;
@@ -137,39 +147,26 @@ void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 	if (is_expandable(arg[i]))
 		while (arg[i] && is_expandable2(arg[i]))
 			i++;
-	if (arg[i])
-	{
-		if (arg[i] == '+' && arg[i + 1] == '=')
-			i += 2;
-		else if (arg[i] == '=')
-			i++;
-		else
-			return ;
-	}
+	if (arg[i] && arg[i] != '=')
+        perror("export");
 	equal = ft_strchr(arg, '=');
 	if (!equal)
 	{
 		newk = ft_strdup(arg, garbage);
+        save_data(*garbage);
 		newv = NULL;
-	}
-	else if (equal > arg && *(equal - 1) == '+')
-	{
-		newk = _substr(arg, 0, equal - 1 - arg, garbage);
-		existing = find_key(*env, newk);
-		if (!existing || !existing->value)
-			newv = ft_strdup(equal + 1, garbage);
-		else
-			newv = ft_strjoin(existing->value, equal + 1, garbage);
 	}
 	else
 	{
 		newk = _substr(arg, 0, equal - arg, garbage);
+        save_data(*garbage);
 		newv = ft_strdup(equal + 1, garbage);
+        save_data(*garbage);
 	}
 	existing = find_key(*env, newk);
 	if (!existing)
 		add_var(env, newk, newv, garbage);
-	else
+	else if (existing && equal)
 		existing->value = newv;
 }
 
@@ -177,7 +174,7 @@ void	export(t_env **env, char **args, t_garbage **garbage)
 {
 	int	i;
 
-	if (!args || !args[1])
+	if (!args[1])
 	{
 		print_export(*env, garbage);
 		return ;

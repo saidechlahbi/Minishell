@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 23:04:40 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/21 00:24:26 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 char	*ft_itoa(long n, t_garbage **garbage);
-
+void save_data(t_garbage *garbage);
 /*------------execution-------------*/
 void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
 t_cmds 			*splinting_into_proccess(t_token *token,char **envp, t_garbage **garbage);
@@ -149,7 +149,7 @@ void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
 int 			ft_size(t_cmds *commands);
 
 /*------------built-in-------------*/
-void 			execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
+void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
 void	ft_echo(char **args);
 int 	check_which_built_are(char *cmd);
 int		ft_pwd(void);
