@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/20 21:06:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/20 22:30:36 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ int ft_cd(char **args, t_env **env, t_garbage **garbage)
     char    *target;
     int     res;
 
-    old = getcwd(NULL, 0);
+    if(!(old = getcwd(NULL, 0)))
+    {
+        perror("cd");
+        return (1);
+    }
     if (!args[1])
     {
         target = exdoc("HOME", *env);
@@ -51,7 +55,13 @@ int ft_cd(char **args, t_env **env, t_garbage **garbage)
             free(old);
         return (1);
     }
-    pwd = getcwd(NULL, 0);
+    if (!(pwd = getcwd(NULL, 0)))
+    {
+        perror("cd");
+        if (old)
+            free (old);
+        return (1);
+    }
     set_oldpwd(env, pwd, old, garbage);
     if (pwd)
         free(pwd);

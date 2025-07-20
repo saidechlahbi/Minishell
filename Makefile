@@ -10,7 +10,7 @@ FILES		=   minishell.c \
 				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
 				execution/herdoc.c execution/one_cmd.c  execution/pipe_tools.c \
 				execution/execute_built_in.c builtins/echo.c builtins/pwd.c builtins/unset.c builtins/env.c \
-				builtins/export.c
+				builtins/export.c builtins/cd.c 
 
 OBJ_DIR		= obj
 OBJ			= $(FILES:.c=.o)
