@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/21 00:48:07 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/21 00:52:20 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,17 +147,35 @@ void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 	if (is_expandable(arg[i]))
 		while (arg[i] && is_expandable2(arg[i]))
 			i++;
-	if (arg[i] && arg[i] != '=')
-    {
-        perror("export");
-        return ;
-    }
+	if (arg[i])
+	{
+		if (arg[i] == '+' && arg[i + 1] == '=')
+			i += 2;
+		else if (arg[i] == '=')
+			i++;
+		else
+		{
+            perror("export");
+            return ;
+        }
+	}
 	equal = ft_strchr(arg, '=');
 	if (!equal)
 	{
 		newk = ft_strdup(arg, garbage);
         save_data(*garbage);
 		newv = NULL;
+	}
+	else if (equal > arg && *(equal - 1) == '+')
+	{
+		newk = _substr(arg, 0, equal - 1 - arg, garbage);
+        save_data(*garbage);
+		existing = find_key(*env, newk);
+		if (!existing || !existing->value)
+			newv = ft_strdup(equal + 1, garbage);
+		else
+			newv = ft_strjoin(existing->value, equal + 1, garbage);
+        save_data(*garbage);
 	}
 	else
 	{
