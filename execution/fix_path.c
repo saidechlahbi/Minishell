@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 21:44:20 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/20 01:33:12 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,11 @@ void fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
     {
         if (commands->cmd && commands->type == CMD)
         {
+            if (commands->cmd[0][0] == 0)
+            {
+                commands->executable = 1;
+                return ;
+            }
             cmd = get_right_path(env, commands->cmd[0], garbage);
             if (cmd)
             {

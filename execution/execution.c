@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 21:01:43 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/20 01:35:32 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,34 @@ static void seting(t_garbage *garage, int status)
     return;
 }
 
+int checking_ambigious(t_token *token)
+{
+    while (token)
+    {
+        if (token->type == RED_IN || token->type == APPEND 
+            || token->type == RED_OUT)
+        {
+            if (token->next->is_ambg && token->next->next && token->next->next->is_ambg)
+            {
+                printf("minishell: ambiguous redirect\n");
+                return 1;
+            }
+            else if (!token->next->value  && token->next->expanded)
+            {
+                printf("minishell: ambiguous redirect\n");
+                return 1;
+            }
+            else if (!token->next->value[0] &&  token->next->expanded)
+            {
+                printf("minishell: ambiguous redirect\n");
+                return 1;
+            }
+        }
+        token = token->next;
+    }
+    return 0;
+}
+
 void execution(t_token *token, t_env **env, int *exit_status, t_garbage **garbage)
 {
     t_cmds *commands;
@@ -66,6 +94,8 @@ void execution(t_token *token, t_env **env, int *exit_status, t_garbage **garbag
         return ;
     seting(*garbage, *exit_status);
     if (!herdoc(commands, exit_status, *env, garbage))
+        return ;
+    if (checking_ambigious(token))
         return ;
     fill_by_path(commands, *env, garbage);
     if (size(commands) == 1)

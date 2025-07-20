@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/20 20:57:40 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/20 21:06:51 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int ft_cd(char **args, t_env **env, t_garbage **garbage)
     char    *pwd;
     char    *old;
     char    *target;
-    int        res;
+    int     res;
 
     old = getcwd(NULL, 0);
     if (!args[1])

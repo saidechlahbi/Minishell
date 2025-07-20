@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 18:52:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/20 01:48:54 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,10 @@ t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
 void	lexing(t_token *token)
 {
 	t_token	*prev;
+	int	i;
 
 	prev = token;
+	i = 0;
 	if (token && token->type == WORD)
 	{
 		if (is_builtin(token->value))
@@ -143,11 +145,38 @@ void	lexing(t_token *token)
 	while (token)
 	{
 		if (token->type == RED_OUT)
+		{
 			token->next->type = OUT_FILE;
+			while (token->next->value[i])
+			{
+				if (token->next->value[i] == '$')
+					token->next->expanded = EXPANDED;
+				i++;
+			}
+			i = 0;
+		}
 		if (token->type == APPEND)
+		{
 			token->next->type = APP_FILE;
+			while (token->next->value[i])
+			{
+				if (token->next->value[i] == '$')
+					token->next->expanded = EXPANDED;
+				i++;
+			}
+			i = 0;
+		}
 		else if (token->type == RED_IN)
+		{
 			token->next->type = IN_FILE;
+			while (token->next->value[i])
+			{
+				if (token->next->value[i] == '$')
+					token->next->expanded = EXPANDED;
+				i++;
+			}
+			i = 0;
+		}
 		else if (token->type == HERE_DOC)
 			token->next->type = DELIMITER;
 		if (token->type == WORD)
