@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 00:11:21 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/21 02:14:56 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int		validate_input(t_token *token, int *status);
 char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status);
 
 /*------------Utils-------------*/
+void	export_variable(t_env **env, char *arg, t_garbage **garbage);
 void    add_var(t_env **head, char *key, char *value, t_garbage **garbage);
 int		is_builtin(char *s);
 char    *randomize(t_garbage **garbage);
@@ -133,6 +134,7 @@ char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 char	*ft_itoa(long n, t_garbage **garbage);
+void save_data(t_garbage *garbage);
 
 /*------------execution-------------*/
 void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
@@ -148,13 +150,14 @@ void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
 int 			ft_size(t_cmds *commands);
 
 /*------------built-in-------------*/
-void 			execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
+void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage, int exit_status);
 void	ft_echo(char **args);
 int 	check_which_built_are(char *cmd);
 int		ft_pwd(void);
 void 	unset(t_env **env, char **args, t_garbage *garbage);
 void	print_env(t_env *env);
 void	export(t_env **env, char **args, t_garbage **garbage);
+int		ft_cd(char **args, t_env **env, t_garbage **garbage);
 
 /*------------redirection-------------*/
 int 			open_files(t_cmds *command);

@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 17:19:50 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 22:08:05 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/21 02:14:08 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,16 @@ int check_which_built_are(char *cmd)
     return 0;
 }
 
-void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage)
+void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage, int exit_status)
 {
     int checker;
 
-    (void)garbage;
-    (void)env;
+
     checker = check_which_built_are(cmd[0]);
     if (checker == 0)
         ft_echo(cmd);
-        // else if (checker == 1)
-        //     ft_cd(cmd);
+    else if (checker == 1)
+        ft_cd(cmd, env, garbage);
     else if (checker == 2)
         ft_pwd();
     else if (checker == 3)
@@ -56,7 +55,7 @@ void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage)
         unset(env, cmd, *garbage);
     else if (checker == 5)
         print_env(*env);
-    // else if (checker == 6)
-    //     ft_exit(cmd);
+    else if (checker == 6)
+        ft_exit(cmd, *exit_status, *garbage);
     return ;
 }

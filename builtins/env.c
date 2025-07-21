@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 17:41:06 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/21 00:24:50 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	add_var(t_env **head, char *key, char *value, t_garbage **garbage)
 	t_env	*tmp;
 
 	new = ft_malloc(sizeof(t_env), 1, garbage);
+	save_data(*garbage);
 	new->key = key;
 	new->value = value;
 	new->next = NULL;

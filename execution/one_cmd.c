@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 01:35:11 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/21 02:13:26 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void one_command(t_cmds *commands, t_env **env, int *exit_status, t_garbage **ga
         return ;
     }
     if (commands->type == BUILTIN)
-        execute_built_in(commands->cmd, env, garbage);
+        execute_built_in(commands->cmd, env, garbage, exit_status);
     else
     {
         execute_cmd(commands, &pid, *garbage);
