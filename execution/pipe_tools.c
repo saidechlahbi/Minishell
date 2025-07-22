@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 21:24:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:24:15 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
 {
     if (command->type == BUILTIN)
+    {
         execute_built_in(command->cmd, env, garbage);
+         get_out_from_here(*garbage, 0);
+    }
     else
     {
         execve(command->cmd[0], command->cmd, command->envp);
@@ -29,7 +32,7 @@ void open_and_redirec(t_cmds *command, t_garbage *garbage)
 {
     if (open_files(command) == 0)
         get_out_from_here(garbage, 1);
-    if (command->executable == 0)
+    if (command->executable == 0 && command->type == CMD)
     {
         printf("%s: command not found\n", command->cmd[0]);
         get_out_from_here(garbage, 127);

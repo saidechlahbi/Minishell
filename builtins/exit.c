@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/21 01:50:05 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:49:10 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,20 @@ static unsigned char	_atoi(const char *str, int *error)
 
 static int check(char *str)
 {
-    while (*str && (*str >= 9 && *str <= 13) || *str == 32)
+    while ((*str && (*str >= 9 && *str <= 13) )|| *str == 32)
         str++;
     if (*str == '-' || *str == '+')
         str++;
     while (*str && *str >= '0' && *str <= '9')
         str++;
-    while (*str && (*str >= 9 && *str <= 13) || *str == 32)
+    while ((*str && (*str >= 9 && *str <= 13)) || *str == 32)
         str++;
     if (*str)
         return 1;
     return 0;
 }
 
-static int ft_size(char **args)
+static int ft_sizee(char **args)
 {
     int count ;
 
@@ -64,7 +64,7 @@ static void help(char *args)
 {
     ft_putstr_fd("minishell\n", 2);
     ft_putstr_fd("minishell: exit: ", 2);
-    ft_putstr_fd(args[1], 2);
+    ft_putstr_fd(args, 2);
     ft_putstr_fd(": numeric argument required\n", 2); 
 }
 
@@ -74,14 +74,14 @@ void ft_exit(char **args, int exit_status, t_garbage *garbage)
     int exit_s; 
 
     error = 0;
-    if (ft_size(args) == 1)
+    if (ft_sizee(args) == 1)
         exit(exit_status);
     if (check(args[1]))
     {
-        help(args[1])
+        help(args[1]);
         get_out_from_here(garbage, 2);
     }
-    if (ft_size(args) > 2)
+    if (ft_sizee(args) > 2)
     {
         ft_putstr_fd("minishell\n", 2);
         ft_putstr_fd("minishell: exit: too many arguments\n", 2);

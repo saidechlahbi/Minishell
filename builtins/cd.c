@@ -16,10 +16,10 @@ static void set_oldpwd(t_env **env, char *pwd, char *old, t_garbage **garbage)
 {
     char *tmp;
 
-        tmp = ft_strjoin("PWD=", pwd, garbage);
-        export_variable(env, tmp, garbage);
-        tmp = ft_strjoin("OLDPWD=", old, garbage);
-        export_variable(env, tmp, garbage);
+    tmp = ft_strjoin("PWD=", pwd, garbage);
+    export_variable(env, tmp, garbage);
+    tmp = ft_strjoin("OLDPWD=", old, garbage);
+    export_variable(env, tmp, garbage);
 }
 
 int ft_cd(char **args, t_env **env, t_garbage **garbage)

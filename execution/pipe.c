@@ -6,22 +6,24 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 21:03:28 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/22 19:12:45 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void first_pipe(t_cmds *command, t_env **env, int *f_pipe, t_garbage **garbage)
+static int first_pipe(t_cmds *command, t_env **env, int *f_pipe, t_garbage **garbage)
 {
     command->pid = fork();
     if(command->pid == -1)
     {
-        perror("fork");
-        get_out_from_here(*garbage, 1);
+        perror("fork failed\n");
+        return 1;
     }
     if (command->pid == 0)
     {
+        if(check_if_is_it_dir(command->cmd[0]))
+            get_out_from_here(*garbage, 126);
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
         open_and_redirec(command, *garbage);
@@ -37,19 +39,21 @@ static void first_pipe(t_cmds *command, t_env **env, int *f_pipe, t_garbage **ga
     }
     else
         g_global_signal = -1;
-    return;
+    return 0;
 }
 
-static void middle_pipe(t_cmds *command, t_env **env, int *f_pipe,  t_garbage **garbage)
+static int middle_pipe(t_cmds *command, t_env **env, int *f_pipe,  t_garbage **garbage)
 {
     command->pid = fork();
     if(command->pid == -1)
     {
-        perror("fork");
-        get_out_from_here(*garbage, 1);
+        perror("fork failed\n");
+        return 1;
     }
     if (command->pid == 0)
     {
+        if(check_if_is_it_dir(command->cmd[0]))
+            get_out_from_here(*garbage, 126);
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
         open_and_redirec(command, *garbage);
@@ -67,18 +71,21 @@ static void middle_pipe(t_cmds *command, t_env **env, int *f_pipe,  t_garbage **
     }
     else
         g_global_signal = -1;
+    return 0;
 }
 
-static void last_pipe(t_cmds *command, t_env **env, int *f_pipe, t_garbage **garbage)
+static int last_pipe(t_cmds *command, t_env **env, int *f_pipe, t_garbage **garbage)
 {
     command->pid = fork();
     if(command->pid == -1)
     {
-        perror("fork");
-        get_out_from_here(*garbage, 1);
+        perror("fork failed\n");
+        return 1;
     }
     if (command->pid == 0)
     {
+        if(check_if_is_it_dir(command->cmd[0]))
+            get_out_from_here(*garbage, 126);
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
         open_and_redirec(command, *garbage);
@@ -94,6 +101,7 @@ static void last_pipe(t_cmds *command, t_env **env, int *f_pipe, t_garbage **gar
     }
     else
         g_global_signal = -1;
+    return 0;
 }
 
 static int wait_commands(int size, t_cmds * cmd)
@@ -123,20 +131,32 @@ void pipes(t_cmds *commands, int *exit_status, t_env **env, t_garbage **garbage)
 
     tmp = commands;
     pipe(f_pipe);
-    first_pipe(tmp, env, f_pipe, garbage);
+    if (first_pipe(tmp, env, f_pipe, garbage))
+    {
+        *exit_status = 1;
+        return ;
+    }
     tmp = tmp->next;
     while (tmp->next)
     {
         close(f_pipe[1]);
         pipe(s_pipe);
         f_pipe[1] = s_pipe[1];
-        middle_pipe(tmp, env, f_pipe, garbage);
+        if (middle_pipe(tmp, env, f_pipe, garbage))
+        {
+            *exit_status = 1;
+            return ;
+        }
         close(f_pipe[0]);
         f_pipe[0] = s_pipe[0];
         f_pipe[1] = s_pipe[1];
         tmp = tmp->next;
     }
-    last_pipe(tmp, env, f_pipe, garbage);
+    if (last_pipe(tmp, env, f_pipe, garbage))
+    {
+        *exit_status = 1;
+        return ;
+    }
     close(f_pipe[1]);
     close(f_pipe[0]);
     *exit_status = wait_commands(ft_size(commands),commands);

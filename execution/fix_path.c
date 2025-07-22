@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 01:33:12 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/22 19:10:00 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,14 @@ int check(char *str)
 static char *get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 {
     char **paths;
-    char *cmd_with_path, *str;
+    char *cmd_with_path;
+    char  *str;
 
     if (check(cmd) == 1)
         if (!access(cmd, X_OK))
             return ft_strdup(cmd, garbage);
+    if (ft_strchr(cmd, '/'))
+        return (NULL);
     paths = get_paths(env, garbage);
     if (!paths)
         return NULL;
@@ -89,7 +92,7 @@ static char *get_right_path(t_env *env, char *cmd, t_garbage **garbage)
     {
         str = ft_strjoin(*paths, "/", garbage);
         cmd_with_path = ft_strjoin(str, cmd, garbage);
-        if (access(cmd_with_path, X_OK) == 0)
+        if (!access(cmd_with_path, X_OK))
             return (cmd_with_path);
         paths++;
     }

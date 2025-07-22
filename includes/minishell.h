@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/21 02:14:56 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:01:09 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <stdio.h>
 #include <termios.h> 
 #include <fcntl.h>
@@ -70,6 +71,7 @@ typedef struct s_redirection
 	int fd;
 	int type;
 	int inq;
+	int is_ambigious;
 	struct s_redirection *next;
 }t_redirection;
 
@@ -148,9 +150,9 @@ int 			check_is_built_in(char *cmd);
 void 			execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage);
 void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
 int 			ft_size(t_cmds *commands);
-
+int check_if_is_it_dir(char *cmd);
 /*------------built-in-------------*/
-void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage, int exit_status);
+void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
 void	ft_echo(char **args);
 int 	check_which_built_are(char *cmd);
 int		ft_pwd(void);
@@ -158,6 +160,10 @@ void 	unset(t_env **env, char **args, t_garbage *garbage);
 void	print_env(t_env *env);
 void	export(t_env **env, char **args, t_garbage **garbage);
 int		ft_cd(char **args, t_env **env, t_garbage **garbage);
+void 	ft_exit(char **args, int exit_status, t_garbage *garbage);
+t_garbage *f(t_garbage *garbage);
+/*------------ambigious-------------*/
+void checking_ambigious(t_token *token, t_cmds *commands);
 
 /*------------redirection-------------*/
 int 			open_files(t_cmds *command);
