@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 10:22:09 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 10:24:28 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*expand(char *var, t_env *env, char *encapsulizer, t_garbage **garbage)
 	return (NULL);
 }
 
-static char	*expand_exit_status(t_scanner *var, char *input, char *expanded,int status,
-		t_garbage **garbage)
+static char	*expand_exit_status(t_scanner *var, char *input, char *expanded,
+		int status, t_garbage **garbage)
 {
 	if (input[var->i] == '\'' && !var->in_dquote)
 		var->in_squote = !var->in_squote;
@@ -65,29 +65,28 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage,
 {
 	char		*expanded;
 	char		*value;
-	t_scanner	var;
+	t_scanner	v;
 
-	ft_bzero(&var, sizeof(var));
+	ft_bzero(&v, sizeof(v));
 	expanded = ft_strdup("", garbage);
-	while (input[var.i])
+	while (input[v.i])
 	{
-		expanded = expand_exit_status(&var, input, expanded,status, garbage);
-		if (input[var.i] == '$' && !var.in_squote && is_expandable(input[var.i
-					+ 1]))
+		expanded = expand_exit_status(&v, input, expanded, status, garbage);
+		if (input[v.i] == '$' && !v.in_squote && is_expandable(input[v.i + 1]))
 		{
-			expanded = prep_helper(&var, input, expanded, garbage);
-			value = expand(_substr(input, var.start, var.i - var.start,
-						garbage), env, encapsulizer, garbage);
+			expanded = prep_helper(&v, input, expanded, garbage);
+			value = expand(_substr(input, v.start, v.i - v.start, garbage), env,
+					encapsulizer, garbage);
 			if (value)
 				expanded = ft_strjoin(expanded, value, garbage);
-			var.start = var.i;
+			v.start = v.i;
 		}
 		else
-			var.i++;
+			v.i++;
 	}
-	if (var.i > var.start)
-		expanded = ft_strjoin(expanded, _substr(input, var.start, var.i
-					- var.start, garbage), garbage);
+	if (v.i > v.start)
+		expanded = ft_strjoin(expanded, _substr(input, v.start, v.i - v.start,
+					garbage), garbage);
 	return (expanded);
 }
 
