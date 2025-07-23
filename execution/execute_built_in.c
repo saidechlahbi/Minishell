@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 17:19:50 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 22:06:56 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/21 17:38:19 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage)
 {
     int checker;
 
-    (void)garbage;
-    (void)env;
+
     checker = check_which_built_are(cmd[0]);
     if (checker == 0)
         ft_echo(cmd);
@@ -56,7 +55,7 @@ void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage)
         unset(env, cmd, *garbage);
     else if (checker == 5)
         print_env(*env);
-    // else if (checker == 6)
-    //     ft_exit(cmd);
+    else if (checker == 6)
+        ft_exit(cmd, (*garbage)->status, *garbage);
     return ;
 }

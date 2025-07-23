@@ -19,16 +19,13 @@ void	handle_sigint(int signum __attribute__((unused)))
 {
 	if (g_global_signal == 0)
 	{
+		rl_replace_line("", 0);       // Clear the current input
 		write(1, "\n", 1);              // Move to new line
 		rl_on_new_line();              // Tell readline we're on a new line
-		rl_replace_line("", 0);       // Clear the current input
 		rl_redisplay();              // Redraw the prompt
 	}
 	else
-	{
-		// rl_done = 1; 
 		write(1, "\n", 1);
-	}
 	g_global_signal = 0;
 }
 
@@ -57,6 +54,13 @@ void set_not(t_garbage *garbage)
 	}
 	return ;
 }
+t_garbage *f(t_garbage *garbage)
+{
+    static t_garbage *head;
+	if (garbage)
+		head = garbage;
+    return head;
+}
 
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
@@ -80,7 +84,10 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
     	// rl_reset_line_state();
 		input = readline("minishell$ ");
 		if (!input)
-			exit(1);
+		{
+			ft_putstr_fd("exiting minishell...\n", 2);
+			get_out_from_here(garbage, 1);
+		}
 		if (!input[0])
 			continue ;
 		add_back_for_garbage(&garbage, new_garbage(input, garbage));
@@ -92,12 +99,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			garbage = NULL;
 			continue ;
 		}
-		// t_token *tmp=tokens;
-		// while (tmp)
-		// {
-		// 	printf("%s %d\t%d\t%d\n", tmp->value, tmp->type, tmp->is_ambg, tmp->expanded);
-		// 	tmp = tmp->next;
-		// }
+		f(garbage);
 		execution(tokens, &env, &status, &garbage);
 		close_all_fds_fstat(3);
 		free_all(&garbage);

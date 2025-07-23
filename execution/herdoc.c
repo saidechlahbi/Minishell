@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 04:44:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/19 23:04:05 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:14:54 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 //     term.c_lflag |= (ECHO | ICANON);
 //     tcsetattr(STDIN_FILENO, TCSANOW, &term);
 // }
+
+void herdoc_handler(int sig_herdoc __attribute__((unused)))
+{
+    t_garbage *garbage;
+    
+    garbage = f(NULL);
+    get_out_from_here(garbage, 2);
+}
 
 static void read_from_stdin(t_redirection *redirec, int fd, t_env *env, t_garbage **garbage)
 {
@@ -66,8 +74,8 @@ static void open_herdoc(t_redirection *redirec, int *pid, t_env *env, t_garbage 
     }
     if (*pid == 0)
     {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
+        signal(SIGINT, herdoc_handler);
+        signal(SIGQUIT, SIG_IGN);
         read_from_stdin(redirec, fd, env, garbage);
         // close_all_fds_fstat(3);
         // get_out_from_here(garbage, 0);
