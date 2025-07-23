@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 08:52:02 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 11:12:11 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@ char	*exdoc(char *var, t_env *env)
 	return (NULL);
 }
 
-static char	*exdoc_exit_status(t_scanner *var, char *input, int status,
+static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded ,int status,
 		t_garbage **garbage)
 {
-	char	*expanded;
-
-	expanded = ft_strdup("", garbage);
 	if (input[var->i] == '$' && input[var->i + 1] == '?')
 	{
 		expanded = ft_strjoin(expanded, _substr(input, var->start, var->i
@@ -46,10 +43,11 @@ char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
 	char		*value;
 	t_scanner	var;
 
+	expanded = ft_strdup("", garbage);
 	ft_bzero(&var, sizeof(var));
 	while (input[var.i])
 	{
-		expanded = exdoc_exit_status(&var, input, status, garbage);
+		expanded = exdoc_exit_status(&var, input, expanded, status, garbage);
 		if (input[var.i] == '$' && is_expandable(input[var.i + 1]))
 		{
 			expanded = prep_helper(&var, input, expanded, garbage);

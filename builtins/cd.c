@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 09:34:05 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 11:14:42 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@ int ft_cd(char **args, t_env **env, t_garbage **garbage)
     char    *target;
     int     res;
 
+    if (args[2])
+        return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
     old = getcwd(NULL, 0);
-    // if(!old)
-    //     return (perror("cd"), 1);
+    if(!old)
+        return (perror("cd"), 1);
     if (!args[1])
     {
         target = exdoc("HOME", *env);
         if (!target)
         {
-            ft_putstr_fd("cd: HOME not set\n", 2);
+            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
             if (old)
                 free(old);
             return (1);
@@ -54,13 +56,13 @@ int ft_cd(char **args, t_env **env, t_garbage **garbage)
         return (1);
     }
     pwd = getcwd(NULL, 0);
-    // if (!pwd)
-    // {
-    //     perror("cd");
-    //     if (old)
-    //         free (old);
-    //     return (1);
-    // }
+    if (!pwd)
+    {
+        perror("cd");
+        if (old)
+            free (old);
+        return (1);
+    }
     set_oldpwd(env, pwd, old, garbage);
     if (pwd)
         free(pwd);
