@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/21 00:52:20 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 11:42:20 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,7 @@ void print_export(t_env *env, t_garbage **garbage)
             i = 0;
             while (copy->value[i])
             {
-                if (copy->value[i] == '"')
-                    printf("\\\"");
-                else if (copy->value[i] == '$')
-                    printf("\\$");
-                else
-                    printf("%c", copy->value[i]);
+                printf("%c", copy->value[i]);
                 i++;
             }
             printf("\"");

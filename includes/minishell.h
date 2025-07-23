@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/23 05:58:42 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/23 12:50:24 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,17 +148,17 @@ void	save_data(t_garbage *garbage);
 void	ft_bzero(void *s, size_t n);
 char	*prep_helper(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
 /*------------execution-------------*/
-void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
-t_cmds 			*splinting_into_proccess(t_token *token,char **envp, t_garbage **garbage);
-void 			fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage);
-char 			**env_lst_to_char2(t_env *env, t_garbage **garbage);
-void 			pipes(t_cmds *commands, int *exit_status, t_env **env, t_garbage **garbage);
-void 			one_command(t_cmds *commands, t_env **env, int *exit_status, t_garbage **garbage);
-int 			herdoc(t_cmds *commands, int *exit_status, t_env *env, t_garbage **garbage);
-int 			check_is_built_in(char *cmd);
-void 			execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage);
-void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
-int 			ft_size(t_cmds *commands);
+void 	execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
+t_cmds 	*splinting_into_proccess(t_token *token,char **envp, t_garbage **garbage);
+void 	fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage);
+char 	**env_lst_to_char2(t_env *env, t_garbage **garbage);
+void 	pipes(t_cmds *commands, int *exit_status, t_env **env, t_garbage **garbage);
+void 	one_command(t_cmds *commands, t_env **env, int *exit_status, t_garbage **garbage);
+int 	herdoc(t_cmds *commands, int *exit_status, t_env *env, t_garbage **garbage);
+int 	check_is_built_in(char *cmd);
+void 	execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage);
+void 	open_and_redirec(t_cmds *command, t_garbage *garbage);
+int 	ft_size(t_cmds *commands);
 
 /*------------built-in-------------*/
 void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage);

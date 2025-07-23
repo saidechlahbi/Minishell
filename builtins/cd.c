@@ -6,67 +6,74 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 11:14:42 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 13:26:51 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void set_oldpwd(t_env **env, char *pwd, char *old, t_garbage **garbage)
+static void	set_oldpwd(t_env **env, char *pwd, char *old, t_garbage **garbage)
 {
-    char *tmp;
+	char	*tmp;
 
-        tmp = ft_strjoin("PWD=", pwd, garbage);
-        export_variable(env, tmp, garbage);
-        tmp = ft_strjoin("OLDPWD=", old, garbage);
-        export_variable(env, tmp, garbage);
+	tmp = ft_strjoin("PWD=", pwd, garbage);
+	export_variable(env, tmp, garbage);
+	tmp = ft_strjoin("OLDPWD=", old, garbage);
+	export_variable(env, tmp, garbage);
 }
 
-int ft_cd(char **args, t_env **env, t_garbage **garbage)
+static int	change_dir(char **args, t_env **env)
 {
-    char    *pwd;
-    char    *old;
-    char    *target;
-    int     res;
+	char	*target;
+	int		res;
 
-    if (args[2])
-        return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
-    old = getcwd(NULL, 0);
-    if(!old)
-        return (perror("cd"), 1);
-    if (!args[1])
-    {
-        target = exdoc("HOME", *env);
-        if (!target)
-        {
-            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-            if (old)
-                free(old);
-            return (1);
-        }
-        res = chdir(target);
-    }
-    else
-        res = chdir(args[1]);
-    if (res)
-    {
-        perror("cd");
-        if (old)
-            free(old);
-        return (1);
-    }
-    pwd = getcwd(NULL, 0);
-    if (!pwd)
-    {
-        perror("cd");
-        if (old)
-            free (old);
-        return (1);
-    }
-    set_oldpwd(env, pwd, old, garbage);
-    if (pwd)
-        free(pwd);
-    if (old)
-        free(old);
-    return (0);
+	if (!args[1])
+	{
+		target = exdoc("HOME", *env);
+		if (!target)
+		{
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			return (1);
+		}
+		res = chdir(target);
+	}
+	else
+		res = chdir(args[1]);
+	return (res);
+}
+
+static void	free_pwd(char *old, char *pwd)
+{
+	if (old)
+		free(old);
+	if (pwd)
+		free(pwd);
+}
+
+int	ft_cd(char **args, t_env **env, t_garbage **garbage)
+{
+	char	*pwd;
+	char	*old;
+	int		res;
+
+	if (args[2])
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
+	old = getcwd(NULL, 0);
+	if (!old)
+		perror("");
+	res = change_dir(args, env);
+	if (res)
+	{
+		if (res == -1)
+			perror("");
+		if (old)
+			free(old);
+		return (1);
+	}
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (perror(""), free_pwd(old, pwd), 1);
+	set_oldpwd(env, pwd, old, garbage);
+	free_pwd(old, pwd);
+	return (0);
 }
