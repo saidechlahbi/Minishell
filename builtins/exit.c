@@ -6,13 +6,13 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/23 14:32:45 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 16:49:59 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static unsigned char    _atoi(const char *str, int *error)
+static unsigned char	_atoi(const char *str, int *error)
 {
 	long long	result;
 	int			sign;
@@ -21,13 +21,12 @@ static unsigned char    _atoi(const char *str, int *error)
 	sign = 1;
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
-    if (*str == '-' || *str == '+')
-    {
-        if ((sign = (*str++ == '-')))
-            return -1;
-        else
-            return 1;
-    }
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
 	while (*str >= '0' && *str <= '9')
 	{
 		if (result > (LLONG_MAX - (*str - '0')) / 10)
