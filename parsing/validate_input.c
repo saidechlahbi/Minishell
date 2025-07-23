@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:55:51 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 10:57:26 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 16:37:03 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ int	validate_input(t_token *token, int *status)
 void	delimiter(t_token *token)
 {
 	int	i;
-	int	inq;
 
-	inq = 0;
 	while (token)
 	{
 		if (token->type == DELIMITER)
