@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils03.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:03:31 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/15 17:35:55 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/23 05:48:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_strstr(const char *str, const char *target)
 	return (NULL);
 }
 
-static void	ft_bzero(void *s, size_t n)
+void	ft_bzero(void *s, size_t n)
 {
 	size_t	i;
 	char	*str;

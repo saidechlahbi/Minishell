@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/21 00:24:26 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 05:58:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ enum e_type
 	AMBIGIUOS,
 	EXPANDED
 };
+
+typedef struct s_scanner
+{
+	t_token	*tokens;
+	int		i;
+	int		start;
+	int		in_squote;
+	int		in_dquote;
+	int		encapsuled;
+}	t_scanner;
 
 typedef struct s_env
 {
@@ -134,7 +144,9 @@ char	**ft_split(char const *s, char c, t_garbage **garbage);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 char	*ft_itoa(long n, t_garbage **garbage);
-void save_data(t_garbage *garbage);
+void	save_data(t_garbage *garbage);
+void	ft_bzero(void *s, size_t n);
+char	*prep_helper(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
 /*------------execution-------------*/
 void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
 t_cmds 			*splinting_into_proccess(t_token *token,char **envp, t_garbage **garbage);

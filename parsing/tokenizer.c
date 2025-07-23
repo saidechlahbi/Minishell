@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 01:48:54 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/23 05:55:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,101 @@ int	validate_input(t_token *token, int *status)
 	return (0);
 }
 
-t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
+void	delimiter(t_token *token)
+{
+	int	i;
+	int	inq;
+
+	inq = 0;
+	while (token)
+	{
+		if (token->type == DELIMITER)
+		{
+			i = 0;
+			while (token->value[i])
+			{
+				if (token->value[i] == '\'' || token->value[i] == '"')
+					token->inq = 1;
+				i++;
+			}
+		}
+		token = token->next;
+	}
+}
+
+static void	handle_quotes(t_scanner *var, char c)
+{
+	if (c == '\'' && !var->in_dquote)
+	{
+		var->in_squote = !var->in_squote;
+		var->i++;
+	}
+	else if (c == '"' && !var->in_squote)
+	{
+		var->in_dquote = !var->in_dquote;
+		var->i++;
+	}
+}
+
+static void	handle_spaces(t_scanner *var, char *input, t_garbage **garbage)
+{
+	if (var->i > var->start)
+		add_token(&var->tokens, _substr(input, var->start, var->i - var->start,
+				garbage), WORD, garbage);
+	while (ft_isspace(input[var->i]))
+		var->i++;
+	var->start = var->i;
+}
+
+static void	handle_operator(t_scanner *var, char *input, t_garbage **garbage)
+{
+	if (var->i > var->start)
+		add_token(&var->tokens, _substr(input, var->start, var->i - var->start,
+				garbage), WORD, garbage);
+	else if (is_append(&input[var->i]) != -1)
+	{
+		add_token(&var->tokens, _substr(input, var->i, 2, garbage),
+			is_append(&input[var->i]), garbage);
+		var->i += 2;
+	}
+	else
+	{
+		add_token(&var->tokens, _substr(input, var->i, 1, garbage),
+			is_operator(input[var->i]), garbage);
+		var->i++;
+	}
+	var->start = var->i;
+}
+
+t_token	*tokenize(char *input, t_garbage **garbage, int *status)
+{
+	t_scanner	var;
+
+	ft_bzero(&var, sizeof(var));
+	while (input[var.i])
+	{
+		if (input[var.i] == '\'' || input[var.i] == '"')
+			handle_quotes(&var, input[var.i]);
+		else if (!var.in_squote && !var.in_dquote && ft_isspace(input[var.i]))
+			handle_spaces(&var, input, garbage);
+		else if (!var.in_squote && !var.in_dquote
+			&& is_operator(input[var.i]) != -1)
+			handle_operator(&var, input, garbage);
+		else
+			var.i++;
+	}
+	if (var.i > var.start)
+		add_token(&var.tokens, _substr(input, var.start, var.i - var.start,
+				garbage), WORD, garbage);
+	if (var.in_squote || var.in_dquote)
+	{
+		ft_putstr_fd("Error : Syntax\n", 2);
+		*status = 2;
+		return (NULL);
+	}
+	return (var.tokens);
+}
+/*t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
 {
 	t_token	*tokens;
 	int		i;
@@ -124,92 +218,4 @@ t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
 		return (NULL);
 	}
 	return (tokens);
-}
-
-void	lexing(t_token *token)
-{
-	t_token	*prev;
-	int	i;
-
-	prev = token;
-	i = 0;
-	if (token && token->type == WORD)
-	{
-		if (is_builtin(token->value))
-			token->type = BUILTIN;
-		else
-			token->type = CMD;
-		prev = token;
-		token = token->next;
-	}
-	while (token)
-	{
-		if (token->type == RED_OUT)
-		{
-			token->next->type = OUT_FILE;
-			while (token->next->value[i])
-			{
-				if (token->next->value[i] == '$')
-					token->next->expanded = EXPANDED;
-				i++;
-			}
-			i = 0;
-		}
-		if (token->type == APPEND)
-		{
-			token->next->type = APP_FILE;
-			while (token->next->value[i])
-			{
-				if (token->next->value[i] == '$')
-					token->next->expanded = EXPANDED;
-				i++;
-			}
-			i = 0;
-		}
-		else if (token->type == RED_IN)
-		{
-			token->next->type = IN_FILE;
-			while (token->next->value[i])
-			{
-				if (token->next->value[i] == '$')
-					token->next->expanded = EXPANDED;
-				i++;
-			}
-			i = 0;
-		}
-		else if (token->type == HERE_DOC)
-			token->next->type = DELIMITER;
-		if (token->type == WORD)
-		{
-			if (prev->type == CMD || prev->type == BUILTIN)
-				token->type = ARG;
-			else
-				token->type = CMD;
-		}
-		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
-			prev = token;
-		token = token->next;
-	}
-}
-
-void	delimiter(t_token *token)
-{
-	int	i;
-	int	inq;
-
-	inq = 0;
-	while (token)
-	{
-		if (token->type == DELIMITER)
-		{
-			i = 0;
-			while (token->value[i])
-			{
-				if (token->value[i] == '\'' || token->value[i] == '"')
-					token->inq = 1;
-				i++;
-			}
-		}
-		token = token->next;
-	}
-}
+}*/

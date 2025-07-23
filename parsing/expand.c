@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/20 02:07:22 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/23 10:22:09 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,57 +30,93 @@ char	*expand(char *var, t_env *env, char *encapsulizer, t_garbage **garbage)
 	return (NULL);
 }
 
-char	*exdoc(char *var, t_env *env)
+static char	*expand_exit_status(t_scanner *var, char *input, char *expanded,int status,
+		t_garbage **garbage)
 {
-	while (env)
+	if (input[var->i] == '\'' && !var->in_dquote)
+		var->in_squote = !var->in_squote;
+	if (input[var->i] == '"' && !var->in_squote)
+		var->in_dquote = !var->in_dquote;
+	if (input[var->i] == '$' && !var->in_squote && input[var->i + 1] == '?')
 	{
-		if (!ft_strcmp(var, env->key))
-			return (env->value);
-		env = env->next;
+		expanded = ft_strjoin(expanded, _substr(input, var->start, var->i
+					- var->start, garbage), garbage);
+		var->i += 2;
+		var->start = var->i;
+		expanded = ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
 	}
-	return (NULL);
-}
-
-char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
-{
-	int		start;
-	int		i;
-	char	*expanded;
-	char	*value;
-	
-	start = 0;
-	expanded = ft_strdup("", garbage);
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == '$' && input[i + 1] == '?')
-		{
-			expanded = ft_strjoin(expanded, _substr(input, start, i-start, garbage),garbage);
-			i+=2;
-			start = i;
-			expanded = ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
-		}
-		if (input[i] == '$' && is_expandable(input[i + 1]))
-		{
-			expanded = ft_strjoin(expanded, _substr(input, start, i-start, garbage),garbage);
-			i++;
-			start = i;
-			while(input[i] && is_expandable2(input[i]))
-				i++;
-			value = exdoc(_substr(input, start, i - start, garbage), env);
-			if (value)
-				expanded = ft_strjoin(expanded, value, garbage);
-			start = i;
-		}
-		else
-			i++;
-	}
-	if (i > start)
-		expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
 	return (expanded);
 }
 
-char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage, int status)
+char	*prep_helper(t_scanner *var, char *input, char *expanded,
+		t_garbage **garbage)
+{
+	expanded = ft_strjoin(expanded, _substr(input, var->start, var->i
+				- var->start, garbage), garbage);
+	var->i++;
+	var->start = var->i;
+	while (input[var->i] && is_expandable2(input[var->i]))
+		var->i++;
+	return (expanded);
+}
+
+char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage,
+		int status)
+{
+	char		*expanded;
+	char		*value;
+	t_scanner	var;
+
+	ft_bzero(&var, sizeof(var));
+	expanded = ft_strdup("", garbage);
+	while (input[var.i])
+	{
+		expanded = expand_exit_status(&var, input, expanded,status, garbage);
+		if (input[var.i] == '$' && !var.in_squote && is_expandable(input[var.i
+					+ 1]))
+		{
+			expanded = prep_helper(&var, input, expanded, garbage);
+			value = expand(_substr(input, var.start, var.i - var.start,
+						garbage), env, encapsulizer, garbage);
+			if (value)
+				expanded = ft_strjoin(expanded, value, garbage);
+			var.start = var.i;
+		}
+		else
+			var.i++;
+	}
+	if (var.i > var.start)
+		expanded = ft_strjoin(expanded, _substr(input, var.start, var.i
+					- var.start, garbage), garbage);
+	return (expanded);
+}
+
+void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
+{
+	t_token	*cur;
+	t_token	*next;
+	char	*expanded;
+	char	*encapsulizer;
+
+	cur = tokens;
+	encapsulizer = randomize(garbage);
+	while (cur)
+	{
+		next = cur->next;
+		if (ft_strchr(cur->value, '$') && cur->type != DELIMITER)
+		{
+			expanded = prep(cur->value, env, encapsulizer, garbage, status);
+			cur->value = expanded;
+			split_n_insert(cur, encapsulizer, garbage);
+		}
+		cur = next;
+	}
+	remove_quotes(tokens, encapsulizer, garbage);
+	lexing(tokens);
+}
+/*
+char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage,
+		int status)
 {
 	int		in_squote;
 	int		in_dquote;
@@ -102,7 +138,8 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage, int
 			in_squote = !in_squote;
 		if (input[i] == '$' && !in_squote && input[i + 1] == '?')
 		{
-			expanded = ft_strjoin(expanded, _substr(input, start, i - start, garbage), garbage);
+			expanded = ft_strjoin(expanded, _substr(input, start, i - start,
+						garbage), garbage);
 			i+=2;
 			start = i;
 			expanded =ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
@@ -132,27 +169,4 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage, int
 					garbage), garbage);
 	return (expanded);
 }
-
-void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
-{
-	t_token	*cur;
-	t_token	*next;
-	char	*expanded;
-	char	*encapsulizer;
-
-	cur = tokens;
-	encapsulizer = randomize(garbage);
-	while (cur)
-	{
-		next = cur->next;
-		if (ft_strchr(cur->value, '$') && cur->type != DELIMITER)
-		{
-			expanded = prep(cur->value, env, encapsulizer, garbage, status);
-			cur->value = expanded;
-			split_n_insert(cur, encapsulizer, garbage);
-		}
-		cur = next;
-	}
-	remove_quotes(tokens, encapsulizer, garbage);
-	lexing(tokens);
-}
+*/
