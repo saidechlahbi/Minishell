@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/23 05:55:28 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/23 10:57:31 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,53 +29,6 @@ void	add_token(t_token **head, char *value, int type, t_garbage **garbage)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
-	}
-}
-
-int	validate_input(t_token *token, int *status)
-{
-	t_token	*cur;
-
-	if (!token || !ft_strncmp(token->value, "|", 1))
-	{
-		ft_putstr_fd("Error : Syntax\n", 2);
-		*status = 2;
-		return (1);
-	}
-	cur = token;
-	while (cur)
-	{
-		if ((is_error(cur->value) && cur->next && is_op(cur->next->value))
-			|| (is_op(cur->value) && !cur->next))
-		{
-			ft_putstr_fd("Error : Syntax\n", 2);
-			*status = 2;
-			return (1);
-		}
-		cur = cur->next;
-	}
-	return (0);
-}
-
-void	delimiter(t_token *token)
-{
-	int	i;
-	int	inq;
-
-	inq = 0;
-	while (token)
-	{
-		if (token->type == DELIMITER)
-		{
-			i = 0;
-			while (token->value[i])
-			{
-				if (token->value[i] == '\'' || token->value[i] == '"')
-					token->inq = 1;
-				i++;
-			}
-		}
-		token = token->next;
 	}
 }
 
