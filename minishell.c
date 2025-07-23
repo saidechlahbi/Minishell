@@ -13,52 +13,95 @@
 
 #include "includes/minishell.h"
 
-int main(int ac __attribute__((unused)), char **av __attribute__((unused)),  char **envp)
+int g_global_signal = 0;
+
+void	handle_sigint(int signum __attribute__((unused)))
 {
-    t_token *tokens;
-    // t_token *tmp;
-    t_env   *env;
-    // t_cmds *commands;
+	if (g_global_signal == 0)
+	{
+		rl_replace_line("", 0);       // Clear the current input
+		write(1, "\n", 1);              // Move to new line
+		rl_on_new_line();              // Tell readline we're on a new line
+		rl_redisplay();              // Redraw the prompt
+	}
+	else
+		write(1, "\n", 1);
+	g_global_signal = 0;
+}
 
-	env = get_env(envp);
-    while (1)
-    {
-        char *input = readline("minishell$ ");
-        if (!input)
-            exit(1);
-        if (!ft_strncmp(input, "exit",4))
-            exit(0);
-        if (!input[0])
-            continue;
-        add_history(input);
+t_token	*parsing(char *input, int *status, t_garbage **garbage,
+		t_env *env)
+{
+	t_token	*tokens;
 
-        tokens = tokenize(input);
-        lexing(tokens);
-        has_dollar(tokens, env);
-        remove_quotes(tokens);
-        restore_quotes(tokens);
-        // if (!tokens)
-        //     return 1;
-        // tmp = tokens;
-        // while (tmp)
-        // {
-        //     printf("%s\ttype:%d\n", tmp->value, tmp->type);
-        //     tmp = tmp->next;
-        // }
-        // printf("\n");
+	tokens = tokenize(input, garbage, status);
+	if (!tokens)
+		return (NULL);
+	if (validate_input(tokens, status))
+		return (NULL);
+	lexing(tokens);
+	delimiter(tokens);
+	has_dollar(tokens, env, garbage, (*garbage)->status);
+	return (tokens);
+}
 
-        pipes(splinting_into_proccess(tokens), env);
-        //   printf("here%p\n", commands);
-        // printf("%s\t %s\n", commands->cmd[0], commands->cmd[1]);
-        // while (commands->redirection)
-        // {
-        //     printf("file %s %s\n", commands->redirection->file, commands->redirection->delimiter);
-        //     commands->redirection = commands->redirection->next;
-        // }
-        //export(env);
-        //print_env(env);
-        if (!ft_strncmp(input, "history -c",10))
-            rl_clear_history();
-    }
-    // printf("%s\n",getenv("PATH"));
+void set_not(t_garbage *garbage)
+{
+	while (garbage)
+	{
+		garbage->var = 1;
+		garbage = garbage->next;
+	}
+	return ;
+}
+t_garbage *f(t_garbage *garbage)
+{
+    static t_garbage *head;
+	if (garbage)
+		head = garbage;
+    return head;
+}
+
+int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
+		char **envp)
+{
+	t_token		*tokens;
+	t_env		*env;
+	t_garbage	*garbage;
+	int			status;
+	char		*input;
+
+	g_global_signal = 0;
+	garbage = NULL;
+	env = get_env(envp, &garbage);
+	set_not(garbage);
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+	status = 0;
+	while (1)
+	{
+		// reset_terminal();
+    	// rl_reset_line_state();
+		input = readline("minishell$ ");
+		if (!input)
+		{
+			ft_putstr_fd("exiting minishell...\n", 2);
+			get_out_from_here(garbage, 1);
+		}
+		if (!input[0])
+			continue ;
+		add_back_for_garbage(&garbage, new_garbage(input, garbage));
+		add_history(input);
+		tokens = parsing(input, &status, &garbage, env);
+		if (!tokens)
+		{
+			free_all(&garbage);
+			garbage = NULL;
+			continue ;
+		}
+		f(garbage);
+		execution(tokens, &env, &status, &garbage);
+		close_all_fds_fstat(3);
+		free_all(&garbage);
+	}
 }

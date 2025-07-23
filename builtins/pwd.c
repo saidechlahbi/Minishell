@@ -1,42 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randomize.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/12 13:32:28 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 02:29:12 by schahir          ###   ########.fr       */
+/*   Created: 2025/07/12 13:32:10 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/23 09:01:44 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*randomize(t_garbage **garbage)
+int	ft_pwd(void)
 {
-	char	buffer[200];
-	char	*str;
-	int		i;
-	int		j;
-	int		fd;
+	char	*pwd;
 
-	i = 0;
-	j = 0;
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
-		return (NULL);
-	read(fd, buffer, 200);
-	str = ft_malloc(20, 1, garbage);
-	while (j < 19)
-	{
-		if (i >= 200)
-		{
-			read(fd, buffer, 200);
-			i = 0;
-		}
-		if (ft_isalnum(buffer[i]))
-			str[j++] = buffer[i];
-		i++;
-	}
-	return (str[j] = '\0', close(fd), str);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (perror("pwd"), 1);
+	ft_putstr_fd(pwd, 1);
+	ft_putstr_fd("\n", 1);
+	return (free(pwd), 0);
 }

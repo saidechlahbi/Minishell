@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/27 15:52:27 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/22 19:10:00 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char **env_lst_to_char2(t_env *env)
+char **env_lst_to_char2(t_env *env, t_garbage **garbage)
 {
     t_env *tmp;
     char **envp;
@@ -26,20 +26,19 @@ char **env_lst_to_char2(t_env *env)
         count++;
         tmp = tmp->next;
     }
-    envp = malloc (sizeof(char *) * (count + 1));
+    envp = ft_malloc (sizeof(char *) * (count + 1), 1 , garbage);
     count = 0;
     while (env)
     {
-        str = ft_strjoin(env->key, "=");
-        envp[count++] = ft_strjoin(str, env->value);
-        free(str);
+        str = ft_strjoin(env->key, "=", garbage);
+        envp[count++] = ft_strjoin(str, env->value, garbage);
         env = env->next;
     }
     envp[count] = NULL;
     return envp;
 }
 
-static char **get_paths(t_env *env)
+static char **get_paths(t_env *env, t_garbage **garbage)
 {
     char **paths;
     
@@ -48,9 +47,7 @@ static char **get_paths(t_env *env)
     {
         if (ft_strcmp(env->key , "PATH") == 0)
         {
-            paths = ft_split(env->value, ':');
-            if (!paths)
-                return NULL;
+            paths = ft_split(env->value, ':', garbage);
             return paths;
         }
         env = env->next;
@@ -58,42 +55,68 @@ static char **get_paths(t_env *env)
     return NULL;
 }
 
-static char *get_right_path(t_env *env, char *cmd)
+int check(char *str)
+{
+    char *bin;
+    int i;
+
+    i = 0;
+    bin = "bin";
+    while (str[i])
+    {
+        if (str[i] == bin[i])
+        {
+            if (ft_strncmp(&str[i], bin, 3) == 1)
+                return 1;
+        }
+        i++;
+    }
+    return 0;
+}
+
+static char *get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 {
     char **paths;
-    char *cmd_with_path, *str;
+    char *cmd_with_path;
+    char  *str;
 
-    if (!access(cmd, X_OK))
-        return ft_strdup(cmd);
-    paths = get_paths(env);
+    if (check(cmd) == 1)
+        if (!access(cmd, X_OK))
+            return ft_strdup(cmd, garbage);
+    if (ft_strchr(cmd, '/'))
+        return (NULL);
+    paths = get_paths(env, garbage);
     if (!paths)
         return NULL;
     while (*paths)
     {
-        str = ft_strjoin(*paths, "/");
-        cmd_with_path = ft_strjoin(str, cmd);
-        free(str);
-        if (access(cmd_with_path, X_OK) == 0)
+        str = ft_strjoin(*paths, "/", garbage);
+        cmd_with_path = ft_strjoin(str, cmd, garbage);
+        if (!access(cmd_with_path, X_OK))
             return (cmd_with_path);
-        free(cmd_with_path);
         paths++;
     }
     return NULL;
 }
 
-void fill_by_path(t_cmds *commands, t_env *env)
+void fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
 {
     char *cmd;
 
     while (commands)
     {
-        if (commands->cmd && commands->type != BUILTIN)
+        if (commands->cmd && commands->type == CMD)
         {
-            cmd = get_right_path(env, commands->cmd[0]);
+            if (commands->cmd[0][0] == 0)
+            {
+                commands->executable = 1;
+                return ;
+            }
+            cmd = get_right_path(env, commands->cmd[0], garbage);
             if (cmd)
             {
-                free(commands->cmd[0]);
                 commands->cmd[0] = cmd;
+                commands->executable = 1;
             }
         }
         commands = commands->next;

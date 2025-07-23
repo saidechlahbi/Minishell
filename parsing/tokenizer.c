@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/26 15:05:32 by sechlahb         ###   ########.fr       */
+/*   Created: 2025/06/02 10:46:25 by schahir            #+#    #+#             */
+/*   Updated: 2025/07/23 10:57:31 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void add_token(t_token **head, char *value, int type)
+void	add_token(t_token **head, char *value, int type, t_garbage **garbage)
 {
-	t_token *new;
-	t_token *tmp;
+	t_token	*new;
+	t_token	*tmp;
 
-	new = malloc(sizeof(t_token));
-	if (!new)
-		return;
+	new = ft_malloc(sizeof(t_token), 1, garbage);
 	new->value = value;
 	new->next = NULL;
 	new->type = type;
@@ -34,35 +32,91 @@ void add_token(t_token **head, char *value, int type)
 	}
 }
 
-void validate_input(t_token *token)
+static void	handle_quotes(t_scanner *var, char c)
 {
-	t_token *cur;
-
-	if (!token || !ft_strncmp(token->value, "|", 1))
+	if (c == '\'' && !var->in_dquote)
 	{
-		ft_putstr_fd("Error : Syntax\n", 2);
-		return;
+		var->in_squote = !var->in_squote;
+		var->i++;
 	}
-	cur = token;
-	while (cur)
+	else if (c == '"' && !var->in_squote)
 	{
-		if ((is_op(cur->value) && cur->next && is_op(cur->next->value)) || (is_op(cur->value) && !cur->next))
-		{
-			ft_putstr_fd("Error : Syntax\n", 2);
-			return;
-		}
-		cur = cur->next;
+		var->in_dquote = !var->in_dquote;
+		var->i++;
 	}
 }
 
-t_token *tokenize(char *input)
+static void	handle_spaces(t_scanner *var, char *input, t_garbage **garbage)
 {
-	t_token *tokens = NULL;
-	int i = 0;
-	int start = 0;
-	int in_squote = 0;
-	int in_dquote = 0;
+	if (var->i > var->start)
+		add_token(&var->tokens, _substr(input, var->start, var->i - var->start,
+				garbage), WORD, garbage);
+	while (ft_isspace(input[var->i]))
+		var->i++;
+	var->start = var->i;
+}
 
+static void	handle_operator(t_scanner *var, char *input, t_garbage **garbage)
+{
+	if (var->i > var->start)
+		add_token(&var->tokens, _substr(input, var->start, var->i - var->start,
+				garbage), WORD, garbage);
+	else if (is_append(&input[var->i]) != -1)
+	{
+		add_token(&var->tokens, _substr(input, var->i, 2, garbage),
+			is_append(&input[var->i]), garbage);
+		var->i += 2;
+	}
+	else
+	{
+		add_token(&var->tokens, _substr(input, var->i, 1, garbage),
+			is_operator(input[var->i]), garbage);
+		var->i++;
+	}
+	var->start = var->i;
+}
+
+t_token	*tokenize(char *input, t_garbage **garbage, int *status)
+{
+	t_scanner	var;
+
+	ft_bzero(&var, sizeof(var));
+	while (input[var.i])
+	{
+		if (input[var.i] == '\'' || input[var.i] == '"')
+			handle_quotes(&var, input[var.i]);
+		else if (!var.in_squote && !var.in_dquote && ft_isspace(input[var.i]))
+			handle_spaces(&var, input, garbage);
+		else if (!var.in_squote && !var.in_dquote
+			&& is_operator(input[var.i]) != -1)
+			handle_operator(&var, input, garbage);
+		else
+			var.i++;
+	}
+	if (var.i > var.start)
+		add_token(&var.tokens, _substr(input, var.start, var.i - var.start,
+				garbage), WORD, garbage);
+	if (var.in_squote || var.in_dquote)
+	{
+		ft_putstr_fd("Error : Syntax\n", 2);
+		*status = 2;
+		return (NULL);
+	}
+	return (var.tokens);
+}
+/*t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
+{
+	t_token	*tokens;
+	int		i;
+	int		start;
+	int		in_squote;
+	int		in_dquote;
+
+	tokens = NULL;
+	i = 0;
+	start = 0;
+	in_squote = 0;
+	in_dquote = 0;
 	while (input[i])
 	{
 		if (input[i] == '\'' && !in_dquote)
@@ -78,7 +132,8 @@ t_token *tokenize(char *input)
 		else if (!in_squote && !in_dquote && ft_isspace(input[i]))
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start), WORD);
+				add_token(&tokens, _substr(input, start, i - start, garbage),
+					WORD, garbage);
 			i++;
 			while (ft_isspace(input[i]))
 				i++;
@@ -87,15 +142,18 @@ t_token *tokenize(char *input)
 		else if (!in_squote && !in_dquote && is_operator(input[i]) != -1)
 		{
 			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start), WORD);
+				add_token(&tokens, _substr(input, start, i - start, garbage),
+					WORD, garbage);
 			else if (is_append(&input[i]) != -1)
 			{
-				add_token(&tokens, _substr(input, i, 2), is_append(&input[i]));
+				add_token(&tokens, _substr(input, i, 2, garbage),
+					is_append(&input[i]), garbage);
 				i += 2;
 			}
 			else
 			{
-				add_token(&tokens, _substr(input, i, 1), is_operator(input[i]));
+				add_token(&tokens, _substr(input, i, 1, garbage),
+					is_operator(input[i]), garbage);
 				i++;
 			}
 			start = i;
@@ -104,50 +162,13 @@ t_token *tokenize(char *input)
 			i++;
 	}
 	if (i > start)
-		add_token(&tokens, _substr(input, start, i - start), WORD);
-
+		add_token(&tokens, _substr(input, start, i - start, garbage), WORD,
+			garbage);
 	if (in_squote || in_dquote)
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);
-		return NULL;
+		*exit_status = 2;
+		return (NULL);
 	}
-	validate_input(tokens);
-	return tokens;
-}
-
-void lexing(t_token *token)
-{
-	t_token *prev;
-
-	prev = token;
-	if (token && token->type == WORD)
-	{
-		if (is_builtin(token->value))
-			token->type = BUILTIN;
-		else
-			token->type = CMD;
-		prev = token;
-		token = token->next;
-	}
-	while (token)
-	{
-		if (token->type == RED_OUT)
-			token->next->type = OUT_FILE;
-		if (token->type == APPEND)
-			token->next->type = APP_FILE;
-		else if (token->type == RED_IN)
-			token->next->type = IN_FILE;
-		else if (token->type == HERE_DOC)
-			token->next->type = DELIMITER;
-		if (token->type == WORD)
-		{
-			if (prev->type == CMD || prev->type == BUILTIN)
-				token->type = ARG;
-			else
-				token->type = CMD;
-		}
-		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
-			prev = token;
-		token = token->next;
-	}
-}
+	return (tokens);
+}*/

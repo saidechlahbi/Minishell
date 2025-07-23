@@ -1,42 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randomize.c                                        :+:      :+:    :+:   */
+/*   utils06.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/12 13:32:28 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 02:29:12 by schahir          ###   ########.fr       */
+/*   Created: 2025/07/19 18:08:55 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/19 19:48:51 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*randomize(t_garbage **garbage)
+static int	count_digit(long n)
 {
-	char	buffer[200];
-	char	*str;
-	int		i;
-	int		j;
-	int		fd;
+	int	i;
 
 	i = 0;
-	j = 0;
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
-		return (NULL);
-	read(fd, buffer, 200);
-	str = ft_malloc(20, 1, garbage);
-	while (j < 19)
+	if (n <= 0)
+		i = 1;
+	while (n)
 	{
-		if (i >= 200)
-		{
-			read(fd, buffer, 200);
-			i = 0;
-		}
-		if (ft_isalnum(buffer[i]))
-			str[j++] = buffer[i];
+		n = n / 10;
 		i++;
 	}
-	return (str[j] = '\0', close(fd), str);
+	return (i);
+}
+
+char	*ft_itoa(long n, t_garbage **garbage)
+{
+	int		lenght;
+	char	*str;
+
+	lenght = count_digit(n);
+	str = ft_malloc (lenght + 1, 1 ,garbage);
+	str[lenght] = '\0';
+	if (n == 0)
+		return (str[0] = '0', str);
+	if (n < 0)
+	{
+		str[0] = '-';
+		n = -n;
+	}
+	lenght--;
+	while (n)
+	{
+		str[lenght--] = (n % 10) + '0';
+		n = n / 10;
+	}
+	return (str);
 }
