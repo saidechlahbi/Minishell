@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 02:26:41 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/23 16:34:15 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,12 @@ static void	process_redirection(t_token *token)
 		token->next->type = DELIMITER;
 }
 
-static void	specify_word(t_token *token, t_token *prev)
+static void specify_word(t_token *token, t_token *prev)
 {
-	if (prev->type == CMD || token->type == BUILTIN)
-		token->type = ARG;
-	else
-		token->type = CMD;
+    if (prev->type == CMD || prev->type == BUILTIN)
+        token->type = ARG;
+    else
+        token->type = CMD;
 }
 
 void	lexing(t_token *token)
