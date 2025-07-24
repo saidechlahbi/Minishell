@@ -99,6 +99,12 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			garbage = NULL;
 			continue ;
 		}
+		t_token *tmp = tokens;
+		while (tmp)
+		{
+			printf("%d\n", tmp->type);
+			tmp = tmp->next;
+		}
 		f(garbage);
 		execution(tokens, &env, &status, &garbage);
 		close_all_fds_fstat(3);
