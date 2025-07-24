@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/23 14:29:02 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 04:58:20 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_garbage **garbage);
 char	*ft_strdup(const char *src, t_garbage **garbage);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *str, int c);
+char	*ft_strrchr(const char *str, int c);
 char 	*ft_strstr(const char *str, const char *target);
 void	*ft_calloc(size_t nmemb, size_t size, t_garbage **garbage);
 int		ft_isalnum(int c);

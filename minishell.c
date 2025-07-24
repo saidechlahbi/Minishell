@@ -93,12 +93,12 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		add_back_for_garbage(&garbage, new_garbage(input, garbage));
 		add_history(input);
 		tokens = parsing(input, &status, &garbage, env);
-		// t_token *tmp = tokens;
-		// while (tmp)
-		// {
-		// 	printf("%s\n", tmp->value);
-		// 	tmp = tmp->next;
-		// }
+		t_token *tmp = tokens;
+		while (tmp)
+		{
+			printf("%s\n", tmp->value);
+			tmp = tmp->next;
+		}
 		if (!tokens)
 		{
 			free_all(&garbage);
@@ -106,7 +106,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			continue ;
 		}
 		f(garbage);
-		execution(tokens, &env, &status, &garbage);
+		// execution(tokens, &env, &status, &garbage);
 		close_all_fds_fstat(3);
 		free_all(&garbage);
 	}
