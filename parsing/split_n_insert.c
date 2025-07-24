@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 11:55:28 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:20:38 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
 	if (!splits || !splits[0])
 		return ;
 	cur->value = ft_strdup(splits[0], garbage);
-	cur->type = ARG;
+	cur->type = WORD;
 	cur->is_ambg = AMBIGIUOS;
 	i = 1;
 	while (splits[i])
 	{
 		new = ft_malloc(sizeof(t_token), 1, garbage);
 		new->value = ft_strdup(splits[i], garbage);
-		new->type = ARG;
+		new->type = WORD;
 		new->is_ambg = AMBIGIUOS;
 		new->next = cur->next;
 		cur->next = new;
