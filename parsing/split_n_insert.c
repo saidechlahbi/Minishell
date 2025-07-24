@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 07:01:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:15:52 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ int	count_tok(char *input, char *encapsulizer)
 		to_split(&var, input, encapsulizer);
 		if (!var.in_squote && !var.in_dquote && ft_isspace(input[var.i]))
 		{
-			count++;
+			if (var.i > 0)
+				count++;
 			skip_spaces(&var, input);
 		}
 		else
 			var.i++;
 	}
-	if (input[var.i])
+	if (var.i > 0)
 		count++;
 	return (count);
 }
