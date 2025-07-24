@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/24 04:58:20 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 09:23:02 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_token
 	int 			is_ambg;
 	int				expanded;
 	int				inq;
+	int				exp;
 	struct s_token	*next;
 }	t_token;
 
@@ -53,7 +54,8 @@ enum e_type
 	DELIMITER,
 	APPEND,
 	AMBIGIUOS,
-	EXPANDED
+	EXPANDED,
+	EXPORT
 };
 
 typedef struct s_scanner

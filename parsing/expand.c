@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 06:10:47 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 09:36:59 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
 			last = ft_strrchr(cur->value, '$');
 			expanded = prep(cur->value, env, encapsulizer, garbage, status);
 			cur->value = expanded;
-			if (last && (last[1] == '?' || is_expandable(last[1])))
+			if (last && (last[1] == '?' || is_expandable(last[1])) && cur->exp != EXPORT)
 				split_n_insert(cur, encapsulizer, garbage);
 		}
 		cur = next;
