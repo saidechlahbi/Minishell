@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 16:34:15 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:10:57 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,11 @@ void	lexing(t_token *token)
 	if (token && token->type == WORD)
 	{
 		if (is_builtin(token->value))
+		{
+			if(token->next && !strcmp(token->value, "export"))
+				token->next->exp = EXPORT;
 			token->type = BUILTIN;
+		}
 		else
 			token->type = CMD;
 		prev = token;

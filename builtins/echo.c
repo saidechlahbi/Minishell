@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:58 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 09:11:39 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:01:50 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_echo_helper(char **args, int i)
 {
 	ft_putstr_fd(args[i], 1);
-	if (args[i + 1])
+	if (args[i + 1] && args[i + 1][0])
 		write(1, " ", 1);
 }
 

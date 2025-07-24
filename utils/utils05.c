@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils05.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:51:34 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/17 03:35:33 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/24 04:57:59 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	*ft_strrchr(const char *str, int c)
+{
+	int	i;
+
+	i = ft_strlen(str);
+	while (i >= 0)
+	{
+		if (str[i] == (char)c)
+			return ((char *)(str + i));
+		i--;
+	}
+	return (0);
+}
 
 static int	ft_wordlen(const char *str, char d)
 {
