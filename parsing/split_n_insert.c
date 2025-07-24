@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 11:14:11 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 11:26:49 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,35 @@
 
 static void	skip_spaces(t_scanner *var, char *input)
 {
-	while (ft_isspace(input[var->i]))
+	while (input[var->i] && ft_isspace(input[var->i]))
 		var->i++;
 	var->start = var->i;
 }
 
-static void	to_split(t_scanner *var, char *input, char *encapsulizer)
+static int	to_split(t_scanner *var, char *input, char *encapsulizer)
 {
 	if (!ft_strncmp(&input[var->i], encapsulizer, 19))
 	{
 		var->i += 19;
 		var->encapsuled = !var->encapsuled;
+		return (1);
 	}
 	else if (input[var->i] == '\'' && !var->in_dquote && !var->encapsuled)
 	{
 		var->in_squote = !var->in_squote;
 		var->i++;
+		return (1);
 	}
 	else if (input[var->i] == '"' && !var->in_squote && !var->encapsuled)
 	{
 		var->in_dquote = !var->in_dquote;
 		var->i++;
+		return (1);
 	}
+	return (0);
 }
 
-int	count_tok(char *input, char *encapsulizer)
+static int	count_tok(char *input, char *encapsulizer)
 {
 	int			count;
 	t_scanner	var;
@@ -47,22 +51,24 @@ int	count_tok(char *input, char *encapsulizer)
 	count = 0;
 	while (input[var.i])
 	{
-		to_split(&var, input, encapsulizer);
-		if (!var.in_squote && !var.in_dquote && ft_isspace(input[var.i]))
+		if (!to_split(&var, input, encapsulizer))
 		{
-			if (var.i > var.start)
-				count++;
-			skip_spaces(&var, input);
+			if (!var.in_squote && !var.in_dquote && ft_isspace(input[var.i]))
+			{
+				if (var.i > var.start)
+					count++;
+				skip_spaces(&var, input);
+			}
+			else
+				var.i++;
 		}
-		else
-			var.i++;
 	}
 	if (var.i > var.start)
 		count++;
 	return (count);
 }
 
-char	**str_tok(char *input, char *encapsulizer, t_garbage **garbage)
+static char	**str_tok(char *input, char *encapsulizer, t_garbage **garbage)
 {
 	char		**tokens;
 	int			j;
@@ -75,15 +81,17 @@ char	**str_tok(char *input, char *encapsulizer, t_garbage **garbage)
 			garbage);
 	while (input[v.i])
 	{
-		to_split(&v, input, encapsulizer);
-		if (!v.in_squote && !v.in_dquote && ft_isspace(input[v.i]))
+		if (!to_split(&v, input, encapsulizer))
 		{
-			if (v.i > v.start)
-				tokens[j++] = _substr(input, v.start, v.i - v.start, garbage);
-			skip_spaces(&v, input);
+			if (!v.in_squote && !v.in_dquote && ft_isspace(input[v.i]))
+			{
+				if (v.i > v.start)
+					tokens[j++] = _substr(input, v.start, v.i - v.start, garbage);
+				skip_spaces(&v, input);
+			}
+			else
+				v.i++;
 		}
-		else
-			v.i++;
 	}
 	if (v.i > v.start)
 		tokens[j++] = _substr(input, v.start, v.i - v.start, garbage);
