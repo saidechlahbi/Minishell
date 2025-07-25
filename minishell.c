@@ -41,6 +41,7 @@ t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 	lexing(tokens);
 	delimiter(tokens);
 	has_dollar(tokens, env, garbage);
+	lexing(tokens);
 	skip_nodes(&tokens);
 	return (tokens);
 }

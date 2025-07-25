@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:14:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 21:43:22 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,32 +106,6 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
 	return (expanded);
 }
 
-int	check_literal(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			i++;
-			if (str[i] == '?')
-				i++;
-			else if (is_expandable(str[i]))
-			{
-				while (str[i] && is_expandable2(str[i]))
-					i++;
-			}
-		}
-		else if (str[i])
-			return (1);
-		else
-			i++;
-	}
-	return (0);
-}
-
 void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 {
 	t_token	*cur;
@@ -153,12 +127,10 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 			cur->has_literal = check_literal(cur->value);
 			expanded = prep(cur->value, env, encapsulizer, garbage);
 			cur->value = expanded;
-			if (last && (last[1] == '?' || is_expandable(last[1]))
-				&& cur->exp != EXPORT)
+			if (check_last(last) && cur->exp != EXPORT)
 				split_n_insert(cur, encapsulizer, garbage);
 		}
 		cur = next;
 	}
 	remove_quotes(tokens, encapsulizer, garbage);
-	lexing(tokens);
 }

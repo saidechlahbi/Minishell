@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:33:24 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 21:18:41 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 21:45:28 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,4 @@ void	get_out_from_here(t_garbage *garbage, int status)
 	}
 	rl_clear_history();
 	exit(status);
-}
-
-int	is_error(char *s)
-{
-	return (!ft_strncmp(s, ">", 1) || !ft_strncmp(s, "<", 1) || !ft_strncmp(s,
-			">>", 2) || !ft_strncmp(s, "<<", 2));
 }

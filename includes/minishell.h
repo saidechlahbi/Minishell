@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 21:10:13 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 21:44:07 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ char	*prep_helper(t_scanner *var, char *input, char *expanded, t_garbage **garba
 char	*expand_exit_status(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
 void	skip_nodes(t_token **tokens);
 t_garbage *f(t_garbage *garbage);
+int	check_literal(char *str);
+int	check_last(char *last);
 
 /*------------built-in-------------*/
 void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
