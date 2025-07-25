@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 15:00:10 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:21:04 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,18 @@ typedef struct s_garbage
 {
 	void *data;
 	int var;
-	int status;
 	struct  s_garbage *next;
 }t_garbage;
 
 /*-----------Parsing-------------*/
-void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage, int status);
-t_token	*tokenize(char *input, t_garbage **garbage, int *status);
-void    has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status);
+void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage);
+t_token	*tokenize(char *input, t_garbage **garbage);
+void    has_dollar(t_token *tokens, t_env *env, t_garbage **garbage);
 t_env 	*get_env(char **envp, t_garbage **garbage);
 void	lexing(t_token *token);
-int		validate_input(t_token *token, int *status);
-char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status);
-
+int		validate_input(t_token *token);
+char	*prepdoc(char *input, t_env *env, t_garbage **garbage);
+int		set_status(int new_status);
 /*------------Utils-------------*/
 void	export_variable(t_env **env, char *arg, t_garbage **garbage);
 void    add_var(t_env **head, char *key, char *value, t_garbage **garbage);
@@ -155,8 +154,7 @@ void	save_data(t_garbage *garbage);
 void	ft_bzero(void *s, size_t n);
 int		ft_countwords(const char *str);
 char	*prep_helper(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
-char	*expand_exit_status(t_scanner *var, char *input, char *expanded,
-		int status, t_garbage **garbage);
+char	*expand_exit_status(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
 void	skip_nodes(t_token **tokens);
 
 /*------------execution-------------*/

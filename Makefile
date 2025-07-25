@@ -7,11 +7,11 @@ FILES		=   minishell.c \
 				parsing/exdoc.c parsing/randomize.c parsing/validate_input.c parsing/handlamb.c \
 				utils/utils00.c utils/utils01.c utils/utils02.c utils/utils03.c utils/utils04.c utils/utils05.c utils/utils06.c \
 				utils/cleaner.c utils/free_all.c \
-				execution/execution.c \
+				builtins/echo.c builtins/pwd.c builtins/unset.c builtins/env.c \
+				builtins/export.c builtins/cd.c builtins/exit.c \
+				#execution/execute_built_in.c execution/execution.c \
 				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
-				execution/herdoc.c execution/one_cmd.c  execution/pipe_tools.c execution/ambiguous.c\
-				execution/execute_built_in.c builtins/echo.c builtins/pwd.c builtins/unset.c builtins/env.c \
-				builtins/export.c builtins/cd.c builtins/exit.c
+				execution/herdoc.c execution/one_cmd.c  execution/pipe_tools.c execution/ambiguous.c
 
 OBJ_DIR		= obj
 OBJ			= $(FILES:.c=.o)

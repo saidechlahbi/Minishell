@@ -6,13 +6,13 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 22:56:51 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 16:12:48 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:21:29 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	prepamb(char *input, t_env *env, t_garbage **garbage, int status)
+static int	prepamb(char *input, t_env *env, t_garbage **garbage)
 {
 	char		*expanded;
 	char		*value;
@@ -22,7 +22,7 @@ static int	prepamb(char *input, t_env *env, t_garbage **garbage, int status)
 	ft_bzero(&v, sizeof(v));
 	while (input[v.i])
 	{
-		expanded = expand_exit_status(&v, input, expanded, status, garbage);
+		expanded = expand_exit_status(&v, input, expanded, garbage);
 		if (input[v.i] == '$' && !v.in_squote && !v.in_dquote && is_expandable(input[v.i + 1]))
 		{
 			expanded = prep_helper(&v, input, expanded, garbage);
@@ -41,7 +41,7 @@ static int	prepamb(char *input, t_env *env, t_garbage **garbage, int status)
 	return (ft_countwords(expanded));
 }
 
-void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage, int status)
+void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage)
 {
 	t_token *cur;
 	
@@ -51,7 +51,7 @@ void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage, int status)
 		
 		if (cur->type == IN_FILE || cur->type == OUT_FILE || cur->type == APP_FILE)
 		{
-			if (prepamb(cur->value, env, garbage, status) != 1)
+			if (prepamb(cur->value, env, garbage) != 1)
 				cur->is_ambg = AMBIGIUOS;
 		}
 		cur = cur->next;

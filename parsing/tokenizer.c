@@ -76,7 +76,7 @@ static void	handle_operator(t_scanner *var, char *input, t_garbage **garbage)
 	var->start = var->i;
 }
 
-t_token	*tokenize(char *input, t_garbage **garbage, int *status)
+t_token	*tokenize(char *input, t_garbage **garbage)
 {
 	t_scanner	var;
 
@@ -99,7 +99,7 @@ t_token	*tokenize(char *input, t_garbage **garbage, int *status)
 	if (var.in_squote || var.in_dquote)
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);
-		*status = 2;
+		set_status(2);
 		return (NULL);
 	}
 	return (var.tokens);

@@ -29,19 +29,19 @@ void	handle_sigint(int signum __attribute__((unused)))
 	g_global_signal = 0;
 }
 
-t_token	*parsing(char *input, int *status, t_garbage **garbage,
+t_token	*parsing(char *input, t_garbage **garbage,
 		t_env *env)
 {
 	t_token	*tokens;
 
-	tokens = tokenize(input, garbage, status);
+	tokens = tokenize(input, garbage);
 	if (!tokens)
 		return (NULL);
-	if (validate_input(tokens, status))
+	if (validate_input(tokens))
 		return (NULL);
 	lexing(tokens);
 	delimiter(tokens);
-	has_dollar(tokens, env, garbage, (*garbage)->status);
+	has_dollar(tokens, env, garbage);
 	skip_nodes(&tokens);
 	return (tokens);
 }
@@ -63,13 +63,21 @@ t_garbage *f(t_garbage *garbage)
     return head;
 }
 
+int set_status(int new_status)
+{
+    static int status;
+
+    if (new_status != -1)
+        status =  new_status;
+    return status;
+}
+
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
 {
 	t_token		*tokens;
 	t_env		*env;
 	t_garbage	*garbage;
-	int			status;
 	char		*input;
 
 	g_global_signal = 0;
@@ -78,7 +86,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	set_not(garbage);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	status = 0;
 	while (1)
 	{
 		// reset_terminal();
@@ -93,7 +100,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			continue ;
 		add_back_for_garbage(&garbage, new_garbage(input, garbage));
 		add_history(input);
-		tokens = parsing(input, &status, &garbage, env);
+		tokens = parsing(input, &garbage, env);
 		if (!tokens)
 		{
 			free_all(&garbage);
@@ -107,8 +114,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			tmp = tmp->next;
 		}
 		f(garbage);
-		// execution(tokens, &env, &status, &garbage);
-		close_all_fds_fstat(3);
+		// close_all_fds_fstat(3);
 		free_all(&garbage);
 	}
 }

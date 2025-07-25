@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 16:14:57 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:19:58 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ char	*expand(char *var, t_env *env, char *encapsulizer, t_garbage **garbage)
 	return (NULL);
 }
 
-char	*expand_exit_status(t_scanner *var, char *input, char *expanded,
-		int status, t_garbage **garbage)
+char	*expand_exit_status(t_scanner *var, char *input, char *expanded, t_garbage **garbage)
 {
 	if (input[var->i] == '\'' && !var->in_dquote)
 	{
@@ -59,7 +58,7 @@ char	*expand_exit_status(t_scanner *var, char *input, char *expanded,
 					- var->start, garbage), garbage);
 		var->i += 2;
 		var->start = var->i;
-		expanded = ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
+		expanded = ft_strjoin(expanded, ft_itoa(set_status(-1), garbage), garbage);
 	}
 	return (expanded);
 }
@@ -76,8 +75,7 @@ char	*prep_helper(t_scanner *var, char *input, char *expanded,
 	return (expanded);
 }
 
-char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage,
-		int status)
+char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
 {
 	char		*expanded;
 	char		*value;
@@ -87,7 +85,7 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage,
 	expanded = ft_strdup("", garbage);
 	while (input[v.i])
 	{
-		expanded = expand_exit_status(&v, input, expanded, status, garbage);
+		expanded = expand_exit_status(&v, input, expanded, garbage);
 		if (input[v.i] == '$' && !v.in_squote && is_expandable(input[v.i + 1]))
 		{
 			expanded = prep_helper(&v, input, expanded, garbage);
@@ -132,7 +130,7 @@ int	check_literal(char *str)
 	return (0);
 }
 
-void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
+void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 {
 	t_token	*cur;
 	t_token	*next;
@@ -141,7 +139,7 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
 	char	*last;
 
 	cur = tokens;
-	is_amb(cur,env,garbage,status);
+	is_amb(cur,env,garbage);
 	encapsulizer = randomize(garbage);
 	while (cur)
 	{
@@ -150,7 +148,7 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status)
 		{
 			last = ft_strrchr(cur->value, '$');
 			cur->has_literal = check_literal(cur->value);
-			expanded = prep(cur->value, env, encapsulizer, garbage, status);
+			expanded = prep(cur->value, env, encapsulizer, garbage);
 			cur->value = expanded;
 			if (last && (last[1] == '?' || is_expandable(last[1])) && cur->exp != EXPORT)
 				split_n_insert(cur, encapsulizer, garbage);
