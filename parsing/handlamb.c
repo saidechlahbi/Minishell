@@ -23,11 +23,11 @@ static int	prepamb(char *input, t_env *env, t_garbage **garbage)
 	while (input[v.i])
 	{
 		expanded = expand_exit_status(&v, input, expanded, garbage);
-		if (input[v.i] == '$' && !v.in_squote && !v.in_dquote && is_expandable(input[v.i + 1]))
+		if (input[v.i] == '$' && !v.in_squote && !v.in_dquote
+			&& is_expandable(input[v.i + 1]))
 		{
 			expanded = prep_helper(&v, input, expanded, garbage);
-			value = exdoc(_substr(input, v.start, v.i - v.start, garbage),
-					env);
+			value = exdoc(_substr(input, v.start, v.i - v.start, garbage), env);
 			if (value)
 				expanded = ft_strjoin(expanded, value, garbage);
 			v.start = v.i;
@@ -36,20 +36,20 @@ static int	prepamb(char *input, t_env *env, t_garbage **garbage)
 			v.i++;
 	}
 	if (v.i > v.start)
-		expanded = ft_strjoin(expanded, _substr(input, v.start, v.i
-					- v.start, garbage), garbage);
+		expanded = ft_strjoin(expanded, _substr(input, v.start, v.i - v.start,
+					garbage), garbage);
 	return (ft_countwords(expanded));
 }
 
 void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage)
 {
-	t_token *cur;
-	
+	t_token	*cur;
+
 	cur = tokens;
 	while (cur)
 	{
-		
-		if (cur->type == IN_FILE || cur->type == OUT_FILE || cur->type == APP_FILE)
+		if (cur->type == IN_FILE || cur->type == OUT_FILE
+			|| cur->type == APP_FILE)
 		{
 			if (prepamb(cur->value, env, garbage) != 1)
 				cur->is_ambg = AMBIGIUOS;
@@ -60,13 +60,12 @@ void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage)
 
 void	skip_nodes(t_token **tokens)
 {
-	t_token *cur;
-	t_token *prev;
-	t_token *next;
+	t_token	*cur;
+	t_token	*prev;
+	t_token	*next;
 
 	cur = *tokens;
 	prev = NULL;
-	
 	while (cur)
 	{
 		next = cur->next;
@@ -79,7 +78,6 @@ void	skip_nodes(t_token **tokens)
 		}
 		else
 			prev = cur;
-		
 		cur = next;
 	}
 }

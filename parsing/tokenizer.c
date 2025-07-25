@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 10:46:25 by schahir            #+#    #+#             */
-/*   Updated: 2025/07/23 10:57:31 by schahir          ###   ########.fr       */
+/*   Created: 2025/06/02 10:46:25 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/25 21:17:35 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,71 +104,3 @@ t_token	*tokenize(char *input, t_garbage **garbage)
 	}
 	return (var.tokens);
 }
-/*t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
-{
-	t_token	*tokens;
-	int		i;
-	int		start;
-	int		in_squote;
-	int		in_dquote;
-
-	tokens = NULL;
-	i = 0;
-	start = 0;
-	in_squote = 0;
-	in_dquote = 0;
-	while (input[i])
-	{
-		if (input[i] == '\'' && !in_dquote)
-		{
-			in_squote = !in_squote;
-			i++;
-		}
-		else if (input[i] == '"' && !in_squote)
-		{
-			in_dquote = !in_dquote;
-			i++;
-		}
-		else if (!in_squote && !in_dquote && ft_isspace(input[i]))
-		{
-			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start, garbage),
-					WORD, garbage);
-			i++;
-			while (ft_isspace(input[i]))
-				i++;
-			start = i;
-		}
-		else if (!in_squote && !in_dquote && is_operator(input[i]) != -1)
-		{
-			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start, garbage),
-					WORD, garbage);
-			else if (is_append(&input[i]) != -1)
-			{
-				add_token(&tokens, _substr(input, i, 2, garbage),
-					is_append(&input[i]), garbage);
-				i += 2;
-			}
-			else
-			{
-				add_token(&tokens, _substr(input, i, 1, garbage),
-					is_operator(input[i]), garbage);
-				i++;
-			}
-			start = i;
-		}
-		else
-			i++;
-	}
-	if (i > start)
-		add_token(&tokens, _substr(input, start, i - start, garbage), WORD,
-			garbage);
-	if (in_squote || in_dquote)
-	{
-		ft_putstr_fd("Error : Syntax\n", 2);
-		*exit_status = 2;
-		return (NULL);
-	}
-	return (tokens);
-}*/

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:33:00 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/22 23:54:06 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 21:18:50 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,4 @@ int	is_op(char *s)
 {
 	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) || !ft_strncmp(s,
 			"<", 1) || !ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
-}
-
-int	is_error(char *s)
-{
-	return (!ft_strncmp(s, ">", 1) || !ft_strncmp(s, "<", 1) || !ft_strncmp(s,
-			">>", 2) || !ft_strncmp(s, "<<", 2));
 }

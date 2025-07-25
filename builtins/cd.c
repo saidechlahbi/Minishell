@@ -30,7 +30,7 @@ static int	change_dir(char **args, t_env **env)
 	if (!args[1])
 	{
 		target = exdoc("HOME", *env);
-			return (1);
+		return (1);
 		res = chdir(target);
 	}
 	else
@@ -53,7 +53,8 @@ int	ft_cd(char **args, t_env **env, t_garbage **garbage)
 	int		res;
 
 	if (args[2])
-		return (set_status(1), perror("minishell: cd: too many arguments\n"), 1);
+		return (set_status(1), perror("minishell: cd: too many arguments\n"),
+			1);
 	old = getcwd(NULL, 0);
 	res = change_dir(args, env);
 	if (res)

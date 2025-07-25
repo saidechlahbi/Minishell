@@ -23,7 +23,8 @@ char	*exdoc(char *var, t_env *env)
 	return (NULL);
 }
 
-static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded, t_garbage **garbage)
+static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded,
+		t_garbage **garbage)
 {
 	if (input[var->i] == '$' && input[var->i + 1] == '?')
 	{
@@ -31,7 +32,8 @@ static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded, t_ga
 					- var->start, garbage), garbage);
 		var->i += 2;
 		var->start = var->i;
-		expanded = ft_strjoin(expanded, ft_itoa(set_status(-1), garbage), garbage);
+		expanded = ft_strjoin(expanded, ft_itoa(set_status(-1), garbage),
+				garbage);
 	}
 	return (expanded);
 }

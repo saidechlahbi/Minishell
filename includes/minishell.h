@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 17:34:27 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 21:10:13 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ char	*prepdoc(char *input, t_env *env, t_garbage **garbage);
 int		set_status(int new_status);
 /*------------Utils-------------*/
 void	export_variable(t_env **env, char *arg, t_garbage **garbage);
+t_env	*find_key(t_env *env, char *key);
+int		export_error(char *arg);
+void	print_export(t_env *env, t_garbage **garbage);
 void    add_var(t_env **head, char *key, char *value, t_garbage **garbage);
 int		is_builtin(char *s);
 char    *randomize(t_garbage **garbage);

@@ -13,24 +13,23 @@
 
 #include "includes/minishell.h"
 
-int g_global_signal = 0;
+int		g_global_signal = 0;
 
 void	handle_sigint(int signum __attribute__((unused)))
 {
 	if (g_global_signal == 0)
 	{
-		rl_replace_line("", 0);       // Clear the current input
-		write(1, "\n", 1);              // Move to new line
-		rl_on_new_line();              // Tell readline we're on a new line
-		rl_redisplay();              // Redraw the prompt
+		rl_replace_line("", 0); // Clear the current input
+		write(1, "\n", 1);      // Move to new line
+		rl_on_new_line();       // Tell readline we're on a new line
+		rl_redisplay();         // Redraw the prompt
 	}
 	else
 		write(1, "\n", 1);
 	g_global_signal = 0;
 }
 
-t_token	*parsing(char *input, t_garbage **garbage,
-		t_env *env)
+t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 {
 	t_token	*tokens;
 
@@ -46,7 +45,7 @@ t_token	*parsing(char *input, t_garbage **garbage,
 	return (tokens);
 }
 
-void set_not(t_garbage *garbage)
+void	set_not(t_garbage *garbage)
 {
 	while (garbage)
 	{
@@ -63,6 +62,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	t_env		*env;
 	t_garbage	*garbage;
 	char		*input;
+	t_token		*tmp;
 
 	g_global_signal = 0;
 	garbage = NULL;
@@ -89,10 +89,11 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			garbage = NULL;
 			continue ;
 		}
-		t_token *tmp = tokens;
-		while(tmp)
+		tmp = tokens;
+		while (tmp)
 		{
-			printf("%s\ttype%d\tamb%d\tliteral%d\texpanded%d\n", tmp->value, tmp->type, tmp->is_ambg, tmp->has_literal, tmp->expanded);
+			printf("%s\ttype%d\tamb%d\tliteral%d\texpanded%d\n", tmp->value,
+				tmp->type, tmp->is_ambg, tmp->has_literal, tmp->expanded);
 			tmp = tmp->next;
 		}
 		f(garbage);
