@@ -55,6 +55,42 @@ void	set_not(t_garbage *garbage)
 	}
 	return ;
 }
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <pwd.h>
+#include <limits.h>
+
+// ANSI color codes
+#define GREEN   "\001\033[1;32m\002"
+#define BLUE    "\001\033[1;34m\002"
+#define YELLOW  "\001\033[1;33m\002"
+#define RESET   "\001\033[0m\002"
+
+char *get_username() {
+    struct passwd *pw = getpwuid(getuid());
+    return pw ? pw->pw_name : "user";
+}
+
+char *get_cwd() {
+    static char cwd[102];
+    return getcwd(cwd, sizeof(cwd));
+}
+
+char *build_prompt()
+ {
+    char *user = get_username();
+    char *cwd = get_cwd();
+
+    // Static buffer (enough for typical prompts)
+    static char prompt[102 + 100];
+
+    snprintf(prompt, sizeof(prompt),
+        GREEN "%s" RESET ":" BLUE "%s" RESET YELLOW " $ " RESET,
+        user, cwd);
+
+    return prompt;
+}
 
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
@@ -73,7 +109,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline(build_prompt());
 		if (!input)
 		{
 			ft_putstr_fd("exiting minishell...\n", 2);

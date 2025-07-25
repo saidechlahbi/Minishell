@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 21:41:22 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:44:17 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 22:31:02 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ int	is_error(char *s)
 {
 	return (!ft_strncmp(s, ">", 1) || !ft_strncmp(s, "<", 1) || !ft_strncmp(s,
 			">>", 2) || !ft_strncmp(s, "<<", 2));
+}
+
+int	is_op(char *s)
+{
+	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) || !ft_strncmp(s,
+			"<", 1) || !ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
+}
+
+int	is_pipe(char *s)
+{
+	return (!ft_strncmp(s, "|", 1));
 }
 
 int	check_literal(char *str)

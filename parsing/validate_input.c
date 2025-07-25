@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:55:51 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 17:14:35 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 22:34:43 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	validate_input(t_token *token)
 	while (cur)
 	{
 		if ((is_error(cur->value) && cur->next && is_op(cur->next->value))
-			|| (is_op(cur->value) && !cur->next))
+			|| (is_op(cur->value) && !cur->next)
+			|| (is_pipe(cur->value) && cur->next && is_pipe(cur->next->value)))
 		{
 			ft_putstr_fd("Error : Syntax\n", 2);
 			set_status(2);

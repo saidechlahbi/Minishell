@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 21:44:07 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 22:33:20 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ char	*_substr(char *str, int start, int len, t_garbage **garbage);
 int		is_error(char *s);
 int		is_operator(char c);
 int		is_append(char *s);
+int		is_pipe(char *s);
 int		ft_isspace(char c);
 int		is_op(char *s);
 void	ft_putstr_fd(char *s, int fd);

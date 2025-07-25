@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:33:00 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:18:50 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 22:25:56 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,4 @@ int	is_append(char *s)
 int	ft_isspace(char c)
 {
 	return ((c >= 9 && c <= 13) || c == 32);
-}
-
-int	is_op(char *s)
-{
-	return (!ft_strncmp(s, "|", 1) || !ft_strncmp(s, ">", 1) || !ft_strncmp(s,
-			"<", 1) || !ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2));
 }
