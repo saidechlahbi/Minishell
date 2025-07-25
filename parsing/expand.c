@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:43:22 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 23:32:03 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 	while (cur)
 	{
 		next = cur->next;
+		cur->has_literal = check_literal(cur->value);
 		if (ft_strchr(cur->value, '$') && cur->type != DELIMITER
 			&& cur->is_ambg != AMBIGIUOS)
 		{
 			last = ft_strrchr(cur->value, '$');
-			cur->has_literal = check_literal(cur->value);
 			expanded = prep(cur->value, env, encapsulizer, garbage);
 			cur->value = expanded;
 			if (check_last(last) && cur->exp != EXPORT)

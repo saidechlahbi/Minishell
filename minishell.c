@@ -68,7 +68,7 @@ void	set_not(t_garbage *garbage)
 #define RESET   "\001\033[0m\002"
 
 char *get_username() {
-    struct passwd *pw = getpwuid(getuid());
+    struct passwd *pw = getpwuid (getuid());
     return pw ? pw->pw_name : "user";
 }
 
