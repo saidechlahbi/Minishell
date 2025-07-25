@@ -42,6 +42,7 @@ t_token	*parsing(char *input, int *status, t_garbage **garbage,
 	lexing(tokens);
 	delimiter(tokens);
 	has_dollar(tokens, env, garbage, (*garbage)->status);
+	skip_nodes(&tokens);
 	return (tokens);
 }
 
@@ -100,13 +101,13 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			continue ;
 		}
 		t_token *tmp = tokens;
-		while (tmp)
+		while(tmp)
 		{
-			printf("%d\n", tmp->type);
+			printf("%s\ttype%d\tamb%d\tliteral%d\texpanded%d\n", tmp->value, tmp->type, tmp->is_ambg, tmp->has_literal, tmp->expanded);
 			tmp = tmp->next;
 		}
 		f(garbage);
-		execution(tokens, &env, &status, &garbage);
+		// execution(tokens, &env, &status, &garbage);
 		close_all_fds_fstat(3);
 		free_all(&garbage);
 	}

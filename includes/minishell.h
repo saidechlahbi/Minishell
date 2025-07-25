@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/24 09:23:02 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 15:00:10 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_token
 	int				expanded;
 	int				inq;
 	int				exp;
+	int				has_literal;
 	struct s_token	*next;
 }	t_token;
 
@@ -66,6 +67,7 @@ typedef struct s_scanner
 	int		in_squote;
 	int		in_dquote;
 	int		encapsuled;
+	int		has_literal;
 }	t_scanner;
 
 typedef struct s_env
@@ -108,6 +110,7 @@ typedef struct s_garbage
 }t_garbage;
 
 /*-----------Parsing-------------*/
+void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage, int status);
 t_token	*tokenize(char *input, t_garbage **garbage, int *status);
 void    has_dollar(t_token *tokens, t_env *env, t_garbage **garbage, int status);
 t_env 	*get_env(char **envp, t_garbage **garbage);
@@ -150,7 +153,11 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 char	*ft_itoa(long n, t_garbage **garbage);
 void	save_data(t_garbage *garbage);
 void	ft_bzero(void *s, size_t n);
+int		ft_countwords(const char *str);
 char	*prep_helper(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
+char	*expand_exit_status(t_scanner *var, char *input, char *expanded,
+		int status, t_garbage **garbage);
+void	skip_nodes(t_token **tokens);
 
 /*------------execution-------------*/
 void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);

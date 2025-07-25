@@ -6,11 +6,28 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:08:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/19 19:48:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 03:18:40 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_countwords(const char *str)
+{
+	int	count;
+
+	count = 0;
+	while (*str)
+	{
+		while (*str == ' ')
+			str++;
+		if (*str)
+			count++;
+		while (*str && *str != ' ')
+			str++;
+	}
+	return (count);
+}
 
 static int	count_digit(long n)
 {

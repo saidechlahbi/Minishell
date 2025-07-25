@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 10:10:57 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/24 21:32:48 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,11 @@ static void	process_redirection(t_token *token)
 static void specify_word(t_token *token, t_token *prev)
 {
     if (prev->type == CMD || prev->type == BUILTIN)
+	{
+		if(prev->next && !strcmp(prev->value, "export"))
+			token->exp = EXPORT;
         token->type = ARG;
+	}
     else
         token->type = CMD;
 }

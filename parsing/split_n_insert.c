@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 13:20:38 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 03:22:06 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ static void	skip_spaces(t_scanner *var, char *input)
 
 static void	to_split(t_scanner *var, char *input, char *encapsulizer)
 {
-	// Add null check for input
 	if (!input[var->i])
 		return;
-		
 	if (!ft_strncmp(&input[var->i], encapsulizer, 19))
 	{
 		var->i += 19;
@@ -33,10 +31,12 @@ static void	to_split(t_scanner *var, char *input, char *encapsulizer)
 	else if (input[var->i] == '\'' && !var->in_dquote && !var->encapsuled)
 	{
 		var->in_squote = !var->in_squote;
+		var->i++;
 	}
 	else if (input[var->i] == '"' && !var->in_squote && !var->encapsuled)
 	{
 		var->in_dquote = !var->in_dquote;
+		var->i++;
 	}
 }
 
@@ -44,10 +44,7 @@ int	count_tok(char *input, char *encapsulizer)
 {
 	int			count;
 	t_scanner	var;
-	
-	if (!input)
-		return (0);
-		
+
 	ft_bzero(&var, sizeof(var));
 	count = 0;
 	while (input[var.i])
@@ -103,7 +100,7 @@ void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
 	char	**splits;
 	t_token	*new;
 	int		i;
-	
+
 	if (!cur || !cur->value || !cur->value[0])
 		return ;
 	splits = str_tok(cur->value, enapsulizer, garbage);
@@ -111,14 +108,14 @@ void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
 		return ;
 	cur->value = ft_strdup(splits[0], garbage);
 	cur->type = WORD;
-	cur->is_ambg = AMBIGIUOS;
+	// cur->is_ambg = AMBIGIUOS;
 	i = 1;
 	while (splits[i])
 	{
 		new = ft_malloc(sizeof(t_token), 1, garbage);
 		new->value = ft_strdup(splits[i], garbage);
 		new->type = WORD;
-		new->is_ambg = AMBIGIUOS;
+		// new->is_ambg = AMBIGIUOS;
 		new->next = cur->next;
 		cur->next = new;
 		cur = new;
