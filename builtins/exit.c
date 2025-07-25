@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/23 16:49:59 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:42:15 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,23 @@ static int ft_sizee(char **args)
 
 static void help(char *args)
 {
-    ft_putstr_fd("minishell\n", 2);
+    ft_putstr_fd("exit\n", 2);
     ft_putstr_fd("minishell: exit: ", 2);
     ft_putstr_fd(args, 2);
     ft_putstr_fd(": numeric argument required\n", 2); 
 }
 
-void ft_exit(char **args, int exit_status, t_garbage *garbage)
+void ft_exit(char **args, t_garbage *garbage)
 {
     int error;
     int exit_s; 
 
     error = 0;
     if (ft_sizee(args) == 1)
-        exit(exit_status);
+    {
+        ft_putstr_fd("exit\n", 2);
+        get_out_from_here(garbage, set_status(-1));
+    }
     if (check(args[1]))
     {
         help(args[1]);
@@ -87,12 +90,13 @@ void ft_exit(char **args, int exit_status, t_garbage *garbage)
     }
     if (ft_sizee(args) > 2)
     {
-        ft_putstr_fd("minishell\n", 2);
+        ft_putstr_fd("exit\n", 2);
         ft_putstr_fd("minishell: exit: too many arguments\n", 2);
         get_out_from_here(garbage, 2);
     }
     exit_s = _atoi(args[1], &error);
     if (error == 1)
         help(args[1]);
+    ft_putstr_fd("exit\n", 2);
     get_out_from_here(garbage, exit_s);
 }

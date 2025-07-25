@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:08:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 03:18:40 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:32:39 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,21 @@ char	*ft_itoa(long n, t_garbage **garbage)
 		n = n / 10;
 	}
 	return (str);
+}
+
+t_garbage *f(t_garbage *garbage)
+{
+    static t_garbage *head;
+	if (garbage)
+		head = garbage;
+    return head;
+}
+
+int set_status(int new_status)
+{
+    static int status;
+
+    if (new_status != -1)
+        status =  new_status;
+    return status;
 }

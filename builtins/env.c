@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/21 00:24:50 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 18:06:58 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	print_env(t_env *env)
 {
 	while (env)
 	{
-		if (env->key && env->value)
+		if (env->value)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}

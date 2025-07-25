@@ -55,22 +55,6 @@ void set_not(t_garbage *garbage)
 	}
 	return ;
 }
-t_garbage *f(t_garbage *garbage)
-{
-    static t_garbage *head;
-	if (garbage)
-		head = garbage;
-    return head;
-}
-
-int set_status(int new_status)
-{
-    static int status;
-
-    if (new_status != -1)
-        status =  new_status;
-    return status;
-}
 
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
@@ -88,8 +72,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		// reset_terminal();
-    	// rl_reset_line_state();
 		input = readline("minishell$ ");
 		if (!input)
 		{

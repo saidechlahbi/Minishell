@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 17:21:04 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:34:27 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,18 @@ int		ft_countwords(const char *str);
 char	*prep_helper(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
 char	*expand_exit_status(t_scanner *var, char *input, char *expanded, t_garbage **garbage);
 void	skip_nodes(t_token **tokens);
+t_garbage *f(t_garbage *garbage);
+
+/*------------built-in-------------*/
+void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
+void	ft_echo(char **args);
+int 	check_which_built_are(char *cmd);
+int		ft_pwd(void);
+void 	unset(t_env **env, char **args, t_garbage *garbage);
+void	print_env(t_env *env);
+void	export(t_env **env, char **args, t_garbage **garbage);
+int		ft_cd(char **args, t_env **env, t_garbage **garbage);
+void 	ft_exit(char **args, t_garbage *garbage);
 
 /*------------execution-------------*/
 void 			execution(t_token *token, t_env **env, int *last_exit_status, t_garbage **garbage);
@@ -170,17 +182,6 @@ void 			execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage);
 void 			open_and_redirec(t_cmds *command, t_garbage *garbage);
 int 			ft_size(t_cmds *commands);
 int check_if_is_it_dir(char *cmd);
-/*------------built-in-------------*/
-void 	execute_built_in(char **cmd, t_env **env, t_garbage **garbage);
-void	ft_echo(char **args);
-int 	check_which_built_are(char *cmd);
-int		ft_pwd(void);
-void 	unset(t_env **env, char **args, t_garbage *garbage);
-void	print_env(t_env *env);
-void	export(t_env **env, char **args, t_garbage **garbage);
-int		ft_cd(char **args, t_env **env, t_garbage **garbage);
-void 	ft_exit(char **args, int exit_status, t_garbage *garbage);
-t_garbage *f(t_garbage *garbage);
 /*------------ambigious-------------*/
 void checking_ambigious(t_token *token, t_cmds *commands);
 
