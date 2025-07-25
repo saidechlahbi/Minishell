@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:51:34 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/24 04:57:59 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 03:25:55 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	ft_wordlen(const char *str, char d)
 	return (len);
 }
 
-static int	ft_countwords(const char *str, char d)
+static int	ft_wordcount(const char *str, char d)
 {
 	int	count;
 
@@ -74,7 +74,7 @@ char	**ft_split(char const *s, char c, t_garbage **garbage)
 	i = 0;
 	if (!s)
 		return (NULL);
-	strs = ft_malloc(sizeof(char *), ft_countwords(s, c) + 1, garbage);
+	strs = ft_malloc(sizeof(char *), ft_wordcount(s, c) + 1, garbage);
 	while (*s)
 	{
 		while (*s == c)

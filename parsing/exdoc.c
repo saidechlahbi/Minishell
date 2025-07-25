@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 11:12:11 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:22:51 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*exdoc(char *var, t_env *env)
 	return (NULL);
 }
 
-static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded ,int status,
+static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded,
 		t_garbage **garbage)
 {
 	if (input[var->i] == '$' && input[var->i + 1] == '?')
@@ -32,12 +32,13 @@ static char	*exdoc_exit_status(t_scanner *var, char *input, char *expanded ,int 
 					- var->start, garbage), garbage);
 		var->i += 2;
 		var->start = var->i;
-		expanded = ft_strjoin(expanded, ft_itoa(status, garbage), garbage);
+		expanded = ft_strjoin(expanded, ft_itoa(set_status(-1), garbage),
+				garbage);
 	}
 	return (expanded);
 }
 
-char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
+char	*prepdoc(char *input, t_env *env, t_garbage **garbage)
 {
 	char		*expanded;
 	char		*value;
@@ -47,7 +48,7 @@ char	*prepdoc(char *input, t_env *env, t_garbage **garbage, int status)
 	ft_bzero(&var, sizeof(var));
 	while (input[var.i])
 	{
-		expanded = exdoc_exit_status(&var, input, expanded, status, garbage);
+		expanded = exdoc_exit_status(&var, input, expanded, garbage);
 		if (input[var.i] == '$' && is_expandable(input[var.i + 1]))
 		{
 			expanded = prep_helper(&var, input, expanded, garbage);

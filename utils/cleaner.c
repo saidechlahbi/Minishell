@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/21 00:20:06 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/25 17:24:52 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_garbage	*new_garbage(void *content, t_garbage *garbage)
 		get_out_from_here(garbage, 1);
 	now->data = content;
 	now->var = 0;
-	now->status = 0;
 	now->next = NULL;
 	return (now);
 }

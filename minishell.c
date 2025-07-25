@@ -13,39 +13,40 @@
 
 #include "includes/minishell.h"
 
-int g_global_signal = 0;
+int		g_global_signal = 0;
 
 void	handle_sigint(int signum __attribute__((unused)))
 {
 	if (g_global_signal == 0)
 	{
-		rl_replace_line("", 0);       // Clear the current input
-		write(1, "\n", 1);              // Move to new line
-		rl_on_new_line();              // Tell readline we're on a new line
-		rl_redisplay();              // Redraw the prompt
+		rl_replace_line("", 0); // Clear the current input
+		write(1, "\n", 1);      // Move to new line
+		rl_on_new_line();       // Tell readline we're on a new line
+		rl_redisplay();         // Redraw the prompt
 	}
 	else
 		write(1, "\n", 1);
 	g_global_signal = 0;
 }
 
-t_token	*parsing(char *input, int *status, t_garbage **garbage,
-		t_env *env)
+t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 {
 	t_token	*tokens;
 
-	tokens = tokenize(input, garbage, status);
+	tokens = tokenize(input, garbage);
 	if (!tokens)
 		return (NULL);
-	if (validate_input(tokens, status))
+	if (validate_input(tokens))
 		return (NULL);
 	lexing(tokens);
 	delimiter(tokens);
-	has_dollar(tokens, env, garbage, (*garbage)->status);
+	has_dollar(tokens, env, garbage);
+	lexing(tokens);
+	skip_nodes(&tokens);
 	return (tokens);
 }
 
-void set_not(t_garbage *garbage)
+void	set_not(t_garbage *garbage)
 {
 	while (garbage)
 	{
@@ -54,13 +55,6 @@ void set_not(t_garbage *garbage)
 	}
 	return ;
 }
-t_garbage *f(t_garbage *garbage)
-{
-    static t_garbage *head;
-	if (garbage)
-		head = garbage;
-    return head;
-}
 
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
@@ -68,8 +62,8 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	t_token		*tokens;
 	t_env		*env;
 	t_garbage	*garbage;
-	int			status;
 	char		*input;
+	t_token		*tmp;
 
 	g_global_signal = 0;
 	garbage = NULL;
@@ -77,12 +71,9 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	set_not(garbage);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	status = 0;
 	while (1)
 	{
-		// reset_terminal();
-    	// rl_reset_line_state();
-		input = readline("minishell$ ");
+		input = readline(custom_prompt(env, &garbage));
 		if (!input)
 		{
 			ft_putstr_fd("exiting minishell...\n", 2);
@@ -92,16 +83,22 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 			continue ;
 		add_back_for_garbage(&garbage, new_garbage(input, garbage));
 		add_history(input);
-		tokens = parsing(input, &status, &garbage, env);
+		tokens = parsing(input, &garbage, env);
 		if (!tokens)
 		{
 			free_all(&garbage);
 			garbage = NULL;
 			continue ;
 		}
+		tmp = tokens;
+		while (tmp)
+		{
+			printf("%s\ttype%d\tamb%d\tliteral%d\texpanded%d\n", tmp->value,
+				tmp->type, tmp->is_ambg, tmp->has_literal, tmp->expanded);
+			tmp = tmp->next;
+		}
 		f(garbage);
-		execution(tokens, &env, &status, &garbage);
-		close_all_fds_fstat(3);
+		// close_all_fds_fstat(3);
 		free_all(&garbage);
 	}
 }
