@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 06:47:42 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 09:09:39 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ int							export(t_env **env, char **args,
 								t_garbage **garbage);
 int							ft_cd(char **args, t_env **env,
 								t_garbage **garbage);
-void						ft_exit(t_cmds *cmd, t_garbage *garbage);
+int						ft_exit(t_cmds *cmd, t_garbage *garbage);
 
 /*------------execution-------------*/
 void						execution(t_token *token, t_env **env,

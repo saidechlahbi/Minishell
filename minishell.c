@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 05:27:22 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 17:08:11 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 	lexing(tokens);
 	delimiter(tokens);
 	has_dollar(tokens, env, garbage);
-	lexing(tokens);
 	skip_nodes(&tokens);
+	lexing(tokens);
 	return (tokens);
 }
 
@@ -71,7 +71,7 @@ static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
 		if (!tokens)
 		{
 			free_all(garbage);
-			garbage = NULL;
+			*garbage = NULL;
 			continue ;
 		}
 		f(*garbage);

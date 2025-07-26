@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fix_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 03:19:39 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 07:37:12 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ static char	*get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 	{
 		str = ft_strjoin(*paths, "/", garbage);
 		cmd_with_path = ft_strjoin(str, cmd, garbage);
-		if (!access(cmd_with_path, X_OK))
-			return (cmd_with_path);
+		if (!access(cmd_with_path, F_OK))
+		{
+			if (!access(cmd_with_path, X_OK))
+				return (cmd_with_path);
+			ft_putstr_fd("bash:",2);
+			ft_putstr_fd(cmd_with_path, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			exit(126);
+		}
 		paths++;
 	}
 	return (NULL);

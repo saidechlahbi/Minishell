@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 17:19:50 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 06:43:19 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 07:49:38 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	execute_built_in(t_cmds *cmd, t_env **env, t_garbage **garbage)
 	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
 		print_env(*env);
 	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
-		ft_exit(cmd, *garbage);
+		status = ft_exit(cmd, *garbage);
 	return (status);
 }
 
@@ -38,6 +38,7 @@ void	execute_cmd_built_in(t_cmds *commands, t_env **env, t_garbage **garbage)
 {
 	int	std_in;
 	int	std_out;
+	int status;
 
 	std_in = dup(0);
 	std_out = dup(1);
@@ -51,7 +52,8 @@ void	execute_cmd_built_in(t_cmds *commands, t_env **env, t_garbage **garbage)
 		dup2(commands->read_from, 0);
 	if (commands->write_in)
 		dup2(commands->write_in, 1);
-	set_status(execute_built_in(commands, env, garbage));
+	status = execute_built_in(commands, env, garbage);
+	set_status(status);
 	close(0);
 	close(1);
 	dup(std_in);

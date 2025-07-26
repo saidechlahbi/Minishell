@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 06:33:54 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 07:50:34 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	help(char *args, int i, t_garbage *garbage)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 }
 
-void	ft_exit(t_cmds *cmd, t_garbage *garbage)
+int	ft_exit(t_cmds *cmd, t_garbage *garbage)
 {
 	int	error;
 	int	exit_s;
@@ -82,11 +82,11 @@ void	ft_exit(t_cmds *cmd, t_garbage *garbage)
 	if (cmd->cmd[2])
 	{
 		help(cmd->cmd[1], 0, garbage);
-		set_status(1);
-		return ;
+		return (1);
 	}
 	exit_s = _atoi(cmd->cmd[1], &error);
 	if (error == 1)
 		help(cmd->cmd[1], 0, garbage);
 	get_out_from_here(garbage, exit_s);
+	return 0;
 }

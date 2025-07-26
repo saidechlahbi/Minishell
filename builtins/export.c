@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 06:51:43 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 07:03:27 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	export(t_env **env, char **args, t_garbage **garbage)
 	i = 1;
 	while (args[i])
 	{
-		export_variable(env, args[i], garbage);
+		status = export_variable(env, args[i], garbage);
 		i++;
 	}
 	return (status);
