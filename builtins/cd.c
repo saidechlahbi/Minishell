@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 18:04:37 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 06:52:18 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int	ft_cd(char **args, t_env **env, t_garbage **garbage)
 	int		res;
 
 	if (args[2])
-		return (set_status(1), perror("minishell: cd: too many arguments\n"),
-			1);
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	old = getcwd(NULL, 0);
 	res = change_dir(args, env);
 	if (res)
@@ -65,11 +64,12 @@ int	ft_cd(char **args, t_env **env, t_garbage **garbage)
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		if (old)
 			free(old);
-		return (set_status(1), 1);
+		return (1);
 	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (perror(""), free_pwd(old, pwd), 0);
+		return (ft_putstr_fd("cd: error retrieving current directory", 2),
+			free_pwd(old, pwd), 1);
 	set_oldpwd(env, pwd, old, garbage);
-	return (free_pwd(old, pwd), set_status(0), 0);
+	return (free_pwd(old, pwd), 0);
 }

@@ -6,11 +6,35 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:33:24 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 21:45:28 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 05:16:17 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static int	is_fd_open_fstat(int fd)
+{
+	struct stat	st;
+
+	return (fstat(fd, &st) == 0);
+}
+
+void	close_all_fds_fstat(int start)
+{
+	int	count;
+
+	count = 0;
+	while (start < 1024)
+	{
+		if (is_fd_open_fstat(start))
+			close(start);
+		else
+			count++;
+		if (count == 20)
+			break ;
+		start++;
+	}
+}
 
 void	free_all(t_garbage **garbage)
 {

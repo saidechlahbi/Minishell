@@ -9,9 +9,10 @@ FILES		=   minishell.c \
 				utils/utils07.c utils/cleaner.c utils/free_all.c utils/prompt.c \
 				builtins/echo.c builtins/pwd.c builtins/unset.c builtins/env.c builtins/export.c \
 				builtins/export_error.c builtins/print_export.c builtins/cd.c builtins/exit.c \
-				#execution/execute_built_in.c execution/execution.c \
-				execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c execution/flow_tools.c \
-				execution/herdoc.c execution/one_cmd.c  execution/pipe_tools.c execution/ambiguous.c
+				execution/execution.c \
+				execution/execute_built_in.c  execution/flow.c execution/fix_path.c execution/pipe.c execution/redirection.c \
+				execution/flow_tools.c  execution/flow_tools2.c execution/herdoc.c execution/one_cmd.c \
+				execution/pipe_tools.c execution/pipe_tools2.c
 
 OBJ_DIR		= obj
 OBJ			= $(FILES:.c=.o)

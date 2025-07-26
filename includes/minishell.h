@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 00:19:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 06:47:42 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define BLUE "\001\033[1;34m\002"
 # define YELLOW "\001\033[1;33m\002"
 # define RESET "\001\033[0m\002"
+# define TRUE 1
+# define FALSE 0
 
 extern int					g_global_signal;
 
@@ -89,7 +91,7 @@ typedef struct s_redirection
 	int						fd;
 	int						type;
 	int						inq;
-	int						is_ambigious;
+	int						is_ambg;
 	struct s_redirection	*next;
 }							t_redirection;
 
@@ -103,6 +105,7 @@ typedef struct s_cmds
 	int						write_in;
 	int						read_from;
 	char					**envp;
+	int						printable;
 	struct s_cmds			*next;
 }							t_cmds;
 
@@ -126,7 +129,7 @@ char						*prepdoc(char *input, t_env *env,
 								t_garbage **garbage);
 int							set_status(int new_status);
 /*------------Utils-------------*/
-void						export_variable(t_env **env, char *arg,
+int							export_variable(t_env **env, char *arg,
 								t_garbage **garbage);
 t_env						*find_key(t_env *env, char *key);
 int							export_error(char *arg);
@@ -187,47 +190,49 @@ char						*custom_prompt(t_env *env, t_garbage **garbage);
 t_garbage					*f(t_garbage *garbage);
 
 /*------------built-in-------------*/
-void						execute_built_in(char **cmd, t_env **env,
+int							execute_built_in(t_cmds *cmd, t_env **env,
 								t_garbage **garbage);
 void						ft_echo(char **args);
 int							check_which_built_are(char *cmd);
 int							ft_pwd(void);
 void						unset(t_env **env, char **args, t_garbage *garbage);
 void						print_env(t_env *env);
-void						export(t_env **env, char **args,
+int							export(t_env **env, char **args,
 								t_garbage **garbage);
 int							ft_cd(char **args, t_env **env,
 								t_garbage **garbage);
-void						ft_exit(char **args, t_garbage *garbage);
+void						ft_exit(t_cmds *cmd, t_garbage *garbage);
 
 /*------------execution-------------*/
 void						execution(t_token *token, t_env **env,
-								int *last_exit_status, t_garbage **garbage);
+								t_garbage **garbage);
 t_cmds						*splinting_into_proccess(t_token *token,
 								char **envp, t_garbage **garbage);
 void						fill_by_path(t_cmds *commands, t_env *env,
 								t_garbage **garbage);
 char						**env_lst_to_char2(t_env *env, t_garbage **garbage);
-void						pipes(t_cmds *commands, int *exit_status,
-								t_env **env, t_garbage **garbage);
-void						one_command(t_cmds *commands, t_env **env,
-								int *exit_status, t_garbage **garbage);
-int							herdoc(t_cmds *commands, int *exit_status,
-								t_env *env, t_garbage **garbage);
+int							pipes(t_cmds *commands, t_env **env,
+								t_garbage **garbage);
+int							one_command(t_cmds *commands, t_env **env,
+								t_garbage **garbage);
+int							herdoc(t_cmds *commands, t_env *env,
+								t_garbage **garbage);
 int							check_is_built_in(char *cmd);
 void						execution_cmd(t_cmds *command, t_env **env,
 								t_garbage **garbage);
-void						open_and_redirec(t_cmds *command,
-								t_garbage *garbage);
+void						execute_cmd_built_in(t_cmds *commands, t_env **env,
+								t_garbage **garbage);
+void						open_and_red_and_fill(t_cmds *command, t_env *env,
+								t_garbage **garbage);
 int							ft_size(t_cmds *commands);
 int							check_if_is_it_dir(char *cmd);
-/*------------ambigious-------------*/
-void						checking_ambigious(t_token *token,
-								t_cmds *commands);
+void						close_pipes(int *pipefd);
+int							wait_commands(int size, t_cmds *cmd,
+								t_garbage **garbage);
 
 /*------------redirection-------------*/
 int							open_files(t_cmds *command);
-void						redirection(t_cmds *command);
+int							redirection(t_cmds *command);
 void						close_all_fds_fstat(int start);
 
 /*----------flow tools------------*/
@@ -236,6 +241,9 @@ void						add_back_for_cmd(t_cmds **lst, t_cmds *new);
 t_redirection				*last_for_redirec(t_redirection *lst);
 void						add_back_for_redirec(t_redirection **lst,
 								t_redirection *new);
+int							count_args_of_cmd(t_token *token);
+char						**fill_cmd(t_token *token, t_garbage **garbage);
+int							ft_size(t_cmds *commands);
 
 /*----------cleaner tools------------*/
 t_garbage					*new_garbage(void *content, t_garbage *garbage);

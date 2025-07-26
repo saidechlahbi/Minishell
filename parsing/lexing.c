@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:27:07 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 05:12:16 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,17 @@ static void	specify_word(t_token *token, t_token *prev)
 		token->type = ARG;
 	}
 	else
-		token->type = CMD;
+	{
+		if (is_builtin(token->value))
+			token->type = BUILTIN;
+		else
+			token->type = CMD;
+	}
 }
 
 void	lexing(t_token *token)
 {
-	t_token (*prev);
+	t_token(*prev);
 	if (token && token->type == WORD)
 	{
 		if (is_builtin(token->value))

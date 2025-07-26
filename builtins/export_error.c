@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:08:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 06:45:22 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	export_error(char *arg)
 			ft_putstr_fd("bash: export: `", 2);
 			ft_putstr_fd(arg, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			set_status(1);
 			return (1);
 		}
 	}

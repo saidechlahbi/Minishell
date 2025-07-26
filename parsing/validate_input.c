@@ -26,8 +26,8 @@ int	validate_input(t_token *token)
 	while (cur)
 	{
 		if ((is_error(cur->value) && cur->next && is_op(cur->next->value))
-			|| (is_op(cur->value) && !cur->next)
-			|| (is_pipe(cur->value) && cur->next && is_pipe(cur->next->value)))
+			|| (is_op(cur->value) && !cur->next) || (is_pipe(cur->value)
+				&& cur->next && is_pipe(cur->next->value)))
 		{
 			ft_putstr_fd("Error : Syntax\n", 2);
 			set_status(2);

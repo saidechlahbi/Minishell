@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:17:35 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 03:10:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,10 @@ void	add_token(t_token **head, char *value, int type, t_garbage **garbage)
 static void	handle_quotes(t_scanner *var, char c)
 {
 	if (c == '\'' && !var->in_dquote)
-	{
 		var->in_squote = !var->in_squote;
-		var->i++;
-	}
 	else if (c == '"' && !var->in_squote)
-	{
 		var->in_dquote = !var->in_dquote;
-		var->i++;
-	}
+	var->i++;
 }
 
 static void	handle_spaces(t_scanner *var, char *input, t_garbage **garbage)

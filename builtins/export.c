@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:13:52 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 06:51:43 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,14 @@ static void	add_value(t_env *node, char *arg, t_garbage **garbage)
 	save_data(*garbage);
 }
 
-void	export_variable(t_env **env, char *arg, t_garbage **garbage)
+int	export_variable(t_env **env, char *arg, t_garbage **garbage)
 {
 	char	*equal;
 	t_env	node;
 	t_env	*existing;
-	int		i;
 
-	i = 0;
 	if (export_error(arg))
-		return ;
+		return (1);
 	equal = ft_strchr(arg, '=');
 	if (!equal)
 	{
@@ -66,16 +64,19 @@ void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 		add_var(env, node.key, node.value, garbage);
 	else if (existing && equal)
 		existing->key = node.value;
+	return (0);
 }
 
-void	export(t_env **env, char **args, t_garbage **garbage)
+int	export(t_env **env, char **args, t_garbage **garbage)
 {
 	int	i;
+	int	status;
 
+	status = 0;
 	if (!args[1])
 	{
 		print_export(*env, garbage);
-		return ;
+		return (0);
 	}
 	i = 1;
 	while (args[i])
@@ -83,4 +84,5 @@ void	export(t_env **env, char **args, t_garbage **garbage)
 		export_variable(env, args[i], garbage);
 		i++;
 	}
+	return (status);
 }

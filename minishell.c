@@ -1,31 +1,28 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/19 16:47:01 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 05:27:22 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int		g_global_signal = 0;
+int			g_global_signal = 0;
 
 void	handle_sigint(int signum __attribute__((unused)))
 {
 	if (g_global_signal == 0)
 	{
-		rl_replace_line("", 0); // Clear the current input
-		write(1, "\n", 1);      // Move to new line
-		rl_on_new_line();       // Tell readline we're on a new line
-		rl_redisplay();         // Redraw the prompt
-	}
-	else
+		rl_replace_line("", 0);
 		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 	g_global_signal = 0;
 }
 
@@ -56,6 +53,34 @@ void	set_not(t_garbage *garbage)
 	return ;
 }
 
+static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
+{
+	while (1)
+	{
+		input = readline(custom_prompt(*env, garbage));
+		if (!input)
+		{
+			ft_putstr_fd("exit\n", 2);
+			get_out_from_here(*garbage, 1);
+		}
+		if (!input[0])
+			continue ;
+		add_back_for_garbage(garbage, new_garbage(input, *garbage));
+		add_history(input);
+		tokens = parsing(input, garbage, *env);
+		if (!tokens)
+		{
+			free_all(garbage);
+			garbage = NULL;
+			continue ;
+		}
+		f(*garbage);
+		execution(tokens, env, garbage);
+		close_all_fds_fstat(3);
+		free_all(garbage);
+	}
+}
+
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 		char **envp)
 {
@@ -63,42 +88,14 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	t_env		*env;
 	t_garbage	*garbage;
 	char		*input;
-	t_token		*tmp;
 
+	input = NULL;
+	tokens = NULL;
 	g_global_signal = 0;
 	garbage = NULL;
 	env = get_env(envp, &garbage);
 	set_not(garbage);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	while (1)
-	{
-		input = readline(custom_prompt(env, &garbage));
-		if (!input)
-		{
-			ft_putstr_fd("exiting minishell...\n", 2);
-			get_out_from_here(garbage, 1);
-		}
-		if (!input[0])
-			continue ;
-		add_back_for_garbage(&garbage, new_garbage(input, garbage));
-		add_history(input);
-		tokens = parsing(input, &garbage, env);
-		if (!tokens)
-		{
-			free_all(&garbage);
-			garbage = NULL;
-			continue ;
-		}
-		tmp = tokens;
-		while (tmp)
-		{
-			printf("%s\ttype%d\tamb%d\tliteral%d\texpanded%d\n", tmp->value,
-				tmp->type, tmp->is_ambg, tmp->has_literal, tmp->expanded);
-			tmp = tmp->next;
-		}
-		f(garbage);
-		// close_all_fds_fstat(3);
-		free_all(&garbage);
-	}
+	help(&env, &garbage, input, tokens);
 }
