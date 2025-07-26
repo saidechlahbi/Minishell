@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 07:03:27 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 19:05:46 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	export_variable(t_env **env, char *arg, t_garbage **garbage)
 	if (!existing)
 		add_var(env, node.key, node.value, garbage);
 	else if (existing && equal)
-		existing->key = node.value;
+		existing->value = node.value;
 	return (0);
 }
 
