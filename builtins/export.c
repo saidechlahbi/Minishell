@@ -6,189 +6,64 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/21 00:52:20 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 01:56:28 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env *create_copy(t_env *env, t_garbage **garbage)
+static void	append_value(t_env **env, t_env *node, char *arg,
+		t_garbage **garbage)
 {
-    t_env *new_node;
-    t_env *head;
-    t_env *tail;
+	char	*equal;
+	t_env	*existing;
 
-    head = NULL;
-    tail = NULL;
-    while (env)
-    {
-        new_node = ft_malloc(sizeof(t_env), 1, garbage);
-        new_node->key = ft_malloc(strlen(env->key) + 1, 1, garbage);
-        ft_strncpy(new_node->key, env->key, ft_strlen(env->key));
-        new_node->key[ft_strlen(env->key)] = '\0';
-        if (env->value)
-        {
-            new_node->value = ft_malloc(strlen(env->value) + 1, 1, garbage);
-            ft_strncpy(new_node->value, env->value, ft_strlen(env->value));
-            new_node->value[ft_strlen(env->value)] = '\0';
-        }
-        else
-            new_node->value = NULL;
-        new_node->next = NULL;
-        if (!head)
-        {
-            head = new_node;
-            tail = new_node;
-        }
-        else
-        {
-            tail->next = new_node;
-            tail = new_node;
-        }
-        env = env->next;
-    }
-    return (head);
+	equal = ft_strchr(arg, '=');
+	node->key = _substr(arg, 0, equal - 1 - arg, garbage);
+	save_data(*garbage);
+	existing = find_key(*env, node->key);
+	if (!existing || !existing->value)
+		node->value = ft_strdup(equal + 1, garbage);
+	else
+		node->value = ft_strjoin(existing->value, equal + 1, garbage);
+	save_data(*garbage);
 }
 
-t_env *sort_export(t_env *head)
+static void	add_value(t_env *node, char *arg, t_garbage **garbage)
 {
-    int sorted;
-    t_env *current;
-    char *kc;
-    char *vc;
+	char	*equal;
 
-    if (!head)
-        return (NULL);
-    
-    sorted = 0;
-    while (!sorted)
-    {
-        sorted = 1;
-        current = head;
-        while (current && current->next)
-        {
-            if (ft_strcmp(current->key, current->next->key) > 0)
-            {
-                kc = current->key;
-                current->key = current->next->key;
-                current->next->key = kc;
-                vc = current->value;
-                current->value = current->next->value;
-                current->next->value = vc;
-                sorted = 0;
-            }
-            current = current->next;
-        }
-    }
-    return (head);
-}
-
-void print_export(t_env *env, t_garbage **garbage)
-{
-    t_env *copy;
-    int i;
-
-    copy = create_copy(env, garbage);
-    copy = sort_export(copy);
-    while (copy)
-    {
-        printf("declare -x %s", copy->key);
-        if (copy->value)
-        {
-            printf("=\"");
-            i = 0;
-            while (copy->value[i])
-            {
-                if (copy->value[i] == '"')
-                    printf("\\\"");
-                else if (copy->value[i] == '$')
-                    printf("\\$");
-                else
-                    printf("%c", copy->value[i]);
-                i++;
-            }
-            printf("\"");
-        }
-        printf("\n");
-        copy = copy->next;
-    }
-}
-
-t_env	*find_key(t_env *env, char *key)
-{
-	while (env)
-	{
-		if (!ft_strcmp(env->key, key))
-			return (env);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-void save_data(t_garbage *garbage)
-{
-    if (!garbage)
-        return ;
-    while (garbage->next)
-        garbage = garbage->next;
-    if (garbage)
-        garbage->var = 1;
+	equal = ft_strchr(arg, '=');
+	node->key = _substr(arg, 0, equal - arg, garbage);
+	save_data(*garbage);
+	node->value = ft_strdup(equal + 1, garbage);
+	save_data(*garbage);
 }
 
 void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 {
-	char		*equal;
-	char		*newk;
-	char		*newv;
-	t_env		*existing;
-	int			i;
+	char	*equal;
+	t_env	node;
+	t_env	*existing;
 
-	i = 0;
-	if (is_expandable(arg[i]))
-		while (arg[i] && is_expandable2(arg[i]))
-			i++;
-	if (arg[i])
-	{
-		if (arg[i] == '+' && arg[i + 1] == '=')
-			i += 2;
-		else if (arg[i] == '=')
-			i++;
-		else
-		{
-            perror("export");
-            return ;
-        }
-	}
+	if (export_error(arg))
+		return ;
 	equal = ft_strchr(arg, '=');
 	if (!equal)
 	{
-		newk = ft_strdup(arg, garbage);
-        save_data(*garbage);
-		newv = NULL;
+		node.key = ft_strdup(arg, garbage);
+		save_data(*garbage);
+		node.value = NULL;
 	}
 	else if (equal > arg && *(equal - 1) == '+')
-	{
-		newk = _substr(arg, 0, equal - 1 - arg, garbage);
-        save_data(*garbage);
-		existing = find_key(*env, newk);
-		if (!existing || !existing->value)
-			newv = ft_strdup(equal + 1, garbage);
-		else
-			newv = ft_strjoin(existing->value, equal + 1, garbage);
-        save_data(*garbage);
-	}
+		append_value(env, &node, arg, garbage);
 	else
-	{
-		newk = _substr(arg, 0, equal - arg, garbage);
-        save_data(*garbage);
-		newv = ft_strdup(equal + 1, garbage);
-        save_data(*garbage);
-	}
-	existing = find_key(*env, newk);
+		add_value(&node, arg, garbage);
+	existing = find_key(*env, node.key);
 	if (!existing)
-		add_var(env, newk, newv, garbage);
+		add_var(env, node.key, node.value, garbage);
 	else if (existing && equal)
-		existing->value = newv;
+		existing->key = node.value;
 }
 
 void	export(t_env **env, char **args, t_garbage **garbage)

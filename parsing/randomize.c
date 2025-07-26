@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   randomize.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:28 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/17 14:07:46 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/23 02:29:12 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,5 @@ char	*randomize(t_garbage **garbage)
 			str[j++] = buffer[i];
 		i++;
 	}
-	str[j] = '\0';
-	close(fd);
-	return (str);
+	return (str[j] = '\0', close(fd), str);
 }

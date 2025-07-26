@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/21 17:49:10 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:42:15 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,73 +22,81 @@ static unsigned char	_atoi(const char *str, int *error)
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
 	if (*str == '-' || *str == '+')
-		sign = (*str++ == '-') ? -1 : 1;
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
 	while (*str >= '0' && *str <= '9')
 	{
 		if (result > (LLONG_MAX - (*str - '0')) / 10)
 		{
 			*error = 1;
-			break;
+			break ;
 		}
 		result = result * 10 + (*str++ - '0');
 	}
 	return ((unsigned char)(result * sign));
 }
 
-static int check(char *str)
+static int	check(char *str)
 {
-    while ((*str && (*str >= 9 && *str <= 13) )|| *str == 32)
-        str++;
-    if (*str == '-' || *str == '+')
-        str++;
-    while (*str && *str >= '0' && *str <= '9')
-        str++;
-    while ((*str && (*str >= 9 && *str <= 13)) || *str == 32)
-        str++;
-    if (*str)
-        return 1;
-    return 0;
+	while ((*str && (*str >= 9 && *str <= 13)) || *str == 32)
+		str++;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str && *str >= '0' && *str <= '9')
+		str++;
+	while ((*str && (*str >= 9 && *str <= 13)) || *str == 32)
+		str++;
+	if (*str)
+		return (1);
+	return (0);
 }
 
-static int ft_sizee(char **args)
+static int	ft_sizee(char **args)
 {
-    int count ;
+	int	count;
 
-    count = 0;
-    while (args[count])
-        count ++;
-    return count ;
+	count = 0;
+	while (args[count])
+		count++;
+	return (count);
 }
 
-static void help(char *args)
+static void	help(char *args)
 {
-    ft_putstr_fd("minishell\n", 2);
-    ft_putstr_fd("minishell: exit: ", 2);
-    ft_putstr_fd(args, 2);
-    ft_putstr_fd(": numeric argument required\n", 2); 
+	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(args, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
 }
 
-void ft_exit(char **args, int exit_status, t_garbage *garbage)
+void	ft_exit(char **args, t_garbage *garbage)
 {
-    int error;
-    int exit_s; 
+	int	error;
+	int	exit_s;
 
-    error = 0;
-    if (ft_sizee(args) == 1)
-        exit(exit_status);
-    if (check(args[1]))
-    {
-        help(args[1]);
-        get_out_from_here(garbage, 2);
-    }
-    if (ft_sizee(args) > 2)
-    {
-        ft_putstr_fd("minishell\n", 2);
-        ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-        get_out_from_here(garbage, 2);
-    }
-    exit_s = _atoi(args[1], &error);
-    if (error == 1)
-        help(args[1]);
-    get_out_from_here(garbage, exit_s);
+	error = 0;
+	if (ft_sizee(args) == 1)
+	{
+		ft_putstr_fd("exit\n", 2);
+		get_out_from_here(garbage, set_status(-1));
+	}
+	if (check(args[1]))
+	{
+		help(args[1]);
+		get_out_from_here(garbage, 2);
+	}
+	if (ft_sizee(args) > 2)
+	{
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		get_out_from_here(garbage, 2);
+	}
+	exit_s = _atoi(args[1], &error);
+	if (error == 1)
+		help(args[1]);
+	ft_putstr_fd("exit\n", 2);
+	get_out_from_here(garbage, exit_s);
 }

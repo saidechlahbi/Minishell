@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:58 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/21 17:54:04 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:01:50 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	ft_echo_helper(char **args, int i)
+{
+	ft_putstr_fd(args[i], 1);
+	if (args[i + 1] && args[i + 1][0])
+		write(1, " ", 1);
+}
 
 void	ft_echo(char **args)
 {
@@ -34,9 +41,7 @@ void	ft_echo(char **args)
 	}
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1])
-			write(1, " ", 1);
+		ft_echo_helper(args, i);
 		i++;
 	}
 	if (!n)

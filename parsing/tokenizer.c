@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 10:46:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/20 01:48:54 by sechlahb         ###   ########.fr       */
+/*   Created: 2025/06/02 10:46:25 by schahir           #+#    #+#             */
+/*   Updated: 2025/07/26 03:10:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,184 +32,70 @@ void	add_token(t_token **head, char *value, int type, t_garbage **garbage)
 	}
 }
 
-int	validate_input(t_token *token, int *status)
+static void	handle_quotes(t_scanner *var, char c)
 {
-	t_token	*cur;
-
-	if (!token || !ft_strncmp(token->value, "|", 1))
-	{
-		ft_putstr_fd("Error : Syntax\n", 2);
-		*status = 2;
-		return (1);
-	}
-	cur = token;
-	while (cur)
-	{
-		if ((is_error(cur->value) && cur->next && is_op(cur->next->value))
-			|| (is_op(cur->value) && !cur->next))
-		{
-			ft_putstr_fd("Error : Syntax\n", 2);
-			*status = 2;
-			return (1);
-		}
-		cur = cur->next;
-	}
-	return (0);
+	if (c == '\'' && !var->in_dquote)
+		var->in_squote = !var->in_squote;
+	else if (c == '"' && !var->in_squote)
+		var->in_dquote = !var->in_dquote;
+	var->i++;
 }
 
-t_token	*tokenize(char *input, t_garbage **garbage, int *exit_status)
+static void	handle_spaces(t_scanner *var, char *input, t_garbage **garbage)
 {
-	t_token	*tokens;
-	int		i;
-	int		start;
-	int		in_squote;
-	int		in_dquote;
+	if (var->i > var->start)
+		add_token(&var->tokens, _substr(input, var->start, var->i - var->start,
+				garbage), WORD, garbage);
+	while (ft_isspace(input[var->i]))
+		var->i++;
+	var->start = var->i;
+}
 
-	tokens = NULL;
-	i = 0;
-	start = 0;
-	in_squote = 0;
-	in_dquote = 0;
-	while (input[i])
+static void	handle_operator(t_scanner *var, char *input, t_garbage **garbage)
+{
+	if (var->i > var->start)
+		add_token(&var->tokens, _substr(input, var->start, var->i - var->start,
+				garbage), WORD, garbage);
+	else if (is_append(&input[var->i]) != -1)
 	{
-		if (input[i] == '\'' && !in_dquote)
-		{
-			in_squote = !in_squote;
-			i++;
-		}
-		else if (input[i] == '"' && !in_squote)
-		{
-			in_dquote = !in_dquote;
-			i++;
-		}
-		else if (!in_squote && !in_dquote && ft_isspace(input[i]))
-		{
-			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start, garbage),
-					WORD, garbage);
-			i++;
-			while (ft_isspace(input[i]))
-				i++;
-			start = i;
-		}
-		else if (!in_squote && !in_dquote && is_operator(input[i]) != -1)
-		{
-			if (i > start)
-				add_token(&tokens, _substr(input, start, i - start, garbage),
-					WORD, garbage);
-			else if (is_append(&input[i]) != -1)
-			{
-				add_token(&tokens, _substr(input, i, 2, garbage),
-					is_append(&input[i]), garbage);
-				i += 2;
-			}
-			else
-			{
-				add_token(&tokens, _substr(input, i, 1, garbage),
-					is_operator(input[i]), garbage);
-				i++;
-			}
-			start = i;
-		}
-		else
-			i++;
+		add_token(&var->tokens, _substr(input, var->i, 2, garbage),
+			is_append(&input[var->i]), garbage);
+		var->i += 2;
 	}
-	if (i > start)
-		add_token(&tokens, _substr(input, start, i - start, garbage), WORD,
-			garbage);
-	if (in_squote || in_dquote)
+	else
+	{
+		add_token(&var->tokens, _substr(input, var->i, 1, garbage),
+			is_operator(input[var->i]), garbage);
+		var->i++;
+	}
+	var->start = var->i;
+}
+
+t_token	*tokenize(char *input, t_garbage **garbage)
+{
+	t_scanner	var;
+
+	ft_bzero(&var, sizeof(var));
+	while (input[var.i])
+	{
+		if (input[var.i] == '\'' || input[var.i] == '"')
+			handle_quotes(&var, input[var.i]);
+		else if (!var.in_squote && !var.in_dquote && ft_isspace(input[var.i]))
+			handle_spaces(&var, input, garbage);
+		else if (!var.in_squote && !var.in_dquote
+			&& is_operator(input[var.i]) != -1)
+			handle_operator(&var, input, garbage);
+		else
+			var.i++;
+	}
+	if (var.i > var.start)
+		add_token(&var.tokens, _substr(input, var.start, var.i - var.start,
+				garbage), WORD, garbage);
+	if (var.in_squote || var.in_dquote)
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);
-		*exit_status = 2;
+		set_status(2);
 		return (NULL);
 	}
-	return (tokens);
-}
-
-void	lexing(t_token *token)
-{
-	t_token	*prev;
-	int	i;
-
-	prev = token;
-	i = 0;
-	if (token && token->type == WORD)
-	{
-		if (is_builtin(token->value))
-			token->type = BUILTIN;
-		else
-			token->type = CMD;
-		prev = token;
-		token = token->next;
-	}
-	while (token)
-	{
-		if (token->type == RED_OUT)
-		{
-			token->next->type = OUT_FILE;
-			while (token->next->value[i])
-			{
-				if (token->next->value[i] == '$')
-					token->next->expanded = EXPANDED;
-				i++;
-			}
-			i = 0;
-		}
-		if (token->type == APPEND)
-		{
-			token->next->type = APP_FILE;
-			while (token->next->value[i])
-			{
-				if (token->next->value[i] == '$')
-					token->next->expanded = EXPANDED;
-				i++;
-			}
-			i = 0;
-		}
-		else if (token->type == RED_IN)
-		{
-			token->next->type = IN_FILE;
-			while (token->next->value[i])
-			{
-				if (token->next->value[i] == '$')
-					token->next->expanded = EXPANDED;
-				i++;
-			}
-			i = 0;
-		}
-		else if (token->type == HERE_DOC)
-			token->next->type = DELIMITER;
-		if (token->type == WORD)
-		{
-			if (prev->type == CMD || prev->type == BUILTIN)
-				token->type = ARG;
-			else
-				token->type = CMD;
-		}
-		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
-			prev = token;
-		token = token->next;
-	}
-}
-
-void	delimiter(t_token *token)
-{
-	int	i;
-	int	inq;
-
-	inq = 0;
-	while (token)
-	{
-		if (token->type == DELIMITER)
-		{
-			i = 0;
-			while (token->value[i])
-			{
-				if (token->value[i] == '\'' || token->value[i] == '"')
-					token->inq = 1;
-				i++;
-			}
-		}
-		token = token->next;
-	}
+	return (var.tokens);
 }

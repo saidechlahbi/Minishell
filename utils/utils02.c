@@ -70,7 +70,7 @@ char	*ft_strjoin(char const *s1, char const *s2, t_garbage **garbage)
 
 char	*ft_strdup(const char *src, t_garbage **garbage)
 {
-	char *dest;
+	char	*dest;
 
 	dest = ft_malloc(ft_strlen(src) + 1, 1, garbage);
 	ft_strcpy(dest, src);

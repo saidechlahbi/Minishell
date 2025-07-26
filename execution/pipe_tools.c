@@ -6,49 +6,87 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/21 19:24:15 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 01:47:30 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
+void	close_pipes(int *pipefd)
 {
-    if (command->type == BUILTIN)
-    {
-        execute_built_in(command->cmd, env, garbage);
-         get_out_from_here(*garbage, 0);
-    }
-    else
-    {
-        execve(command->cmd[0], command->cmd, command->envp);
-        perror("execve");
-        get_out_from_here(*garbage, 1);
-    }
-    return ;
+	close(pipefd[0]);
+	close(pipefd[1]);
 }
 
-void open_and_redirec(t_cmds *command, t_garbage *garbage)
+int	check_if_is_it_dir(char *cmd)
 {
-    if (open_files(command) == 0)
-        get_out_from_here(garbage, 1);
-    if (command->executable == 0 && command->type == CMD)
-    {
-        printf("%s: command not found\n", command->cmd[0]);
-        get_out_from_here(garbage, 127);
-    }
-    redirection(command);
+	struct stat	stat_dir;
+
+	if (ft_strchr(cmd, '/'))
+	{
+		if (!stat(cmd, &stat_dir))
+		{
+			if (S_ISDIR(stat_dir.st_mode))
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(": Is a directory\n", 2);
+				return (126);
+			}
+		}
+		else
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			return (127);
+		}
+	}
+	return (0);
 }
 
-int ft_size(t_cmds *commands)
+void	execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
 {
-    int count;
+	if (command->type == BUILTIN)
+	{
+		execute_built_in(command->cmd, env, garbage);
+		get_out_from_here(*garbage, 0);
+	}
+	else
+	{
+		execve(command->cmd[0], command->cmd, command->envp);
+		perror("execve");
+		get_out_from_here(*garbage, 1);
+	}
+	return ;
+}
 
-    count = 0;
-    while (commands)
-    {
-        count ++;
-        commands = commands->next;
-    }
-    return count;
+void	open_and_red_and_fill(t_cmds *command, t_env *env, t_garbage **garbage)
+{
+	if (redirection(command))
+		get_out_from_here(*garbage, 1);
+	if (check_if_is_it_dir(command->cmd[0]) == 126)
+		get_out_from_here(*garbage, 126);
+	else if (check_if_is_it_dir(command->cmd[0]) == 127)
+		get_out_from_here(*garbage, 127);
+	fill_by_path(command, env, garbage);
+	if (command->executable == 0 && command->type == CMD)
+	{
+		ft_putstr_fd(command->cmd[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		get_out_from_here(*garbage, 127);
+	}
+}
+
+int	ft_size(t_cmds *commands)
+{
+	int	count;
+
+	count = 0;
+	while (commands)
+	{
+		count++;
+		commands = commands->next;
+	}
+	return (count);
 }

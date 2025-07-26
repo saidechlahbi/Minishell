@@ -6,72 +6,58 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/22 17:48:19 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 03:40:05 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int herdoc_count(t_token *token)
+char	**env_lst_to_char2(t_env *env, t_garbage **garbage)
 {
-    int count;
+	t_env	*tmp;
+	char	**envp;
+	char	*str;
+	int		count;
 
-    count = 0;
-    while (token)
-    {
-        if (token->type == HERE_DOC)
-            count++;
-        token = token->next;
-    }
-    return count;
+	tmp = env;
+	count = 0;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	envp = ft_malloc(sizeof(char *) * (count + 1), 1, garbage);
+	count = 0;
+	while (env)
+	{
+		str = ft_strjoin(env->key, "=", garbage);
+		envp[count++] = ft_strjoin(str, env->value, garbage);
+		env = env->next;
+	}
+	envp[count] = NULL;
+	return (envp);
 }
 
-int size(t_cmds *commands)
+void	execution(t_token *token, t_env **env, t_garbage **garbage)
 {
-    int count;
+	t_cmds	*commands;
+	char	**envp;
 
-    count = 0;
-    while (commands)
-    {
-        count++;
-        commands = commands->next;
-    }
-    return count;
-}
-
-static void setting(t_garbage *garage, int status)
-{
-    while (garage)
-    {
-        garage->status = status;
-        garage = garage->next;
-    }
-    return;
-}
-
-
-void execution(t_token *token, t_env **env, int *exit_status, t_garbage **garbage)
-{
-    t_cmds *commands;
-    char **envp;
-
-    envp = env_lst_to_char2(*env, garbage);
-    if (herdoc_count(token) >= 17)
-    {
-        ft_putstr_fd("minishell: maximum here-document count exceeded", 2);
-        *exit_status = 2;
-        return ;
-    }
-    commands = splinting_into_proccess(token, envp, garbage);
-    if (!commands)
-        return ;
-    setting(*garbage, *exit_status);
-    if (!herdoc(commands, exit_status, *env, garbage))
-        return ;
-    checking_ambigious(token, commands);
-    fill_by_path(commands, *env, garbage);
-    if (size(commands) == 1)
-        one_command(commands, env, exit_status, garbage);
-    else
-        pipes(commands, exit_status, env, garbage);
+	envp = env_lst_to_char2(*env, garbage);
+	commands = splinting_into_proccess(token, envp, garbage);
+	if (!commands)
+		return ;
+	if (herdoc(commands, *env, garbage) == FALSE)
+	{
+		if (set_status(-1) == 130)
+			write(2, "\n", 1);
+		return ;
+	}
+	if (commands->next == NULL)
+		one_command(commands, env, garbage);
+	else
+	{
+		g_global_signal = -1;
+		pipes(commands, env, garbage);
+	}
 }

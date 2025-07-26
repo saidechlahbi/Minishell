@@ -14,14 +14,14 @@
 
 t_cmds	*last_for_cmd(t_cmds *lst)
 {
-    t_cmds	*tmp;
+	t_cmds	*tmp;
 
-    tmp = lst;
-    if (!lst)
-        return (NULL);
-    while (tmp->next != NULL)
-        tmp = tmp->next;
-    return (tmp);
+	tmp = lst;
+	if (!lst)
+		return (NULL);
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 void	add_back_for_cmd(t_cmds **lst, t_cmds *new)
@@ -29,7 +29,7 @@ void	add_back_for_cmd(t_cmds **lst, t_cmds *new)
 	t_cmds	*tmp;
 
 	if (!new)
-		return;
+		return ;
 	if (!(*lst))
 	{
 		(*lst) = new;
@@ -41,14 +41,14 @@ void	add_back_for_cmd(t_cmds **lst, t_cmds *new)
 
 t_redirection	*last_for_redirec(t_redirection *lst)
 {
-    t_redirection	*tmp;
+	t_redirection	*tmp;
 
-    tmp = lst;
-    if (!lst)
-        return (NULL);
-    while (tmp->next != NULL)
-        tmp = tmp->next;
-    return (tmp);
+	tmp = lst;
+	if (!lst)
+		return (NULL);
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 void	add_back_for_redirec(t_redirection **lst, t_redirection *new)
@@ -56,7 +56,7 @@ void	add_back_for_redirec(t_redirection **lst, t_redirection *new)
 	t_redirection	*tmp;
 
 	if (!new)
-		return;
+		return ;
 	if (!(*lst))
 	{
 		(*lst) = new;
