@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:13:52 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 01:57:48 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 	char	*equal;
 	t_env	node;
 	t_env	*existing;
-	int		i;
 
-	i = 0;
 	if (export_error(arg))
 		return ;
 	equal = ft_strchr(arg, '=');
