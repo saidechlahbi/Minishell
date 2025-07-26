@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:08:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 07:09:53 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,20 @@ void	save_data(t_garbage *garbage)
 		garbage->var = 1;
 }
 
+static void	print_error(char *arg)
+{
+	ft_putstr_fd("bash: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
 int	export_error(char *arg)
 {
 	int	i;
 
 	i = 0;
+	if (arg[i] == '=')
+		return (print_error(arg), 1);
 	if (is_expandable(arg[i]))
 		while (arg[i] && is_expandable2(arg[i]))
 			i++;
@@ -48,13 +57,7 @@ int	export_error(char *arg)
 		else if (arg[i] == '=')
 			i++;
 		else
-		{
-			ft_putstr_fd("bash: export: `", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			set_status(1);
-			return (1);
-		}
+			return (print_error(arg), 1);
 	}
 	return (0);
 }

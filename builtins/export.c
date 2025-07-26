@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 01:56:28 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 19:05:46 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ static void	add_value(t_env *node, char *arg, t_garbage **garbage)
 	save_data(*garbage);
 }
 
-void	export_variable(t_env **env, char *arg, t_garbage **garbage)
+int	export_variable(t_env **env, char *arg, t_garbage **garbage)
 {
 	char	*equal;
 	t_env	node;
 	t_env	*existing;
 
 	if (export_error(arg))
-		return ;
+		return (1);
 	equal = ft_strchr(arg, '=');
 	if (!equal)
 	{
@@ -63,22 +63,26 @@ void	export_variable(t_env **env, char *arg, t_garbage **garbage)
 	if (!existing)
 		add_var(env, node.key, node.value, garbage);
 	else if (existing && equal)
-		existing->key = node.value;
+		existing->value = node.value;
+	return (0);
 }
 
-void	export(t_env **env, char **args, t_garbage **garbage)
+int	export(t_env **env, char **args, t_garbage **garbage)
 {
 	int	i;
+	int	status;
 
+	status = 0;
 	if (!args[1])
 	{
 		print_export(*env, garbage);
-		return ;
+		return (0);
 	}
 	i = 1;
 	while (args[i])
 	{
-		export_variable(env, args[i], garbage);
+		status = export_variable(env, args[i], garbage);
 		i++;
 	}
+	return (status);
 }

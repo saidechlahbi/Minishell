@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:55:51 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 22:34:43 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 20:22:13 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	validate_input(t_token *token)
 {
 	t_token	*cur;
 
-	if (!token || !ft_strncmp(token->value, "|", 1))
+	if (!token || !ft_strcmp(token->value, "|"))
 	{
 		ft_putstr_fd("Error : Syntax\n", 2);
 		set_status(2);
@@ -29,7 +29,7 @@ int	validate_input(t_token *token)
 			|| (is_op(cur->value) && !cur->next) || (is_pipe(cur->value)
 				&& cur->next && is_pipe(cur->next->value)))
 		{
-			ft_putstr_fd("Error : Syntax\n", 2);
+			ft_putstr_fd("minishell: syntax error\n", 2);
 			set_status(2);
 			return (1);
 		}

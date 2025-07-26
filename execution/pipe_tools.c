@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 01:47:30 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 23:15:21 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,8 @@ int	check_if_is_it_dir(char *cmd)
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(cmd, 2);
 				ft_putstr_fd(": Is a directory\n", 2);
-				return (126);
+				return (1);
 			}
-		}
-		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			return (127);
 		}
 	}
 	return (0);
@@ -47,15 +40,22 @@ int	check_if_is_it_dir(char *cmd)
 
 void	execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
 {
+	int	status;
+
 	if (command->type == BUILTIN)
 	{
-		execute_built_in(command->cmd, env, garbage);
-		get_out_from_here(*garbage, 0);
+		status = execute_built_in(command, env, garbage);
+		get_out_from_here(*garbage, status);
 	}
 	else
 	{
 		execve(command->cmd[0], command->cmd, command->envp);
-		perror("execve");
+		ft_putstr_fd("minishell: ", 2);
+		perror(command->old_cmd);
+		if (errno == 2)
+			get_out_from_here(*garbage, 127);
+		if (errno == 13)
+			get_out_from_here(*garbage, 126);
 		get_out_from_here(*garbage, 1);
 	}
 	return ;
@@ -63,16 +63,16 @@ void	execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
 
 void	open_and_red_and_fill(t_cmds *command, t_env *env, t_garbage **garbage)
 {
-	if (redirection(command))
+	if (redirection(command) == FALSE)
 		get_out_from_here(*garbage, 1);
-	if (check_if_is_it_dir(command->cmd[0]) == 126)
+	if (check_if_is_it_dir(command->cmd[0]))
 		get_out_from_here(*garbage, 126);
-	else if (check_if_is_it_dir(command->cmd[0]) == 127)
-		get_out_from_here(*garbage, 127);
 	fill_by_path(command, env, garbage);
-	if (command->executable == 0 && command->type == CMD)
+	if (command->executable == 0 && command->type == CMD && command->finde == 0 
+			&& command->slash == 0)
 	{
-		ft_putstr_fd(command->cmd[0], 2);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(command->old_cmd, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		get_out_from_here(*garbage, 127);
 	}

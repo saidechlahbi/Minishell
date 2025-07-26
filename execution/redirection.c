@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:54:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 01:32:19 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 04:34:33 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	open_specific_file(t_redirection *redirec)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(redirec->file, 2);
 		ft_putstr_fd(": ambiguous redirect\n", 2);
-		return (1);
+		return (FALSE);
 	}
 	if (redirec->type == IN_FILE)
 		redirec->fd = open(redirec->file, O_RDONLY, 0644);
@@ -32,9 +32,9 @@ static int	open_specific_file(t_redirection *redirec)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(redirec->file, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		return (1);
+		return (FALSE);
 	}
-	return (0);
+	return (TRUE);
 }
 
 int	open_files(t_cmds *command)
@@ -44,19 +44,19 @@ int	open_files(t_cmds *command)
 	redirec = command->redirection;
 	while (redirec)
 	{
-		if (open_specific_file(redirec))
-			return (1);
+		if (open_specific_file(redirec) == FALSE)
+			return (FALSE);
 		redirec = redirec->next;
 	}
-	return (0);
+	return (TRUE);
 }
 
 int	redirection(t_cmds *command)
 {
 	t_redirection	*tmp;
 
-	if (open_files(command))
-		return (1);
+	if (open_files(command) == FALSE)
+		return (FALSE);
 	tmp = command->redirection;
 	while (tmp)
 	{
@@ -66,5 +66,5 @@ int	redirection(t_cmds *command)
 			command->write_in = tmp->fd;
 		tmp = tmp->next;
 	}
-	return (0);
+	return (TRUE);
 }

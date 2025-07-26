@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 04:00:31 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 23:15:38 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ static int	execute_cmd(t_cmds *command, int *pid, t_env *env,
 		if (command->write_in)
 			dup2(command->write_in, 1);
 		execve(command->cmd[0], command->cmd, command->envp);
-		perror("execve failed\n");
-		close_all_fds_fstat(0);
+		ft_putstr_fd("minishell: ", 2);
+		perror(command->old_cmd);
+		if (errno == 2)
+			get_out_from_here(*garbage, 127);
+		if (errno == 13)
+			get_out_from_here(*garbage, 126);
 		get_out_from_here(*garbage, 1);
 	}
 	return (0);
@@ -37,7 +41,7 @@ static int	execute_cmd(t_cmds *command, int *pid, t_env *env,
 
 static int	help(t_cmds *commands)
 {
-	if (!commands->cmd)
+	if (commands->cmd == NULL)
 	{
 		if (open_files(commands) == FALSE)
 		{
@@ -45,9 +49,9 @@ static int	help(t_cmds *commands)
 			return (FALSE);
 		}
 		set_status(0);
-		return (TRUE);
+		return (FALSE);
 	}
-	return (FALSE);
+	return (TRUE);
 }
 
 int	one_command(t_cmds *commands, t_env **env, t_garbage **garbage)
@@ -58,7 +62,10 @@ int	one_command(t_cmds *commands, t_env **env, t_garbage **garbage)
 	if (help(commands) == FALSE)
 		return (1);
 	if (commands->type == BUILTIN)
+	{
+		commands->printable = 1;
 		execute_cmd_built_in(commands, env, garbage);
+	}
 	else
 	{
 		g_global_signal = -1;

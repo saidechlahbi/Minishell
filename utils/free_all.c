@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 14:33:24 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 02:07:40 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 22:28:29 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void	get_out_from_here(t_garbage *garbage, int status)
 		garbage = tmp;
 	}
 	rl_clear_history();
+	close_all_fds_fstat(3);
 	exit(status);
 }

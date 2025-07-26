@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 03:19:39 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 22:54:58 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,6 @@ static char	*get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 	char	*cmd_with_path;
 	char	*str;
 
-	if (check(cmd) == 1)
-		if (!access(cmd, X_OK))
-			return (ft_strdup(cmd, garbage));
 	paths = get_paths(env, garbage);
 	if (!paths)
 		return (NULL);
@@ -64,34 +61,43 @@ static char	*get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 	{
 		str = ft_strjoin(*paths, "/", garbage);
 		cmd_with_path = ft_strjoin(str, cmd, garbage);
-		if (!access(cmd_with_path, X_OK))
-			return (cmd_with_path);
+		if (!access(cmd_with_path, F_OK))
+		{
+			if (!access(cmd_with_path, X_OK))
+				return (cmd_with_path);
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd_with_path, STDERR_FILENO);
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			get_out_from_here(*garbage, 126);
+		}
 		paths++;
 	}
 	return (NULL);
 }
 
-void	fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
+int	fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
 {
 	char	*cmd;
 
 	if (commands->cmd && commands->type == CMD)
 	{
-		if (!access(commands->cmd[0], X_OK) && ft_strchr(commands->cmd[0], '/'))
-		{
-			commands->executable = 1;
-			return ;
-		}
+		commands->old_cmd = commands->cmd[0];
 		if (commands->cmd[0][0] == 0)
+			return (commands->executable = 0, 1);
+		if (ft_strchr(commands->cmd[0], '/'))
+			commands->slash = 1;
+		if (ft_strchr(commands->cmd[0], '/') && !access(commands->cmd[0], F_OK))
 		{
-			commands->executable = 0;
-			return ;
+			commands->executable = (!access(commands->cmd[0], X_OK));
+			return (commands->finde = 1, 1);
 		}
 		cmd = get_right_path(env, commands->cmd[0], garbage);
 		if (cmd)
 		{
+			commands->old_cmd = commands->cmd[0];
 			commands->cmd[0] = cmd;
 			commands->executable = 1;
 		}
 	}
+	return 0;
 }

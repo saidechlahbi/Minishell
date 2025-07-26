@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/25 17:42:15 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 07:50:34 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,49 +54,39 @@ static int	check(char *str)
 	return (0);
 }
 
-static int	ft_sizee(char **args)
+static void	help(char *args, int i, t_garbage *garbage)
 {
-	int	count;
-
-	count = 0;
-	while (args[count])
-		count++;
-	return (count);
+	if (i == 1)
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		get_out_from_here(garbage, 2);
+	}
+	else
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 }
 
-static void	help(char *args)
-{
-	ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(args, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-}
-
-void	ft_exit(char **args, t_garbage *garbage)
+int	ft_exit(t_cmds *cmd, t_garbage *garbage)
 {
 	int	error;
 	int	exit_s;
 
 	error = 0;
-	if (ft_sizee(args) == 1)
-	{
+	if (cmd->printable)
 		ft_putstr_fd("exit\n", 2);
+	if (cmd->cmd[1] == NULL)
 		get_out_from_here(garbage, set_status(-1));
-	}
-	if (check(args[1]))
+	if (check(cmd->cmd[1]))
+		help(cmd->cmd[1], 1, garbage);
+	if (cmd->cmd[2])
 	{
-		help(args[1]);
-		get_out_from_here(garbage, 2);
+		help(cmd->cmd[1], 0, garbage);
+		return (1);
 	}
-	if (ft_sizee(args) > 2)
-	{
-		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		get_out_from_here(garbage, 2);
-	}
-	exit_s = _atoi(args[1], &error);
+	exit_s = _atoi(cmd->cmd[1], &error);
 	if (error == 1)
-		help(args[1]);
-	ft_putstr_fd("exit\n", 2);
+		help(cmd->cmd[1], 0, garbage);
 	get_out_from_here(garbage, exit_s);
+	return (0);
 }

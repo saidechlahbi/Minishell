@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 22:56:51 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 23:08:48 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 09:09:44 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage)
 		if (cur->type == IN_FILE || cur->type == OUT_FILE
 			|| cur->type == APP_FILE)
 		{
-			if (prepamb(cur->value, env, garbage) != 1)
+			if (ft_strchr(cur->value, '$') && prepamb(cur->value, env,
+					garbage) != 1)
 				cur->is_ambg = AMBIGIUOS;
 		}
 		cur = cur->next;

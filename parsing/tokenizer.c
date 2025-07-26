@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 10:46:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 03:10:59 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:34:19 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_token	*tokenize(char *input, t_garbage **garbage)
 				garbage), WORD, garbage);
 	if (var.in_squote || var.in_dquote)
 	{
-		ft_putstr_fd("Error : Syntax\n", 2);
+		ft_putstr_fd("minishell: unclosed quotes\n", 2);
 		set_status(2);
 		return (NULL);
 	}
