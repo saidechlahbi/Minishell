@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:33:00 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 22:25:56 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 20:20:52 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 int	is_builtin(char *s)
 {
-	return (!ft_strncmp(s, "echo", 4) || !ft_strncmp(s, "export", 6)
-		|| !ft_strncmp(s, "unset", 5) || !ft_strncmp(s, "exit", 4)
-		|| !ft_strncmp(s, "pwd", 3) || !ft_strncmp(s, "env", 3)
-		|| !ft_strncmp(s, "cd", 2));
+	return (!ft_strcmp(s, "echo") || !ft_strcmp(s, "export") || !ft_strcmp(s,
+			"unset") || !ft_strcmp(s, "exit") || !ft_strcmp(s, "pwd")
+		|| !ft_strcmp(s, "env") || !ft_strcmp(s, "cd"));
 }
 
 int	is_operator(char c)
@@ -33,9 +32,9 @@ int	is_operator(char c)
 
 int	is_append(char *s)
 {
-	if (!ft_strncmp(s, ">>", 2))
+	if (!ft_strcmp(s, ">>"))
 		return (APPEND);
-	else if (!ft_strncmp(s, "<<", 2))
+	else if (!ft_strcmp(s, "<<"))
 		return (HERE_DOC);
 	return (-1);
 }

@@ -201,7 +201,7 @@ int							export(t_env **env, char **args,
 								t_garbage **garbage);
 int							ft_cd(char **args, t_env **env,
 								t_garbage **garbage);
-int						ft_exit(t_cmds *cmd, t_garbage *garbage);
+int							ft_exit(t_cmds *cmd, t_garbage *garbage);
 
 /*------------execution-------------*/
 void						execution(t_token *token, t_env **env,

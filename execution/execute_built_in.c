@@ -38,7 +38,7 @@ void	execute_cmd_built_in(t_cmds *commands, t_env **env, t_garbage **garbage)
 {
 	int	std_in;
 	int	std_out;
-	int status;
+	int	status;
 
 	std_in = dup(0);
 	std_out = dup(1);

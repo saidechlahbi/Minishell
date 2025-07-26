@@ -51,7 +51,8 @@ void	is_amb(t_token *tokens, t_env *env, t_garbage **garbage)
 		if (cur->type == IN_FILE || cur->type == OUT_FILE
 			|| cur->type == APP_FILE)
 		{
-			if (ft_strchr(cur->value, '$') && prepamb(cur->value, env, garbage) != 1)
+			if (ft_strchr(cur->value, '$') && prepamb(cur->value, env,
+					garbage) != 1)
 				cur->is_ambg = AMBIGIUOS;
 		}
 		cur = cur->next;

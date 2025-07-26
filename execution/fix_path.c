@@ -68,7 +68,7 @@ static char	*get_right_path(t_env *env, char *cmd, t_garbage **garbage)
 		{
 			if (!access(cmd_with_path, X_OK))
 				return (cmd_with_path);
-			ft_putstr_fd("bash:",2);
+			ft_putstr_fd("bash:", 2);
 			ft_putstr_fd(cmd_with_path, 2);
 			ft_putstr_fd(": Permission denied\n", 2);
 			exit(126);

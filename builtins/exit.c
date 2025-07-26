@@ -88,5 +88,5 @@ int	ft_exit(t_cmds *cmd, t_garbage *garbage)
 	if (error == 1)
 		help(cmd->cmd[1], 0, garbage);
 	get_out_from_here(garbage, exit_s);
-	return 0;
+	return (0);
 }
