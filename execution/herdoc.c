@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 04:44:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 22:19:48 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:53:45 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	read_from_stdin(t_redirection *redirec, int fd, t_env *env,
 		line = readline("> ");
 		if (!line)
 		{
-			ft_putstr_fd("Minishell: warning: here-document at line 4", 2);
+			ft_putstr_fd("Minishell: warning: here-document", 2);
 			ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
 			ft_putstr_fd(redirec->delimiter, 2);
 			ft_putstr_fd("')\n", 2);

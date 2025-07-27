@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:54:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 04:34:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:17:52 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	open_specific_file(t_redirection *redirec)
 	if (redirec->type == IN_FILE)
 		redirec->fd = open(redirec->file, O_RDONLY, 0644);
 	if (redirec->type == OUT_FILE)
-		redirec->fd = open(redirec->file, O_WRONLY | O_CREAT, 0644);
+		redirec->fd = open(redirec->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (redirec->type == APP_FILE)
 		redirec->fd = open(redirec->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (redirec->fd == -1)

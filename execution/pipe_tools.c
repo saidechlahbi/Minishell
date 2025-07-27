@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 18:38:02 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:02:18 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	check_if_is_it_dir(char *cmd)
 {
 	struct stat	stat_dir;
 
+	if (!cmd)
+		return 0;
 	if (ft_strchr(cmd, '/'))
 	{
 		if (!stat(cmd, &stat_dir))
