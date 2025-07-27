@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 01:36:52 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:36:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,6 @@ t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 	skip_nodes(&tokens);
 	lexing(tokens);
 	return (tokens);
-}
-
-void	set_not(t_garbage *garbage)
-{
-	while (garbage)
-	{
-		garbage->var = 1;
-		garbage = garbage->next;
-	}
-	return ;
 }
 
 static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
@@ -94,7 +84,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	g_global_signal = 0;
 	garbage = NULL;
 	env = get_env(envp, &garbage);
-	set_not(garbage);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	help(&env, &garbage, input, tokens);

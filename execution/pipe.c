@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 04:50:14 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/27 21:10:47 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	first_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	}
 	if (command->pid == 0)
 	{
+		if (!command->cmd)
+			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, *env, garbage);
@@ -49,6 +51,8 @@ static int	middle_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	}
 	if (command->pid == 0)
 	{
+		if (!command->cmd)
+			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, *env, garbage);
@@ -77,6 +81,8 @@ static int	last_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	}
 	if (command->pid == 0)
 	{
+		if (!command->cmd)
+			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, *env, garbage);
