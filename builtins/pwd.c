@@ -3,23 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:10 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/23 09:01:44 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/27 19:11:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_pwd(void)
+int	ft_pwd(t_env *env)
 {
 	char	*pwd;
+	char	*cwd;
 
-	pwd = getcwd(NULL, 0);
+	pwd = exdoc("PWD", env);
+	cwd = NULL;
 	if (!pwd)
-		return (perror("pwd"), 1);
+	{
+		cwd = getcwd(NULL, 0);
+		if (!cwd)
+			return (perror("pwd: error retrieving current directory: \
+				getcwd: cannot access parent directories: "), 1);
+		pwd = cwd;
+	}
 	ft_putstr_fd(pwd, 1);
 	ft_putstr_fd("\n", 1);
-	return (free(pwd), 0);
+	if (cwd)
+		free(cwd);
+	return (0);
 }

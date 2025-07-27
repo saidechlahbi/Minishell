@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   one_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 06:11:50 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:41:16 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ static int	execute_cmd(t_cmds *command, int *pid, t_env *env,
 		if (command->write_in)
 			dup2(command->write_in, 1);
 		execve(command->cmd[0], command->cmd, command->envp);
-		perror("execve failed\n");
-		close_all_fds_fstat(0);
+		ft_putstr_fd("minishell: ", 2);
+		perror(command->cmd[0]);
+		if (errno == 2)
+			get_out_from_here(*garbage, 127);
+		if (errno == 13)
+			get_out_from_here(*garbage, 126);
 		get_out_from_here(*garbage, 1);
 	}
 	return (0);

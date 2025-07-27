@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 20:25:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/27 01:36:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
 		if (!input)
 		{
 			ft_putstr_fd("exit\n", 2);
-			get_out_from_here(*garbage, 1);
+			get_out_from_here(*garbage, set_status(-1));
 		}
 		if (!input[0])
 			continue ;

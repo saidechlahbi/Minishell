@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils00.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:33:00 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 20:20:52 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/26 23:09:43 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	is_operator(char c)
 
 int	is_append(char *s)
 {
-	if (!ft_strcmp(s, ">>"))
+	if (!ft_strncmp(s, ">>", 2))
 		return (APPEND);
-	else if (!ft_strcmp(s, "<<"))
+	else if (!ft_strncmp(s, "<<", 2))
 		return (HERE_DOC);
 	return (-1);
 }
