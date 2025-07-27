@@ -6,13 +6,14 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 22:51:51 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:50:00 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -24,7 +25,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <errno.h>
 
 # define GREEN "\001\033[1;32m\002"
 # define BLUE "\001\033[1;34m\002"
@@ -104,6 +104,7 @@ typedef struct s_cmds
 	int						type;
 	int						executable;
 	int						finde;
+	char					*for_no_executable;
 	int						slash;
 	int						pid;
 	int						write_in;
@@ -198,7 +199,7 @@ int							execute_built_in(t_cmds *cmd, t_env **env,
 								t_garbage **garbage);
 void						ft_echo(char **args);
 int							check_which_built_are(char *cmd);
-int							ft_pwd(void);
+int							ft_pwd(t_env *env);
 void						unset(t_env **env, char **args, t_garbage *garbage);
 void						print_env(t_env *env);
 int							export(t_env **env, char **args,
@@ -212,7 +213,7 @@ void						execution(t_token *token, t_env **env,
 								t_garbage **garbage);
 t_cmds						*splinting_into_proccess(t_token *token,
 								char **envp, t_garbage **garbage);
-int						fill_by_path(t_cmds *commands, t_env *env,
+int							fill_by_path(t_cmds *commands, t_env *env,
 								t_garbage **garbage);
 char						**env_lst_to_char2(t_env *env, t_garbage **garbage);
 int							pipes(t_cmds *commands, t_env **env,

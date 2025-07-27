@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 23:15:38 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:41:16 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	execute_cmd(t_cmds *command, int *pid, t_env *env,
 			dup2(command->write_in, 1);
 		execve(command->cmd[0], command->cmd, command->envp);
 		ft_putstr_fd("minishell: ", 2);
-		perror(command->old_cmd);
+		perror(command->cmd[0]);
 		if (errno == 2)
 			get_out_from_here(*garbage, 127);
 		if (errno == 13)

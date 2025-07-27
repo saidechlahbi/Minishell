@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 19:05:46 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/27 01:48:43 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ int	export(t_env **env, char **args, t_garbage **garbage)
 {
 	int	i;
 	int	status;
+	int	last_status;
 
 	status = 0;
+	last_status = 0;
 	if (!args[1])
 	{
 		print_export(*env, garbage);
@@ -82,7 +84,9 @@ int	export(t_env **env, char **args, t_garbage **garbage)
 	while (args[i])
 	{
 		status = export_variable(env, args[i], garbage);
+		if (status == 1)
+			last_status = 1;
 		i++;
 	}
-	return (status);
+	return (last_status);
 }
