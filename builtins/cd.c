@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/27 18:42:29 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/28 21:19:39 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	change_dir(char **args, t_env **env)
 	if (!args[1])
 	{
 		target = exdoc("HOME", *env);
+		if (!target)
+			return (1);
 		res = chdir(target);
 		if (res)
 			return (1);

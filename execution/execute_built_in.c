@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_built_in.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 17:19:50 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 18:49:29 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/28 21:18:46 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	execute_built_in(t_cmds *cmd, t_env **env, t_garbage **garbage)
 	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
 		status = ft_cd(cmd->cmd, env, garbage);
 	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
-		status = ft_pwd(*env);
+		status = ft_pwd();
 	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
 		status = export(env, cmd->cmd, garbage);
 	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)

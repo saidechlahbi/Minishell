@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/27 20:30:01 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/28 18:01:32 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	add_var(t_env **head, char *key, char *value, t_garbage **garbage)
 	t_env	*tmp;
 
 	new = ft_malloc(sizeof(t_env), 1, garbage);
-	save_data(*garbage);
 	new->key = key;
 	new->value = value;
 	new->next = NULL;

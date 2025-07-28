@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 18:50:00 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/28 21:18:28 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ int							execute_built_in(t_cmds *cmd, t_env **env,
 								t_garbage **garbage);
 void						ft_echo(char **args);
 int							check_which_built_are(char *cmd);
-int							ft_pwd(t_env *env);
+int							ft_pwd(void);
 void						unset(t_env **env, char **args, t_garbage *garbage);
 void						print_env(t_env *env);
 int							export(t_env **env, char **args,

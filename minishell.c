@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 21:28:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/28 17:58:35 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 	return (tokens);
 }
 
-// void	set_not(t_garbage *garbage)
-// {
-// 	while (garbage)
-// 	{
-// 		garbage->var = 1;
-// 		garbage = garbage->next;
-// 	}
-// 	return ;
-// }
-
 static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
 {
 	while (1)
@@ -71,7 +61,6 @@ static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
 		if (!tokens)
 		{
 			free_all(garbage);
-			*garbage = NULL;
 			continue ;
 		}
 		f(*garbage);
@@ -94,7 +83,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	g_global_signal = 0;
 	garbage = NULL;
 	env = get_env(envp, &garbage);
-	// set_not(garbage);
+	save_data(garbage);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	help(&env, &garbage, input, tokens);

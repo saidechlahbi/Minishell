@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 07:09:53 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/28 17:59:47 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ void	save_data(t_garbage *garbage)
 {
 	if (!garbage)
 		return ;
-	while (garbage->next)
-		garbage = garbage->next;
-	if (garbage)
+	while (garbage)
+	{
 		garbage->var = 1;
+		garbage = garbage->next;
+	}
 }
 
 static void	print_error(char *arg)
