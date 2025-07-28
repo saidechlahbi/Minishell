@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 21:36:59 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:58:35 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
 		if (!tokens)
 		{
 			free_all(garbage);
-			*garbage = NULL;
 			continue ;
 		}
 		f(*garbage);
@@ -84,6 +83,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 	g_global_signal = 0;
 	garbage = NULL;
 	env = get_env(envp, &garbage);
+	save_data(garbage);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	help(&env, &garbage, input, tokens);
