@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/28 21:19:39 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:33:23 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ static void	set_oldpwd(t_env **env, char *pwd, char *old, t_garbage **garbage)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin("PWD=", pwd, garbage);
-	export_variable(env, tmp, garbage);
+	if (pwd)
+	{
+		tmp = ft_strjoin("PWD=", pwd, garbage);
+		export_variable(env, tmp, garbage);
+	}
 	if (old)
 	{
 		tmp = ft_strjoin("OLDPWD=", old, garbage);
