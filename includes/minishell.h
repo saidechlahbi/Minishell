@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/29 03:01:43 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/29 21:39:51 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,5 @@ void						*ft_malloc(size_t type, size_t size,
 								t_garbage **garbadge);
 void						get_out_from_here(t_garbage *garbage, int status);
 void						free_all(t_garbage **garbage);
-
-//  void reset_terminal(void);
 
 #endif
