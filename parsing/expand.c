@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 23:32:03 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:42:53 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,9 @@ char	*expand_exit_status(t_scanner *var, char *input, char *expanded,
 		t_garbage **garbage)
 {
 	if (input[var->i] == '\'' && !var->in_dquote)
-	{
 		var->in_squote = !var->in_squote;
-		var->has_literal = 1;
-	}
 	if (input[var->i] == '"' && !var->in_squote)
-	{
 		var->in_dquote = !var->in_dquote;
-		var->has_literal = 1;
-	}
 	if (input[var->i] == '$' && !var->in_squote && input[var->i + 1] == '?')
 	{
 		expanded = ft_strjoin(expanded, _substr(input, var->start, var->i
