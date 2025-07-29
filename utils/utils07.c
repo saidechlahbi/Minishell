@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 21:41:22 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 20:24:24 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:33:24 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ int	check_literal(char *str)
 					i++;
 			}
 		}
-		else if (str[i])
-			return (1);
 		else
-			i++;
+			return (1);
 	}
 	return (0);
 }
