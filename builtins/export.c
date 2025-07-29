@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/27 01:48:43 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/29 02:17:24 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ int	export_variable(t_env **env, char *arg, t_garbage **garbage)
 		add_value(&node, arg, garbage);
 	existing = find_key(*env, node.key);
 	if (!existing)
+	{
 		add_var(env, node.key, node.value, garbage);
+		save_data(*garbage);
+	}
 	else if (existing && equal)
 		existing->value = node.value;
 	return (0);

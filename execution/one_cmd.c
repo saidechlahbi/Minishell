@@ -12,8 +12,7 @@
 
 #include "../includes/minishell.h"
 
-static int	execute_cmd(t_cmds *command, t_env *env,
-		t_garbage **garbage)
+static int	execute_cmd(t_cmds *command, t_env *env, t_garbage **garbage)
 {
 	command->pid = fork();
 	if (command->pid == -1)
