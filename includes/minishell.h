@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/28 21:18:28 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/29 03:01:43 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include <unistd.h>
 
 # define GREEN "\001\033[1;32m\002"

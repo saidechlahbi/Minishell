@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/27 01:48:43 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:06:11 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ static void	add_value(t_env *node, char *arg, t_garbage **garbage)
 	save_data(*garbage);
 }
 
+static void	add_unique(t_env *node, char *arg, t_garbage **garbage)
+{
+	node->key = ft_strdup(arg, garbage);
+	save_data(*garbage);
+	node->value = NULL;
+}
+
 int	export_variable(t_env **env, char *arg, t_garbage **garbage)
 {
 	char	*equal;
@@ -50,18 +57,17 @@ int	export_variable(t_env **env, char *arg, t_garbage **garbage)
 		return (1);
 	equal = ft_strchr(arg, '=');
 	if (!equal)
-	{
-		node.key = ft_strdup(arg, garbage);
-		save_data(*garbage);
-		node.value = NULL;
-	}
+		add_unique(&node, arg, garbage);
 	else if (equal > arg && *(equal - 1) == '+')
 		append_value(env, &node, arg, garbage);
 	else
 		add_value(&node, arg, garbage);
 	existing = find_key(*env, node.key);
 	if (!existing)
+	{
 		add_var(env, node.key, node.value, garbage);
+		save_data(*garbage);
+	}
 	else if (existing && equal)
 		existing->value = node.value;
 	return (0);
