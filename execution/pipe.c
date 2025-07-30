@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 21:10:47 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/30 04:35:34 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	first_pipe(t_cmds *command, t_env **env, int *f_pipe,
 			dup2(command->write_in, 1);
 		else
 			dup2(f_pipe[1], 1);
-		close_pipes(f_pipe);
+		close_all_fds_fstat(3);
 		execution_cmd(command, env, garbage);
 	}
 	return (0);
@@ -64,7 +64,7 @@ static int	middle_pipe(t_cmds *command, t_env **env, int *f_pipe,
 			dup2(command->write_in, 1);
 		else
 			dup2(f_pipe[1], 1);
-		close_pipes(f_pipe);
+		close_all_fds_fstat(3);
 		execution_cmd(command, env, garbage);
 	}
 	return (0);
@@ -92,7 +92,7 @@ static int	last_pipe(t_cmds *command, t_env **env, int *f_pipe,
 			dup2(f_pipe[0], 0);
 		if (command->write_in)
 			dup2(command->write_in, 1);
-		close_pipes(f_pipe);
+		close_all_fds_fstat(3);
 		execution_cmd(command, env, garbage);
 	}
 	return (0);
