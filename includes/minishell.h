@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/29 21:39:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/30 01:19:44 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,9 @@ int							validate_input(t_token *token);
 char						*prepdoc(char *input, t_env *env,
 								t_garbage **garbage);
 int							set_status(int new_status);
+char						*prep(char *input, t_env *env, char *encapsulizer,
+								t_garbage **garbage);
+
 /*------------Utils-------------*/
 int							export_variable(t_env **env, char *arg,
 								t_garbage **garbage);
