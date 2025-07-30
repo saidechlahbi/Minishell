@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:25 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/30 01:16:11 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/30 04:14:11 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*prep(char *input, t_env *env, char *encapsulizer, t_garbage **garbage)
 			expanded = prep_helper(&v, input, expanded, garbage);
 			value = expand(_substr(input, v.start, v.i - v.start, garbage), env,
 					encapsulizer, garbage);
-			get_val(&v, expanded, value, garbage);
+			expanded = get_val(&v, expanded, value, garbage);
 		}
 		else
 			v.i++;
