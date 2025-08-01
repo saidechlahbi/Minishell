@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   one_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 21:12:00 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 17:27:53 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	one_command(t_cmds *commands, t_env **env, t_garbage **garbage)
 	}
 	else
 	{
-		g_global_signal = -1;
+		signal(SIGINT, SIG_IGN);
 		if (execute_cmd(commands, *env, garbage))
 			return (set_status(1), 0);
 		waitpid(commands->pid, &status, 0);

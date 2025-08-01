@@ -4,7 +4,7 @@ CFLAGS		= -g -Wall -Wextra -Werror
 # Files
 FILES		=   minishell.c \
 				parsing/tokenizer.c parsing/lexing.c parsing/expand.c parsing/split_n_insert.c parsing/rr_quotes.c \
-				parsing/exdoc.c parsing/randomize.c parsing/validate_input.c parsing/handlamb.c \
+				parsing/exdoc.c parsing/randomize.c parsing/validate_input.c parsing/handlamb.c parsing/has_dollar.c \
 				utils/utils00.c utils/utils01.c utils/utils02.c utils/utils03.c utils/utils04.c utils/utils05.c utils/utils06.c \
 				utils/utils07.c utils/cleaner.c utils/free_all.c utils/prompt.c \
 				builtins/echo.c builtins/pwd.c builtins/unset.c builtins/env.c builtins/export.c \

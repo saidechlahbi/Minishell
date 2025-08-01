@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 21:08:12 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 17:28:04 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	execution(t_token *token, t_env **env, t_garbage **garbage)
 		one_command(commands, env, garbage);
 	else
 	{
-		g_global_signal = -1;
+		signal(SIGINT, SIG_IGN);
 		pipes(commands, env, garbage);
 	}
 }

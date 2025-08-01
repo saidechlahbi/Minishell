@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/28 21:18:28 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 11:35:19 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include <unistd.h>
 
 # define GREEN "\001\033[1;32m\002"
@@ -133,6 +132,9 @@ int							validate_input(t_token *token);
 char						*prepdoc(char *input, t_env *env,
 								t_garbage **garbage);
 int							set_status(int new_status);
+char						*prep(char *input, t_env *env, char *encapsulizer,
+								t_garbage **garbage);
+
 /*------------Utils-------------*/
 int							export_variable(t_env **env, char *arg,
 								t_garbage **garbage);
@@ -258,7 +260,5 @@ void						*ft_malloc(size_t type, size_t size,
 								t_garbage **garbadge);
 void						get_out_from_here(t_garbage *garbage, int status);
 void						free_all(t_garbage **garbage);
-
-//  void reset_terminal(void);
 
 #endif

@@ -6,45 +6,20 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 17:01:25 by schahir          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:12:14 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	is_expanded(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token->value[i])
-	{
-		if (token->value[i] == '$')
-		{
-			token->expanded = EXPANDED;
-			break ;
-		}
-		i++;
-	}
-}
-
 static void	process_redirection(t_token *token)
 {
 	if (token->type == RED_OUT)
-	{
 		token->next->type = OUT_FILE;
-		is_expanded(token->next);
-	}
 	else if (token->type == RED_IN)
-	{
 		token->next->type = IN_FILE;
-		is_expanded(token->next);
-	}
 	else if (token->type == APPEND)
-	{
 		token->next->type = APP_FILE;
-		is_expanded(token->next);
-	}
 	else if (token->type == HERE_DOC)
 		token->next->type = DELIMITER;
 }

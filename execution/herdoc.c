@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 04:44:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 20:53:45 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 17:28:49 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	all_herdoc_in_single_cmd(t_redirection *redirec, t_env *env,
 	{
 		if (redirec->type == HERE_DOC)
 		{
-			g_global_signal = -1;
+			signal(SIGINT, SIG_IGN);
 			status = 0;
 			if (open_herdoc(redirec, &pid, env, garbage) == FALSE)
 				return (TRUE);
