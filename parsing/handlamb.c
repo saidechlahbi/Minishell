@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlamb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 22:56:51 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/26 09:09:44 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 23:02:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,6 @@ void	skip_nodes(t_token **tokens)
 			prev = cur;
 		cur = next;
 	}
+	if (!(*tokens))
+		set_status(0);
 }

@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 17:27:53 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 23:23:38 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	execute_cmd(t_cmds *command, t_env *env, t_garbage **garbage)
 {
+	signal(SIGINT, SIG_IGN);
 	command->pid = fork();
 	if (command->pid == -1)
 		return (perror("fork failed\n"), 1);
@@ -68,14 +69,15 @@ int	one_command(t_cmds *commands, t_env **env, t_garbage **garbage)
 	}
 	else
 	{
-		signal(SIGINT, SIG_IGN);
 		if (execute_cmd(commands, *env, garbage))
 			return (set_status(1), 0);
 		waitpid(commands->pid, &status, 0);
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == 2)
-				write(1, "\n", 1);
+				write(2, "\n", 1);
+			if (WTERMSIG(status) == 3)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
 			return (set_status(128 + WTERMSIG(status)), 1);
 		}
 		set_status(WEXITSTATUS(status));

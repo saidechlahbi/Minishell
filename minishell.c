@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 17:31:57 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:56:07 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 void	handle_sigint(int signum __attribute__((unused)))
 {
 	rl_replace_line("", 0);
-	write(1, "\n", 1);
+	write(2, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
+	set_status(130);
 }
 
 t_token	*parsing(char *input, t_garbage **garbage, t_env *env)

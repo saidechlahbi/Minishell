@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:32:53 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 17:28:04 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 23:22:25 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ char	**env_lst_to_char2(t_env *env, t_garbage **garbage)
 	return (envp);
 }
 
+t_cmds	*return_proccess(t_cmds *cmd)
+{
+	static t_cmds	*old_cmd;
+
+	if (cmd)
+		old_cmd = cmd;
+	return (old_cmd);
+}
+
 void	execution(t_token *token, t_env **env, t_garbage **garbage)
 {
 	t_cmds	*commands;
@@ -47,6 +56,7 @@ void	execution(t_token *token, t_env **env, t_garbage **garbage)
 	commands = splinting_into_proccess(token, envp, garbage);
 	if (!commands)
 		return ;
+	return_proccess(commands);
 	if (herdoc(commands, *env, garbage) == FALSE)
 	{
 		if (set_status(-1) == 130)

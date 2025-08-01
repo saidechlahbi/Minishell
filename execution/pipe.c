@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 04:35:34 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 23:08:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	first_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	command->pid = fork();
 	if (command->pid == -1)
 	{
-		perror("fork failed\n");
+		perror("fork failed");
 		return (1);
 	}
 	if (command->pid == 0)
@@ -46,7 +46,7 @@ static int	middle_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	command->pid = fork();
 	if (command->pid == -1)
 	{
-		perror("fork failed\n");
+		perror("fork failed");
 		return (1);
 	}
 	if (command->pid == 0)
@@ -76,7 +76,7 @@ static int	last_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	command->pid = fork();
 	if (command->pid == -1)
 	{
-		perror("fork failed\n");
+		perror("fork failed");
 		return (1);
 	}
 	if (command->pid == 0)

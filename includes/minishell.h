@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 17:40:59 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 23:29:41 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_redirection
 
 typedef struct s_cmds
 {
+	int						pid;
 	char					*old_cmd;
 	char					**cmd;
 	t_redirection			*redirection;
@@ -103,7 +104,6 @@ typedef struct s_cmds
 	int						finde;
 	char					*for_no_executable;
 	int						slash;
-	int						pid;
 	int						write_in;
 	int						read_from;
 	char					**envp;
@@ -258,5 +258,5 @@ void						*ft_malloc(size_t type, size_t size,
 								t_garbage **garbadge);
 void						get_out_from_here(t_garbage *garbage, int status);
 void						free_all(t_garbage **garbage);
-
+t_cmds						*return_proccess(t_cmds *cmd);
 #endif
