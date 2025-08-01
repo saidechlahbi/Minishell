@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 11:35:19 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 17:40:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # define RESET "\001\033[0m\002"
 # define TRUE 1
 # define FALSE 0
-
-extern int					g_global_signal;
 
 typedef struct s_token
 {
