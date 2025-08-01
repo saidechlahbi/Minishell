@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 23:29:41 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:01:42 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,4 +259,6 @@ void						*ft_malloc(size_t type, size_t size,
 void						get_out_from_here(t_garbage *garbage, int status);
 void						free_all(t_garbage **garbage);
 t_cmds						*return_proccess(t_cmds *cmd);
+void						kill_proccess(void);
+
 #endif

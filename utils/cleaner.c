@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:29:00 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 23:24:46 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:01:54 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ void	add_back_for_garbage(t_garbage **lst, t_garbage *new)
 	tmp->next = new;
 }
 
-static void	kill_proccess(t_cmds *cmd)
+void	kill_proccess(void)
 {
+	t_cmds	*cmd;
 	t_cmds	*tmp;
 	int		status;
 
+	cmd = return_proccess(NULL);
 	if (!cmd)
 		return ;
 	tmp = cmd;
@@ -82,7 +84,7 @@ void	*ft_malloc(size_t type, size_t size, t_garbage **garbage)
 	data = ft_calloc(size, type, garbage);
 	if (!data)
 	{
-		kill_proccess(return_proccess(NULL));
+		kill_proccess();
 		get_out_from_here(*garbage, 2);
 	}
 	add_back_for_garbage(garbage, new_garbage(data, *garbage));

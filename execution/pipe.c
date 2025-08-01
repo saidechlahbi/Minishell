@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 23:08:44 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/02 00:00:38 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	help(t_cmds *cmd, t_env **env, int *f_pipe, t_garbage **garbage)
 	if (pipe(f_pipe) == -1)
 		return (1);
 	if (first_pipe(cmd, env, f_pipe, garbage))
-		return (1);
+		return (kill_proccess(), 1);
 	return (0);
 }
 
@@ -124,14 +124,14 @@ int	pipes(t_cmds *commands, t_env **env, t_garbage **garbage)
 			return (set_status(1), 1);
 		f_pipe[1] = s_pipe[1];
 		if (middle_pipe(tmp, env, f_pipe, garbage))
-			return (set_status(1), 1);
+			return (kill_proccess(), set_status(1), 1);
 		close(f_pipe[0]);
 		f_pipe[0] = s_pipe[0];
 		f_pipe[1] = s_pipe[1];
 		tmp = tmp->next;
 	}
 	if (last_pipe(tmp, env, f_pipe, garbage))
-		return (set_status(1), 1);
+		return (kill_proccess(), set_status(1), 1);
 	close_pipes(f_pipe);
 	return (set_status(wait_commands(ft_size(commands), commands, garbage)), 1);
 }
