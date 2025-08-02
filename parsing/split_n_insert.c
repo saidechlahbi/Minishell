@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_n_insert.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:35 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:16:55 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 05:02:22 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,17 @@ char	**str_tok(char *input, char *enc, t_garbage **garbage)
 	return (tokens[j] = NULL, tokens);
 }
 
-void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
+int	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
 {
 	char	**splits;
 	t_token	*new;
 	int		i;
 
 	if (!cur || !cur->value || !cur->value[0])
-		return ;
+		return (0);
 	splits = str_tok(cur->value, enapsulizer, garbage);
 	if (!splits || !splits[0])
-		return ;
+		return (cur->value = ft_strdup("", garbage), 0);
 	cur->value = ft_strdup(splits[0], garbage);
 	cur->type = WORD;
 	i = 1;
@@ -119,4 +119,5 @@ void	split_n_insert(t_token *cur, char *enapsulizer, t_garbage **garbage)
 		cur = new;
 		i++;
 	}
+	return (0);
 }

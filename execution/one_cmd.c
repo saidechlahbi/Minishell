@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 23:23:38 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/02 04:45:11 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static int	execute_cmd(t_cmds *command, t_env *env, t_garbage **garbage)
 		return (perror("fork failed\n"), 1);
 	if (command->pid == 0)
 	{
-		if (!command->cmd)
-			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, env, garbage);
@@ -60,10 +58,10 @@ int	one_command(t_cmds *commands, t_env **env, t_garbage **garbage)
 {
 	int	status;
 
-	if (help(commands) == FALSE)
-		return (1);
 	if (commands->type == BUILTIN)
 	{
+		if (help(commands) == FALSE)
+			return (1);
 		commands->printable = 1;
 		execute_cmd_built_in(commands, env, garbage);
 	}
