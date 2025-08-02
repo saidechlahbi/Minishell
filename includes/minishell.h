@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 01:19:44 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 05:02:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # define RESET "\001\033[0m\002"
 # define TRUE 1
 # define FALSE 0
-
-extern int					g_global_signal;
 
 typedef struct s_token
 {
@@ -97,6 +95,7 @@ typedef struct s_redirection
 
 typedef struct s_cmds
 {
+	int						pid;
 	char					*old_cmd;
 	char					**cmd;
 	t_redirection			*redirection;
@@ -105,7 +104,6 @@ typedef struct s_cmds
 	int						finde;
 	char					*for_no_executable;
 	int						slash;
-	int						pid;
 	int						write_in;
 	int						read_from;
 	char					**envp;
@@ -150,7 +148,7 @@ void						new_var(t_token *node, t_env **env_list,
 								t_garbage **garbage);
 void						remove_quotes(t_token *tokens, char *encapsulizer,
 								t_garbage **garbage);
-void						split_n_insert(t_token *cur, char *encapsulizer,
+int							split_n_insert(t_token *cur, char *encapsulizer,
 								t_garbage **garbage);
 void						delimiter(t_token *token);
 int							is_expandable2(char c);
@@ -260,5 +258,7 @@ void						*ft_malloc(size_t type, size_t size,
 								t_garbage **garbadge);
 void						get_out_from_here(t_garbage *garbage, int status);
 void						free_all(t_garbage **garbage);
+t_cmds						*return_proccess(t_cmds *cmd);
+void						kill_proccess(void);
 
 #endif

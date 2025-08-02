@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/28 21:19:13 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 04:19:09 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	open_and_red_and_fill(t_cmds *command, t_env *env, t_garbage **garbage)
 {
 	if (redirection(command) == FALSE)
 		get_out_from_here(*garbage, 1);
+	if (!command->cmd)
+		get_out_from_here(*garbage, 0);
 	if (check_if_is_it_dir(command->cmd[0]))
 		get_out_from_here(*garbage, 126);
 	fill_by_path(command, env, garbage);

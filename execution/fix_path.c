@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 14:57:22 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 18:40:49 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 17:58:39 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static int	_is_it_dir(char *cmd)
 {
 	struct stat	stat_dir;
 
+	if (!cmd)
+		return (0);
 	if (ft_strchr(cmd, '/'))
 		if (!stat(cmd, &stat_dir))
 			if (S_ISDIR(stat_dir.st_mode))
@@ -91,7 +93,6 @@ int	fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
 
 	if (commands->cmd && commands->type == CMD)
 	{
-		commands->old_cmd = commands->cmd[0];
 		if (commands->cmd[0][0] == 0)
 			return (commands->executable = 0, 1);
 		if (ft_strchr(commands->cmd[0], '/'))
@@ -102,12 +103,11 @@ int	fill_by_path(t_cmds *commands, t_env *env, t_garbage **garbage)
 		}
 		cmd = get_right_path(env, commands->cmd[0], garbage, commands);
 		if (cmd)
-		{
-			commands->cmd[0] = cmd;
-			return (commands->executable = 1, 1);
-		}
+			return (commands->cmd[0] = cmd, commands->executable = 1, 1);
 		if (commands->finde)
 			commands->cmd[0] = commands->for_no_executable;
+		if (_is_it_dir(commands->for_no_executable) == 1)
+			return (commands->finde = 0, 1);
 	}
 	return (0);
 }

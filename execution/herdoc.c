@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 04:44:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 20:53:45 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/01 23:27:46 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ static int	open_herdoc(t_redirection *redirec, int *pid, t_env *env,
 	fd = open(redirec->file, O_CREAT | O_WRONLY, 0644);
 	redirec->fd = open(redirec->file, O_RDONLY);
 	if (redirec->fd == -1 || fd == -1)
-		return (perror("open failed\n"), FALSE);
+		return (perror("open failed"), FALSE);
 	unlink(redirec->file);
 	*pid = fork();
 	if (*pid == -1)
-		return (set_status(1), perror("fork failed\n"), FALSE);
+		return (set_status(1), perror("fork failed"), FALSE);
 	if (*pid == 0)
 	{
 		signal(SIGINT, herdoc_handler);
@@ -83,7 +83,7 @@ static int	all_herdoc_in_single_cmd(t_redirection *redirec, t_env *env,
 	{
 		if (redirec->type == HERE_DOC)
 		{
-			g_global_signal = -1;
+			signal(SIGINT, SIG_IGN);
 			status = 0;
 			if (open_herdoc(redirec, &pid, env, garbage) == FALSE)
 				return (TRUE);

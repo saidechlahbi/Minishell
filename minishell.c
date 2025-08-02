@@ -6,24 +6,19 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/29 01:54:23 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/02 06:24:07 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int			g_global_signal = 0;
-
 void	handle_sigint(int signum __attribute__((unused)))
 {
-	if (g_global_signal == 0)
-	{
-		rl_replace_line("", 0);
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	g_global_signal = 0;
+	rl_replace_line("", 0);
+	write(2, "\n", 1);
+	rl_on_new_line();
+	rl_redisplay();
+	set_status(130);
 }
 
 t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
@@ -58,6 +53,8 @@ static void	help(t_env **env, t_garbage **garbage, char *input, t_token *tokens)
 {
 	while (1)
 	{
+		signal(SIGINT, handle_sigint);
+		signal(SIGQUIT, SIG_IGN);
 		input = readline(custom_prompt(*env, garbage));
 		if (!input)
 		{
@@ -91,11 +88,8 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)),
 
 	input = NULL;
 	tokens = NULL;
-	g_global_signal = 0;
 	garbage = NULL;
 	env = get_env(envp, &garbage);
 	save_env(garbage);
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
 	help(&env, &garbage, input, tokens);
 }

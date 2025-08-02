@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   one_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 03:54:14 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 21:12:00 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 04:45:11 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 static int	execute_cmd(t_cmds *command, t_env *env, t_garbage **garbage)
 {
+	signal(SIGINT, SIG_IGN);
 	command->pid = fork();
 	if (command->pid == -1)
 		return (perror("fork failed\n"), 1);
 	if (command->pid == 0)
 	{
-		if (!command->cmd)
-			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, env, garbage);
@@ -59,23 +58,24 @@ int	one_command(t_cmds *commands, t_env **env, t_garbage **garbage)
 {
 	int	status;
 
-	if (help(commands) == FALSE)
-		return (1);
 	if (commands->type == BUILTIN)
 	{
+		if (help(commands) == FALSE)
+			return (1);
 		commands->printable = 1;
 		execute_cmd_built_in(commands, env, garbage);
 	}
 	else
 	{
-		g_global_signal = -1;
 		if (execute_cmd(commands, *env, garbage))
 			return (set_status(1), 0);
 		waitpid(commands->pid, &status, 0);
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == 2)
-				write(1, "\n", 1);
+				write(2, "\n", 1);
+			if (WTERMSIG(status) == 3)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
 			return (set_status(128 + WTERMSIG(status)), 1);
 		}
 		set_status(WEXITSTATUS(status));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:43:52 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 04:35:34 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 04:36:10 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ static int	first_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	command->pid = fork();
 	if (command->pid == -1)
 	{
-		perror("fork failed\n");
+		perror("fork failed");
 		return (1);
 	}
 	if (command->pid == 0)
 	{
-		if (!command->cmd)
-			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, *env, garbage);
@@ -46,13 +44,11 @@ static int	middle_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	command->pid = fork();
 	if (command->pid == -1)
 	{
-		perror("fork failed\n");
+		perror("fork failed");
 		return (1);
 	}
 	if (command->pid == 0)
 	{
-		if (!command->cmd)
-			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, *env, garbage);
@@ -76,13 +72,11 @@ static int	last_pipe(t_cmds *command, t_env **env, int *f_pipe,
 	command->pid = fork();
 	if (command->pid == -1)
 	{
-		perror("fork failed\n");
+		perror("fork failed");
 		return (1);
 	}
 	if (command->pid == 0)
 	{
-		if (!command->cmd)
-			get_out_from_here(*garbage, 0);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_and_red_and_fill(command, *env, garbage);
@@ -103,7 +97,7 @@ static int	help(t_cmds *cmd, t_env **env, int *f_pipe, t_garbage **garbage)
 	if (pipe(f_pipe) == -1)
 		return (1);
 	if (first_pipe(cmd, env, f_pipe, garbage))
-		return (1);
+		return (kill_proccess(), 1);
 	return (0);
 }
 
@@ -124,14 +118,14 @@ int	pipes(t_cmds *commands, t_env **env, t_garbage **garbage)
 			return (set_status(1), 1);
 		f_pipe[1] = s_pipe[1];
 		if (middle_pipe(tmp, env, f_pipe, garbage))
-			return (set_status(1), 1);
+			return (kill_proccess(), set_status(1), 1);
 		close(f_pipe[0]);
 		f_pipe[0] = s_pipe[0];
 		f_pipe[1] = s_pipe[1];
 		tmp = tmp->next;
 	}
 	if (last_pipe(tmp, env, f_pipe, garbage))
-		return (set_status(1), 1);
+		return (kill_proccess(), set_status(1), 1);
 	close_pipes(f_pipe);
 	return (set_status(wait_commands(ft_size(commands), commands, garbage)), 1);
 }
