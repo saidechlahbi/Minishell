@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 21:00:31 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:15:26 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ static t_env	*create_node(t_env *env, t_garbage **garbage)
 	t_env	*new_node;
 
 	new_node = ft_malloc(sizeof(t_env), 1, garbage);
-	new_node->key = ft_malloc(strlen(env->key) + 1, 1, garbage);
+	new_node->key = ft_malloc(ft_strlen(env->key) + 1, 1, garbage);
 	ft_strncpy(new_node->key, env->key, ft_strlen(env->key));
 	new_node->key[ft_strlen(env->key)] = '\0';
 	if (env->value)
 	{
-		new_node->value = ft_malloc(strlen(env->value) + 1, 1, garbage);
+		new_node->value = ft_malloc(ft_strlen(env->value) + 1, 1, garbage);
 		ft_strncpy(new_node->value, env->value, ft_strlen(env->value));
 		new_node->value[ft_strlen(env->value)] = '\0';
 	}

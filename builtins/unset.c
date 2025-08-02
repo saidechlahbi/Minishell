@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:12 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/25 18:32:34 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:13:19 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	unset(t_env **env, char **args, t_garbage *garbage)
 		cur = *env;
 		while (cur)
 		{
-			if (cur->key && !strcmp(cur->key, args[i]))
+			if (cur->key && !ft_strcmp(cur->key, args[i]))
 			{
 				mark_garbage(cur, garbage);
 				if (prev == NULL)
