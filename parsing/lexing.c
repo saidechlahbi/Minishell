@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/08/03 16:01:41 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/03 16:03:19 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	specify_word(t_token *token, t_token *prev)
 {
 	if (prev->type == CMD || prev->type == BUILTIN)
 	{
-		if (prev->next && !strcmp(prev->value, "export"))
+		if (prev->next && !ft_strcmp(prev->value, "export"))
 			token->exp = EXPORT;
 		token->type = ARG;
 	}
