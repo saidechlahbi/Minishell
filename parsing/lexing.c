@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/08/03 16:03:19 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/04 08:32:48 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,18 @@ static void	specify_word(t_token *token, t_token *prev)
 	}
 }
 
+static void	specify_first_token(t_token *token)
+{
+	if (is_builtin(token->value))
+	{
+		if (token->next && !ft_strcmp(token->value, "export"))
+			token->next->exp = EXPORT;
+		token->type = BUILTIN;
+	}
+	else
+		token->type = CMD;
+}
+
 void	lexing(t_token *token)
 {
 	t_token	*prev;
@@ -48,14 +60,7 @@ void	lexing(t_token *token)
 	prev = token;
 	if (token && (token->type == WORD || token->type == ARG))
 	{
-		if (is_builtin(token->value))
-		{
-			if (token->next && !ft_strcmp(token->value, "export"))
-				token->next->exp = EXPORT;
-			token->type = BUILTIN;
-		}
-		else
-			token->type = CMD;
+		specify_first_token(token);
 		token = token->next;
 	}
 	while (token)
