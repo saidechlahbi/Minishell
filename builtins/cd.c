@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:31:55 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/28 21:33:23 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/04 09:05:02 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,11 @@ int	ft_cd(char **args, t_env **env, t_garbage **garbage)
 		return (protect_chdir(res), free_pwd(old, pwd), 1);
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (ft_putstr_fd("cd: error retrieving new directory\n", 2),
-			free_pwd(old, pwd), 1);
+	{
+		ft_putstr_fd("pwd: error retrieving current directory: ", 2);
+		perror("getcwd: cannot access parent directories");
+		return (free_pwd(old, pwd), 1);
+	}
 	set_oldpwd(env, pwd, old, garbage);
 	return (free_pwd(old, pwd), 0);
 }
