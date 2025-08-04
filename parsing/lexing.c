@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/08/04 08:32:48 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/04 08:37:41 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	lexing(t_token *token)
 	t_token	*prev;
 
 	prev = token;
-	if (token && (token->type == WORD || token->type == ARG))
+	if (token && (token->type == WORD))
 	{
 		specify_first_token(token);
 		token = token->next;
