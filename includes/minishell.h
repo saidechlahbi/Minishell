@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/02 05:02:44 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/05 06:39:33 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ char						*expand_exit_status(t_scanner *var, char *input,
 								char *expanded, t_garbage **garbage);
 void						skip_nodes(t_token **tokens);
 int							check_literal(char *str);
-int							check_last(char *last);
 char						*custom_prompt(t_env *env, t_garbage **garbage);
 t_garbage					*f(t_garbage *garbage);
 

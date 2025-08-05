@@ -6,11 +6,28 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 01:16:04 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/30 01:18:42 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/05 06:38:29 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static int	check_last(char *last)
+{
+	return (last && (last[1] == '?' || is_expandable(last[1])));
+}
+
+static int	os(char *cur)
+{
+	int	i;
+
+	i = 0;
+	while (cur[i] && ft_isspace(cur[i]))
+		i++;
+	if (cur[i])
+		return (1);
+	return (0);
+}
 
 void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 {
@@ -33,7 +50,7 @@ void	has_dollar(t_token *tokens, t_env *env, t_garbage **garbage)
 			last = ft_strrchr(cur->value, '$');
 			expanded = prep(cur->value, env, encapsulizer, garbage);
 			cur->value = expanded;
-			if (check_last(last) && cur->exp != EXPORT)
+			if (check_last(last) && (cur->exp != EXPORT || !os(cur->value)))
 				split_n_insert(cur, encapsulizer, garbage);
 		}
 		cur = next;
