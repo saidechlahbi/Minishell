@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:54:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/27 20:17:52 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:10:31 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 static int	open_specific_file(t_redirection *redirec)
 {
+	char		*msg;
+	t_garbage	*garbage;
+
+	garbage = f(NULL);
 	if (redirec->is_ambg)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(redirec->file, 2);
-		ft_putstr_fd(": ambiguous redirect\n", 2);
+		msg = ft_strjoin("minishell: ", redirec->file, &garbage);
+		msg = ft_strjoin(msg, ": ambiguous redirect\n", &garbage);
+		ft_putstr_fd(msg, 2);
 		return (FALSE);
 	}
 	if (redirec->type == IN_FILE)
@@ -29,9 +33,9 @@ static int	open_specific_file(t_redirection *redirec)
 		redirec->fd = open(redirec->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (redirec->fd == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(redirec->file, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		msg = ft_strjoin("minishell: ", redirec->file, &garbage);
+		msg = ft_strjoin(msg, ": No such file or directory\n", &garbage);
+		ft_putstr_fd(msg, 2);
 		return (FALSE);
 	}
 	return (TRUE);

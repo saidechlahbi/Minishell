@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:10 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/28 21:47:27 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:43:32 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	ft_pwd(void)
 {
-	char	*pwd;
+	char		*pwd;
+	char		*msg;
+	t_garbage	*garbage;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
@@ -23,7 +25,8 @@ int	ft_pwd(void)
 		perror("getcwd: cannot access parent directories");
 		return (1);
 	}
-	ft_putstr_fd(pwd, 1);
-	ft_putstr_fd("\n", 1);
+	garbage = f(NULL);
+	msg = ft_strjoin(pwd, "\n", &garbage);
+	ft_putstr_fd(msg, 1);
 	return (free(pwd), 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 04:44:31 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 23:27:46 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:05:48 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,18 @@ static int	read_from_stdin(t_redirection *redirec, int fd, t_env *env,
 		t_garbage **garbage)
 {
 	char	*line;
+	char	*msg;
 
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 		{
-			ft_putstr_fd("Minishell: warning: here-document", 2);
-			ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
-			ft_putstr_fd(redirec->delimiter, 2);
-			ft_putstr_fd("')\n", 2);
+			msg = ft_strjoin("Minishell: warning: here-document",
+					" delimited by end-of-file (wanted `", garbage);
+			msg = ft_strjoin(msg, redirec->delimiter, garbage);
+			msg = ft_strjoin(msg, "')\n", garbage);
+			ft_putstr_fd(msg, 2);
 			return (1);
 		}
 		if (ft_strcmp(line, redirec->delimiter) == 0)

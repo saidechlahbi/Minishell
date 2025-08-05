@@ -48,7 +48,7 @@ int	wait_commands(int size, t_cmds *cmd, t_garbage **garbage)
 		if (WTERMSIG(status[size - 1]) == 2)
 			return (write(2, "\n", 1), WTERMSIG(status[size - 1]) + 128);
 		if (WTERMSIG(status[size - 1]) == 3)
-			return (ft_putstr_fd("Quit (core dumped)\n", 2), \
+			return (ft_putstr_fd("Quit (core dumped)\n", 2),
 				WTERMSIG(status[size - 1]) + 128);
 		return (WTERMSIG(status[size - 1]) + 128);
 	}

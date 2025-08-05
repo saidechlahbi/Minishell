@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 00:36:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/02 04:19:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/05 14:48:07 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	close_pipes(int *pipefd)
 int	check_if_is_it_dir(char *cmd)
 {
 	struct stat	stat_dir;
+	t_garbage	*garbage;
+	char		*msg;
 
 	if (!cmd)
 		return (0);
@@ -30,9 +32,10 @@ int	check_if_is_it_dir(char *cmd)
 		{
 			if (S_ISDIR(stat_dir.st_mode))
 			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(cmd, 2);
-				ft_putstr_fd(": Is a directory\n", 2);
+				garbage = f(NULL);
+				msg = ft_strjoin("minishell: ", cmd, &garbage);
+				msg = ft_strjoin(msg, ": Is a directory\n", &garbage);
+				ft_putstr_fd(msg, 2);
 				return (1);
 			}
 		}
@@ -65,6 +68,8 @@ void	execution_cmd(t_cmds *command, t_env **env, t_garbage **garbage)
 
 void	open_and_red_and_fill(t_cmds *command, t_env *env, t_garbage **garbage)
 {
+	char	*msg;
+
 	if (redirection(command) == FALSE)
 		get_out_from_here(*garbage, 1);
 	if (!command->cmd)
@@ -75,9 +80,9 @@ void	open_and_red_and_fill(t_cmds *command, t_env *env, t_garbage **garbage)
 	if (command->executable == 0 && command->type == CMD && command->finde == 0
 		&& command->slash == 0)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(command->cmd[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		msg = ft_strjoin("minishell: ", command->cmd[0], garbage);
+		msg = ft_strjoin(msg, ": command not found\n", garbage);
+		ft_putstr_fd(msg, 2);
 		get_out_from_here(*garbage, 127);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:32:01 by schahir           #+#    #+#             */
-/*   Updated: 2025/07/29 01:52:14 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:01:12 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,13 @@ void	save_data(t_garbage *garbage)
 
 static void	print_error(char *arg)
 {
-	ft_putstr_fd("bash: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
+	char		*msg;
+	t_garbage	*garbage;
+
+	garbage = f(NULL);
+	msg = ft_strjoin("bash: export: `", arg, &garbage);
+	msg = ft_strjoin(msg, "': not a valid identifier\n", &garbage);
+	ft_putstr_fd(msg, 2);
 }
 
 int	export_error(char *arg)

@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/29 03:34:09 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:54:51 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ static int	check(char *str)
 
 static void	help(char *args, int i, t_garbage *garbage)
 {
+	char	*msg;
+
 	if (i == 1)
 	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(args, 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
+		msg = ft_strjoin("minishell: exit: ", args, &garbage);
+		msg = ft_strjoin(msg, ": numeric argument required\n", &garbage);
+		ft_putstr_fd(msg, 2);
 		get_out_from_here(garbage, 2);
 	}
 	else
