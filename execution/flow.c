@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flow.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:14:17 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/26 17:29:32 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/06 11:07:49 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,13 @@ t_cmds	*splinting_into_proccess(t_token *token, char **envp,
 				cmd_tmp->type = token->type;
 			token = token->next;
 		}
-		if (token)
+		if (token && token->next == NULL)
+		{
+			add_back_for_cmd(&commands, cmd_tmp);
+			token = token->next;
+			cmd_tmp = initial_cmd(token, garbage, envp);
+		}
+		else if (token)
 			token = token->next;
 		add_back_for_cmd(&commands, cmd_tmp);
 	}

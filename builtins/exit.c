@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 23:07:39 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/05 15:54:51 by schahir          ###   ########.fr       */
+/*   Updated: 2025/08/06 11:35:49 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static unsigned char	_atoi(const char *str, int *error)
 {
-	long long	result;
-	int			sign;
+	unsigned long long	result;
+	int					sign;
 
 	result = 0;
 	sign = 1;
@@ -29,12 +29,11 @@ static unsigned char	_atoi(const char *str, int *error)
 	}
 	while (*str >= '0' && *str <= '9')
 	{
-		if (result > (LLONG_MAX - (*str - '0')) / 10)
-		{
-			*error = 1;
-			break ;
-		}
 		result = result * 10 + (*str++ - '0');
+		if (sign == 1 && result > LLONG_MAX)
+			return (*error = 1, 0);
+		if (sign == -1 && result > 9223372036854775808ULL)
+			return (*error = 1, 0);
 	}
 	return ((unsigned char)(result * sign));
 }
