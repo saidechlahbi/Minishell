@@ -58,7 +58,7 @@ void	lexing(t_token *token)
 	t_token	*prev;
 
 	prev = token;
-	if (token && (token->type == WORD))
+	if (token && (token->type == WORD || token->type == ARG))
 	{
 		specify_first_token(token);
 		token = token->next;
