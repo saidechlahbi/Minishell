@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/05 06:39:33 by schahir          ###   ########.fr       */
+/*   Updated: 2025/09/20 13:33:55 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_token
 	int						expanded;
 	int						inq;
 	int						exp;
+	int						validex;
 	int						has_literal;
 	struct s_token			*next;
 }							t_token;
@@ -61,7 +62,8 @@ enum						e_type
 	APPEND,
 	AMBIGIUOS,
 	EXPANDED,
-	EXPORT
+	EXPORT,
+	INVALID
 };
 
 typedef struct s_scanner

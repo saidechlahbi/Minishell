@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/05 15:50:54 by schahir          ###   ########.fr       */
+/*   Updated: 2025/09/20 13:24:33 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_token	*parsing(char *input, t_garbage **garbage, t_env *env)
 	if (validate_input(tokens))
 		return (NULL);
 	lexing(tokens);
+	spliport(tokens);
 	delimiter(tokens);
 	has_dollar(tokens, env, garbage);
 	skip_nodes(&tokens);

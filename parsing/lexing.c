@@ -6,7 +6,7 @@
 /*   By: schahir <schahir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 21:14:46 by schahir           #+#    #+#             */
-/*   Updated: 2025/08/05 06:43:30 by schahir          ###   ########.fr       */
+/*   Updated: 2025/09/20 13:37:12 by schahir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,28 @@ void	lexing(t_token *token)
 			specify_word(token, prev);
 		if (token->type == CMD || token->type == BUILTIN || token->type == PIPE)
 			prev = token;
+		token = token->next;
+	}
+}
+
+
+static void	spliport(t_token *token)
+{
+	int i;
+
+	i = 0;
+	while (token)
+	{
+		if (token->exp == EXPORT)
+		{
+			if (is_expandable(token->value[i]))
+			{
+				while (is_expandable2(token->value[i]))
+					i++;
+				if (token->value[i] != '=' || (token->value[i] != '+' && token->value[i + 1] != '='))
+					token->validex = INVALID;
+			}
+		}
 		token = token->next;
 	}
 }
